@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 import new_create_app_name_battler.magic.Magic;
-import new_create_app_name_battler.strategy.IStrategy;
 
 public class BasePlayer implements IPlayer {
 
@@ -29,7 +28,6 @@ public class BasePlayer implements IPlayer {
 	protected int strategyData;
 	protected int healValue;
 	private static final int HERB_RECOVERY_VALUE = 30;
-	protected IStrategy strategy;
 
 	public BasePlayer() {
 	}
@@ -194,14 +192,10 @@ public class BasePlayer implements IPlayer {
 
 		System.out.printf("%sは革袋の中にあった草を食べた！\n", getName());
 
-		int r = random.nextInt(2) + 1;
-
-		switch (r) {
+		switch (random.nextInt(3)) {
 
 		case 0:
 
-			System.out
-					.printf("%sは体力が%d回復した！\n", getName(), HERB_RECOVERY_VALUE);
 			recoveryProcess(this, HERB_RECOVERY_VALUE);
 			break;
 
@@ -214,10 +208,7 @@ public class BasePlayer implements IPlayer {
 
 			} else {
 
-				System.out
-						.printf("%sは体力が%d回復した！\n", getName(), HERB_RECOVERY_VALUE);
 				recoveryProcess(this, HERB_RECOVERY_VALUE);
-
 			}
 			break;
 
@@ -281,7 +272,7 @@ public class BasePlayer implements IPlayer {
 	@Override
 	public boolean isLive() {
 
-		return this.hp > 0;
+		return 0 < this.hp;
 	}
 
 	@Override
@@ -312,27 +303,27 @@ public class BasePlayer implements IPlayer {
 
 
 	@Override
-	public void fall(IPlayer defender) {
+	public void knockedDownCheck(IPlayer defender) {
 
 		if (defender.getHp() <= 0) {
 
 			System.out.printf("%sは力尽きた...\n", defender.getName());
-			abnormalState();// 状態異常チェック
-
-		} else {
-
-			abnormalState();// 状態異常チェック
-
-			if (getHp() <= 0) {// playerの倒れた判定
-				System.out.printf("%sは力尽きた...\n", getName());
-			}
 		}
+			conditionCheck();// 状態異常チェック
 	}
 
 	/**
 	 * 状態異常のチェック
 	 */
-	private void abnormalState() {
+	public void conditionCheck() {
+
+		if (isParalysis()) {// true:麻痺状態 false:麻痺していない
+
+			if(Magic.PARALYSIS.getContinuousRate() < random.nextInt(100) + 1) {// 麻痺の確立より乱数が上なら麻痺の解除
+				setParalysis(false);// 麻痺解除
+				System.out.printf("%sは麻痺が解けた！\n", getName());
+			}
+		}
 
 		if (isPoison()) {// true:毒状態 false:無毒状態
 
@@ -341,12 +332,8 @@ public class BasePlayer implements IPlayer {
 					Magic.POISON.getMaxDamage());
 		}
 
-		if (isParalysis()) {// true:麻痺状態 false:麻痺していない
-
-			if (random.nextInt(100) + 1 > Magic.PARALYSIS.getContinuousRate()) {// 麻痺の確立より乱数が上なら麻痺の解除
-				setParalysis(false);// 麻痺解除
-				System.out.printf("%sは麻痺が解けた！\n", getName());
-			}
+		if (this.getHp() <= 0) {// playerの倒れた判定
+			System.out.printf("%sは力尽きた...\n", getName());
 		}
 	}
 }

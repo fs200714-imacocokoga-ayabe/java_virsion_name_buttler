@@ -35,14 +35,13 @@ public class JobWizard extends BasePlayer implements IMagicalUsable {
 		System.out.printf("%sの攻撃！\n%sは杖を投げつけた！\n", getName(), getName());
 		damage = calcDamage(defender);// 与えるダメージを求める
 		damageProcess(defender, damage);
+		knockedDownCheck(defender);
 	}
 
 	@Override
 	public void skillAttack(IPlayer defender) {
 
-		int r = random.nextInt(100) + 1;
-
-		if (r > 75) {// 25％で発動
+		if (random.nextInt(100) + 1 <= Magic.FIREELEMENTAL.getInvocationRate()) {// 25％で発動
 
 			System.out.printf("%sは魔法陣を描いて%sを召還した\n%sの攻撃！\n", getName(),
 					Magic.FIREELEMENTAL.getName(),
@@ -54,6 +53,7 @@ public class JobWizard extends BasePlayer implements IMagicalUsable {
 
 			System.out.printf("%sの攻撃だがスキルは発動しなかった！\n", getName());
 		}
+		knockedDownCheck(defender);
 	}
 
 	@Override
@@ -63,36 +63,37 @@ public class JobWizard extends BasePlayer implements IMagicalUsable {
 
 			damage = effect(defender);
 			super.damageProcess(defender, damage);
+			knockedDownCheck(defender);
 
 		} else {
 
-			System.out.println("MPが足りない！");
+			System.out.printf("%sは魔法を唱えようとしたが、MPが足りない！！\n", getName());
 			normalAttack(defender);
 		}
+
 	}
 
 	@Override
 	public void eatGrass() {
 		super.eatGrass();
+		knockedDownCheck(this);
 	}
 
 	@Override
 	public int effect(IPlayer defender) {
 
-		if (getMp() >= 20) {// MPが20以上の場合
+		if (20 <= getMp()) {// MPが20以上の場合
 
-			int r = random.nextInt(2) + 1;// 乱数1～2
-
-			if (r == 1) {// 1の場合サンダーを使用
+			if (random.nextInt(2) == 0) {// 0の場合サンダーを使用
 
 				damage = useThunder();
 
-			} else if (r == 2) {// 2の場合ファイアを使用
+			} else {// 1の場合ファイアを使用
 
 				damage = useFire();
 			}
 
-		} else if (getMp() < 20 && getMp() >= 10) {// MPが10以上20未満の場合ファイアを使用する
+		} else if (10 <= this.getMp() && this.getMp() < 20) {// MPが10以上20未満の場合ファイアを使用する
 
 			damage = useFire();// ファイアを使用
 		}
@@ -130,7 +131,7 @@ public class JobWizard extends BasePlayer implements IMagicalUsable {
 	@Override
 	public boolean hasEnoughMp() {
 
-		if (this.getMp() >= 10) {
+		if (10 <= this.getMp()) {
 
 			return true;
 

@@ -17,8 +17,10 @@ public class Context {
 		this.istrategy = istrategy;
 	}
 
-	public void attackStrategy(IPlayer player1, List<IPlayer> party1, List<IPlayer> party2) {
+	public int attackStrategy(IPlayer player1, List<IPlayer> party1, List<IPlayer> party2) {
 
-		this.istrategy.attackStrategy(player1, party1, party2);
+		return this.istrategy.attackStrategy(player1, party1, party2);
+
 	}
 }
+

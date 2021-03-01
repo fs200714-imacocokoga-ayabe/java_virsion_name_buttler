@@ -37,24 +37,24 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 		System.out.printf("%sの攻撃！\n錫杖で突いた！\n", getName());
 		damage = calcDamage(defender);// 与えるダメージを求める
 		damageProcess(defender, damage);// ダメージ処理
+		knockedDownCheck(defender);
 	}
 
 	@Override
 	public void skillAttack(IPlayer defender) {
 
-		int r = random.nextInt(100) + 1;
-
-		if (r > 50) {
+		if (random.nextInt(100) + 1 <= Magic.OPTICALELEMENTAL.getInvocationRate()) {
 
 			System.out.printf("%s祈りを捧げて%sを召還した\n%sの祝福を受けた！\n", getName(),
 					Magic.OPTICALELEMENTAL.getName(), Magic.OPTICALELEMENTAL.getName());
 
-					recoveryProcess(this, Magic.OPTICALELEMENTAL.getRecoveryValue());
+			recoveryProcess(this, Magic.OPTICALELEMENTAL.getRecoveryValue());
 
 		} else {
 
 			System.out.printf("%sは祈りを捧げたが何も起こらなかった！\n", getName());
 		}
+		knockedDownCheck(this);
 	}
 
 	@Override
@@ -63,10 +63,11 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 		if (hasEnoughMp()) {
 
 			damage = effect(defender);
+			knockedDownCheck(defender);
 
 		} else {
 
-			System.out.println("MPが足りない！");
+			System.out.printf("%sは魔法を唱えようとしたが、MPが足りない！！\n", getName());
 			normalAttack(defender);
 		}
 	}
@@ -88,20 +89,25 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 
 			recoveryProcess(defender, Magic.HEAL
 					.getRecoveryValue());
+			knockedDownCheck(this);
 
 		} else {// MPが20未満の場合
 
+			System.out.printf("%sはヒールを唱えようとしたが、MPが足りない！！\n", getName());
 			System.out.printf("%sの攻撃！\n錫杖を振りかざした！\n", getName());
 			damage = calcDamage(defender);// 与えるダメージを求める
 			super.damageProcess(defender, damage);// ダメージ処理
+			knockedDownCheck(defender);
 		}
 
 		this.isHeal = false;
+
 	}
 
 	@Override
 	public void eatGrass() {
 		super.eatGrass();
+		knockedDownCheck(this);
 	}
 
 	@Override
@@ -109,9 +115,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 
 		if (!defender.isPoison() && !defender.isParalysis()) {// 相手が毒,麻痺状態にかかっていない場合
 
-			int magic = random.nextInt(2) + 1;// 乱数1～2
-
-			if (magic == 1) {// 乱数1の場合パライズを使用
+			if (random.nextInt(2) == 0) {// 乱数1の場合パライズを使用
 
 				useParalysis(defender);
 
@@ -166,11 +170,11 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 	@Override
 	public boolean hasEnoughMp() {
 
-		if (this.getMp() >= 10 && !isHeal) {
+		if (10 <= this.getMp() && !isHeal) {
 
 			return true;
 
-		} else if (this.getMp() >= 20 && isHeal) {
+		} else if (20 <= this.getMp() && isHeal) {
 
 			return true;
 
@@ -180,3 +184,5 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 		}
 	}
 }
+
+

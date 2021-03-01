@@ -5,14 +5,14 @@ import java.util.List;
 
 public enum Magic {
 
-	FIRE("ファイア", 10, 10, 30, 0, 0),
-	THUNDER("サンダー", 20, 20, 50, 0, 0),
-	HEAL("ヒール", 20, 0, 0, 50, 0),
-	PARALYSIS("パライズ", 10, 0, 0, 0, 20),
-	POISON("ポイズン", 10, 0, 20, 0, 0),
-	FIREROLL("火遁の術", 10, 10, 30, 0, 0),
-	FIREELEMENTAL("炎の精霊", 0, 60, 60, 0, 0),
-	OPTICALELEMENTAL("光の精霊", 0, 0, 0, 70, 0),
+	FIRE("ファイア", 10, 10, 30, 0, 0, 0),
+	THUNDER("サンダー", 20, 20, 50, 0, 0, 0),
+	HEAL("ヒール", 20, 0, 0, 50, 0, 0),
+	PARALYSIS("パライズ", 10, 0, 0, 0, 20, 0),
+	POISON("ポイズン", 10, 0, 20, 0, 0, 0),
+	FIREROLL("火遁の術", 10, 10, 30, 0, 0, 0),
+	FIREELEMENTAL("炎の精霊", 0, 60, 60, 0, 0, 30),
+	OPTICALELEMENTAL("光の精霊", 0, 0, 0, 70, 0, 40),
 	;
 
 	private String name;// 魔法の名前
@@ -21,8 +21,9 @@ public enum Magic {
 	private int maxDamage;// 最大ダメージ
 	private int recoveryValue;// 回復量
 	private int continuousRate;// 継続率
+	private int invocationRate;// 発動率
 
-	private Magic(String name, int i, int j, int k, int l, int m) {
+	private Magic(String name, int i, int j, int k, int l, int m, int n) {
 
 		this.name = name;
 		this.mpCost = i;
@@ -30,6 +31,7 @@ public enum Magic {
 		this.maxDamage = k;
 		this.recoveryValue = l;
 		this.continuousRate = m;
+		this.invocationRate = n;
 	}
 
 	List<Magic>magicalList = new ArrayList<Magic>();
@@ -99,7 +101,14 @@ public enum Magic {
 
 		return continuousRate;
 	}
+
+	public int getInvocationRate() {
+
+		return invocationRate;
+	}
 }
+
+
 
 
 

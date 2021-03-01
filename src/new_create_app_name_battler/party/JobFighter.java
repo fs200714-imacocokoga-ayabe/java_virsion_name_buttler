@@ -1,5 +1,7 @@
 package new_create_app_name_battler.party;
 
+import new_create_app_name_battler.magic.Skill;
+
 public class JobFighter extends BasePlayer {
 
 	/**
@@ -28,13 +30,12 @@ public class JobFighter extends BasePlayer {
 		System.out.printf("%sの攻撃！\n%sは剣で斬りつけた！\n", getName(), getName());
 		damage = calcDamage(defender); // 与えるダメージを求める
 		damageProcess(defender, damage);
+		knockedDownCheck(defender);
 	}
 
 	public void skillAttack(IPlayer defender) {
 
-		int r = random.nextInt(100) + 1;
-
-		if (r > 75) {// 乱数値が75より大きいなら
+		if (random.nextInt(100) + 1 <= Skill.ASSAULT.getInvocationRate()) {// 発動率25%
 
 			System.out.printf("%sの捨て身の突撃！\n", getName());
 			damage = calcDamage(defender); // 与えるダメージを求める
@@ -45,10 +46,12 @@ public class JobFighter extends BasePlayer {
 
 			System.out.printf("%sの捨て身の突撃はかわされた！\n", getName());
 		}
+		knockedDownCheck(defender);
 	}
 
 	@Override
 	public void eatGrass() {
 		super.eatGrass();
+		knockedDownCheck(this);
 	}
 }

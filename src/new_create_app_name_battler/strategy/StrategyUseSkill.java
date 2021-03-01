@@ -13,7 +13,7 @@ public class StrategyUseSkill extends BaseStrategy {// スキル攻撃
 	 * @param party2 :パーティ2
 	 */
 	@Override
-	public void attackStrategy(IPlayer player1, List<IPlayer> party1,
+	public int attackStrategy(IPlayer player1, List<IPlayer> party1,
 			List<IPlayer> party2) {
 
 		this.player1 = player1;
@@ -27,14 +27,14 @@ public class StrategyUseSkill extends BaseStrategy {// スキル攻撃
 			party.addAll(party1);// partyにparty1を入れる
 		}
 
-		int a = random.nextInt(party.size());
+		player2 = party.get(random.nextInt(party.size()));
 
-		player2 = party.get(a);
+		id = player2.getIdNumber();
 
 		player1.skillAttack(player2);
-		player1.fall(player2);
 
 		party.clear();
 
+		return id;
 	}
 }

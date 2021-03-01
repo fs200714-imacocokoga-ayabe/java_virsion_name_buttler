@@ -12,7 +12,8 @@ public interface IPlayer {
 	void damage(int damage);
 	void recovery(int healValue);
 	int calcDamage(IPlayer defender);
-	void fall(IPlayer defender);
+	void knockedDownCheck(IPlayer defender);
+	void conditionCheck();
 
 	boolean isLive();
 	boolean isPoison();
@@ -38,4 +39,5 @@ public interface IPlayer {
 	boolean isMark();
 	void setPoison(boolean poison);
 	void setParalysis(boolean paralysis);
+
 }

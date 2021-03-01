@@ -7,7 +7,7 @@ import new_create_app_name_battler.party.IPlayer;
 public class StrategyUseHerb extends BaseStrategy {// 草を食べる
 
 	@Override
-	public void attackStrategy(IPlayer player1, List<IPlayer> party1,
+	public int attackStrategy(IPlayer player1, List<IPlayer> party1,
 			List<IPlayer> party2) {
 
 		this.player1 = player1;
@@ -21,13 +21,12 @@ public class StrategyUseHerb extends BaseStrategy {// 草を食べる
 			party.addAll(party1);// partyにparty1を入れる
 		}
 
-		int a = random.nextInt(party.size());
+		player2 = party.get(random.nextInt(party.size()));
 
-		player2 = party.get(a);
+		id = player2.getIdNumber();
 
 		player1.eatGrass();
-		player1.fall(player2);
 
+		return id;
 	}
-
 }

@@ -2,6 +2,7 @@ package new_create_app_name_battler.party;
 
 import new_create_app_name_battler.magic.IMagicalUsable;
 import new_create_app_name_battler.magic.Magic;
+import new_create_app_name_battler.magic.Skill;
 
 public class JobNinja extends BasePlayer implements IMagicalUsable {
 
@@ -34,16 +35,13 @@ public class JobNinja extends BasePlayer implements IMagicalUsable {
 		System.out.printf("%sの攻撃！\n手裏剣を投げつけた！\n", getName());
 		damage = calcDamage(defender); // 与えるダメージを求める
 		damageProcess(defender, damage);// ダメージ処理
+		knockedDownCheck(defender);
 	}
 
 	@Override
 	public void skillAttack(IPlayer defender) {
 
-		int r = random.nextInt(100) + 1;
-
-		damage = 0;
-
-		if (r > 75) {// 25%で発動
+		if (random.nextInt(100) + 1 <= Skill.SWALLOW.getInvocationRate()) {// 25%で発動
 
 			System.out.printf("%sは目にも止まらぬ速さで攻撃した！\n", getName());
 
@@ -64,6 +62,7 @@ public class JobNinja extends BasePlayer implements IMagicalUsable {
 
 			System.out.printf("%sは転んだ！\n", getName());
 		}
+		knockedDownCheck(defender);
 	}
 
 	@Override
@@ -73,18 +72,19 @@ public class JobNinja extends BasePlayer implements IMagicalUsable {
 
 			damage = effect(defender);
 			super.damageProcess(defender, damage);
+			knockedDownCheck(defender);
 
 		} else {
 
-			System.out.println("MPが足りない！");
+			System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", getName());
 			normalAttack(defender);
-
 		}
 	}
 
 	@Override
 	public void eatGrass() {
 		super.eatGrass();
+		knockedDownCheck(this);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class JobNinja extends BasePlayer implements IMagicalUsable {
 	@Override
 	public boolean hasEnoughMp() {
 
-		if (this.getMp() >= 10) {
+		if (10 <= this.getMp()) {
 
 			return true;
 

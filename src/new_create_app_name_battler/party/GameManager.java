@@ -26,9 +26,7 @@ public class GameManager {
 
 	int allyStrategyNumber;// 作戦の選択に使用
 	int enemyStrategyNumber;// 作戦の選択に使用
-	int strategyNumber;// 個別の作戦の選択に使用
-	int[] strategyData = new int[2];// 攻撃プレイヤーIDと守備プレイヤーIDと作戦番号を格納
-
+	int id;
 	private IPlayer[] speedData = new IPlayer[6];
 	List<IPlayer> attackList = new ArrayList<IPlayer>();// 行動するプレイヤーを格納
 
@@ -80,62 +78,62 @@ public class GameManager {
 			}
 
 			// ■プレイヤーの行動ターン
-			for (int i = 0; i < party.getMembers().size(); i++) {// 人数分繰り返し
-
+			// 生きているplayerをattackListに格納
+			for (int i = 0; i < party.getMembers().size(); i++) {
 				player = party.getMembers().get(i);
 				attackList.add(player);// attackにplayerを格納
 			}
 
-			for (int i = 0; i < attackList.size(); i++) {// attackに格納したplayerが全員行動する
+			// attackに格納したplayerが全員行動する
+			for (int i = 0; i < attackList.size(); i++) {
 
-				player1 = attackList.get(i);// 攻撃リストから呼び出し
+				player = attackList.get(i);// 攻撃リストから呼び出し
 
-				if (player1.isLive()) {
+				if (player.isLive()) {
 
-					if (player1.isParalysis()) {
+					if (player.isParalysis()) {// 麻痺している場合
 
-						System.out.printf("%sは麻痺で動けない！！\n", player1.getName());
+						System.out.printf("%sは麻痺で動けない！！\n", player.getName());
+						player.knockedDownCheck(player);
 
-						break;
+					} else {// 麻痺していない場合
 
-					} else {
+						if (player.isMark()) {// player1が味方の場合
 
-						if (player1.isMark()) {// player1が味方の場合
+							id = selectStrategyType(allyStrategyNumber);
 
-							selectStrategyNumber(allyStrategyNumber);
+							player2 = party.selectMember(id);
 
-						} else {
+						} else {// player1が敵の場合
 
 							enemyStrategyNumber = random.nextInt(5) + 1;// 作戦ランダム
-							selectStrategyNumber(enemyStrategyNumber);
-						}
+							id = selectStrategyType(enemyStrategyNumber);
+							player2 = party.selectMember(id);
 
-						System.out.println("");
-
-						if (player1.getHp() <= 0) {// プレイヤー１の敗北判定
-
-							party.removePlayer(player1);// プレイヤー１がHP0の場合パーティから削除する
-							party.removeMembers(player1);// 死亡したプレイヤーを削除する
-
-						}
-
-						if (player2.getHp() <= 0) {// 相手プレイヤーがHP0の場合
-
-							party.removePlayer(player2);// 相手プレイヤーをパーティから削除する
-							party.removeMembers(player2);// 死亡したプレイヤーを削除する
-						}
-
-						if (party.getParty1().size() <= 0
-								|| party.getParty2().size() <= 0) {
-
-							break;
 						}
 					}
 
+					if (player.getHp() <= 0) {// プレイヤー１の敗北判定
+						party.removePlayer(player);// プレイヤー１がHP0の場合パーティから削除する
+						party.removeMembers(player);// 死亡したプレイヤーを削除する
+					}
+
+					if (player2.getHp() <= 0) {// 相手プレイヤーがHP0の場合
+						party.removePlayer(player2);// 相手プレイヤーをパーティから削除する
+						party.removeMembers(player2);// 死亡したプレイヤーを削除する
+					}
+				}
+
+				System.out.println("");
+
+				if (party.getParty1().size() <= 0
+						|| party.getParty2().size() <= 0) {
+					break;
 				}
 			}
 
 			printParty();
+
 			// Party1またはParty2が全滅していた場合処理を抜ける
 			if (party.getParty1().size() <= 0 || party.getParty2().size() <= 0) {
 
@@ -144,7 +142,6 @@ public class GameManager {
 
 			attackList.clear();
 			turnNumber += 1;
-
 		}
 
 		// 勝ち負けの表示(残っているパーティの勝ち)
@@ -165,7 +162,7 @@ public class GameManager {
 		}
 	}
 
-	private void selectStrategyNumber(int number) {
+	private int selectStrategyType(int number) {
 
 		switch (number) {
 		case 1:
@@ -184,9 +181,9 @@ public class GameManager {
 			context = new Context(new StrategyUseHerb());
 			break;
 		}
+		id = context.attackStrategy(player, party.getParty1(), party.getParty2());
 
-		context.attackStrategy(player1, party.getParty1(), party.getParty2());
-
+		return id;
 	}
 
 	private void attackOrder() throws InterruptedException {
@@ -206,7 +203,7 @@ public class GameManager {
 
 		System.out.println("");
 
-		if (party.getParty1().size() > 0) {// パーティ1が1人以上の場合
+		if (0 < party.getParty1().size()) {// パーティ1が1人以上の場合
 
 			System.out.println("パーティ1");
 
@@ -217,7 +214,7 @@ public class GameManager {
 			}
 		}
 
-		if (party.getParty1().size() > 0) {// パーティ2が1人以上の場合
+		if (0 < party.getParty2().size()) {// パーティ2が1人以上の場合
 
 			System.out.println("パーティ2");
 
@@ -254,8 +251,8 @@ public class GameManager {
 
 			for (int j = 0; j < speedData.length - i - 1; j++) {
 
-				player1 = speedData[j];
-				player2 = speedData[j + 1];
+				IPlayer player1 = speedData[j];
+				IPlayer player2 = speedData[j + 1];
 
 				if (player1.getAgi() < player2.getAgi()) {
 
@@ -397,7 +394,7 @@ public class GameManager {
 					job = s.nextInt();
 					s.nextLine();
 
-					if (job >= 1 && job <= 4)
+					if (1 <= job && job <= 4)
 
 						break;
 

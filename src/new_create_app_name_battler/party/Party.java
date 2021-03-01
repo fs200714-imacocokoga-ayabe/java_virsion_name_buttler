@@ -9,24 +9,20 @@ public class Party {
 	Random random = new Random();
 
 	public ArrayList<IPlayer> members;// プレイヤーの入れ物
-
 	public List<IPlayer> party1 = new ArrayList<IPlayer>();// パーティ1の入れ物
-
 	public List<IPlayer> party2 = new ArrayList<IPlayer>();// パーティ2の入れ物
 
 	/**
 	 * コンストラクタ
 	 */
-	Party() {
-
+	public Party() {
 		members = new ArrayList<IPlayer>();
 	}
 
 	/**
 	 * パーティーメンバーをArrayList で取得する
 	 */
-	ArrayList<IPlayer> getMembers() {
-
+	public ArrayList<IPlayer> getMembers() {
 		return members;
 	}
 
@@ -37,11 +33,9 @@ public class Party {
 	public void appendPlayer(IPlayer player) {
 
 		if (player.isMark()) {
-
 			party1.add(player);// playerがtrueならparty1に入れる
 
 		} else {
-
 			party2.add(player);// playerがfalseならparty2に入れる
 		}
 	}
@@ -53,11 +47,9 @@ public class Party {
 	public void removePlayer(IPlayer player) {
 
 		if (player.isMark()) {
-
 			party1.remove(player);// playerがtrueならparty1から削除する
 
 		} else {
-
 			party2.remove(player);// playerがfalseならparty2から削除する
 		}
 	}
@@ -67,7 +59,6 @@ public class Party {
 	 * @param player : プレイヤー
 	 */
 	public void setMembers(IPlayer player) {
-
 		members.add(player);
 	}
 
@@ -76,7 +67,6 @@ public class Party {
 	 * @param player : プレイヤー
 	 */
 	public void removeMembers(IPlayer player) {
-
 		members.remove(player);
 	}
 
@@ -85,7 +75,6 @@ public class Party {
 	 * @return party1 : パーティ１
 	 */
 	public List<IPlayer> getParty1() {
-
 		return party1;
 	}
 
@@ -94,7 +83,6 @@ public class Party {
 	 * @return party2 : パーティ2
 	 */
 	public List<IPlayer> getParty2() {
-
 		return party2;
 	}
 
@@ -110,11 +98,8 @@ public class Party {
 			if (members.get(i).getIdNumber() == id) {
 
 				return members.get(i);
-
 			}
 		}
-
 		return null;
-
 	}
 }
