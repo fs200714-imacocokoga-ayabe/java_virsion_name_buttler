@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import new_create_app_name_battler.strategy.Context;
+import new_create_app_name_battler.strategy.StrategyEnemyPattern;
 import new_create_app_name_battler.strategy.StrategyNormalAttack;
 import new_create_app_name_battler.strategy.StrategyUseHealingMagic;
 import new_create_app_name_battler.strategy.StrategyUseHerb;
@@ -25,11 +26,14 @@ public class GameManager {
 	IPlayer player2;
 
 	int allyStrategyNumber;// 作戦の選択に使用
-	int enemyStrategyNumber;// 作戦の選択に使用
+	final int ENEMY_STRATEGY_NUMBER = 6;// 作戦の選択に使用
 	int id;
 	private IPlayer[] speedData = new IPlayer[6];
 	List<IPlayer> attackList = new ArrayList<IPlayer>();// 行動するプレイヤーを格納
 
+	int speed1 = 1000;// 開始表示速度
+	int speed2 = 750;// ステータス表示速度
+	int speed3 = 1000;// 戦闘中メッセージ速度
 	public void start() throws InterruptedException {
 
 		opening();// 最初のメニュー
@@ -42,6 +46,7 @@ public class GameManager {
 
 	private void battle() throws InterruptedException {
 		// バトル開始の表示
+		Thread.sleep(speed1);// 1000
 		System.out.println("");
 		System.out.println("=== バトル開始 ===");
 		int turnNumber = 1;// ターンの初期値
@@ -100,18 +105,19 @@ public class GameManager {
 
 						if (player.isMark()) {// player1が味方の場合
 
-							id = selectStrategyType(allyStrategyNumber);
+							selectStrategyType(allyStrategyNumber);
 
 							player2 = party.selectMember(id);
 
 						} else {// player1が敵の場合
 
-							enemyStrategyNumber = random.nextInt(5) + 1;// 作戦ランダム
-							id = selectStrategyType(enemyStrategyNumber);
-							player2 = party.selectMember(id);
+							selectStrategyType(ENEMY_STRATEGY_NUMBER);
 
+							player2 = party.selectMember(id);
 						}
 					}
+
+					Thread.sleep(speed3);// 1000
 
 					if (player.getHp() <= 0) {// プレイヤー１の敗北判定
 						party.removePlayer(player);// プレイヤー１がHP0の場合パーティから削除する
@@ -160,6 +166,8 @@ public class GameManager {
 			System.out.println("引き分け");// お互いパーティが全滅していなければ引き分け
 
 		}
+
+		s.close();
 	}
 
 	private int selectStrategyType(int number) {
@@ -180,7 +188,11 @@ public class GameManager {
 		case 5:
 			context = new Context(new StrategyUseHerb());
 			break;
+		case 6:
+			context = new Context(new StrategyEnemyPattern());
+			break;
 		}
+
 		id = context.attackStrategy(player, party.getParty1(), party.getParty2());
 
 		return id;
@@ -189,11 +201,13 @@ public class GameManager {
 	private void attackOrder() throws InterruptedException {
 
 		System.out.println("");
+		Thread.sleep(speed1);// 1000
 		System.out.println("---攻撃の順番---");// 攻撃順
 
 		for (int i = 0; i < party.getMembers().size(); i++) {// パーティ1,パーティ2に振り分ける処理
 
 			player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
+			Thread.sleep(speed2);// 750
 			player.printStatus();// ステータスの表示
 
 		}
@@ -210,6 +224,7 @@ public class GameManager {
 			for (int i = 0; i < party.getParty1().size(); i++) {
 
 				player = party.getParty1().get(i);
+				Thread.sleep(speed2);// 750
 				player.printStatus();// パーティ1のプレイヤーのステータスを表示する
 			}
 		}
@@ -221,6 +236,7 @@ public class GameManager {
 			for (int i = 0; i < party.getParty2().size(); i++) {
 
 				player = party.getParty2().get(i);
+				Thread.sleep(speed2);// 750
 				player.printStatus();// パーティ2のプレイヤーのステータスを表示す
 
 			}
@@ -279,13 +295,20 @@ public class GameManager {
 		while (true)
 
 		{
-			System.out.printf("1-プレイヤー作成 2-作成済みプレイヤー");
+			System.out.printf("1-プレイヤー作成 2-作成済みプレイヤー 3-設定");
+			System.out.println("");
 			try
 
 			{
 
 				menu = s.nextInt();
 				s.nextLine();
+
+				if (menu == 3) {// 設定を選択した場合
+
+					Setting();
+
+				}
 
 				if (menu == 1 || menu == 2) {
 
@@ -318,6 +341,64 @@ public class GameManager {
 		}
 	}
 
+	private void Setting() {
+
+		int ss;//
+
+		int es;//
+
+		while (true) {
+
+			System.out.printf("%s\n1-%s 2-%s 3-%s\n", "戦闘中メッセージ", "普通", "早い",
+					"遅い");
+
+			try {
+
+				ss = s.nextInt();
+				s.nextLine();
+
+				if (1 <= ss && ss <= 3) {
+
+					break;
+
+				} else
+
+					new Exception();
+
+			} catch (Exception e) {
+
+				s.nextLine();
+
+				System.out.printf("input 1 - 3\n");
+
+			}
+
+		}
+
+		switch (ss) {
+
+		case 1:
+			speed1 = 1000;
+			speed2 = 750;
+			speed3 = 1000;
+			break;
+
+		case 2:
+			speed1 = 0;
+			speed2 = 0;
+			speed3 = 0;
+			break;
+
+		case 3:
+			speed1 = 1000;
+			speed2 = 750;
+			speed3 = 2000;
+			break;
+
+		}
+
+	}
+
 	private void fixePlayer() throws InterruptedException {
 
 		jobList.add(new JobFighter("味方アシュラム"));
@@ -343,6 +424,7 @@ public class GameManager {
 
 			player.setIdNumber(i);
 			player.setMaxHp(player.getHp());
+			Thread.sleep(speed2);// 750
 			player.printStatus();
 			speedData[i - 1] = player;// 速さ順ソートで使用する
 

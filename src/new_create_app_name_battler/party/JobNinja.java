@@ -4,7 +4,7 @@ import new_create_app_name_battler.magic.IMagicalUsable;
 import new_create_app_name_battler.magic.Magic;
 import new_create_app_name_battler.magic.Skill;
 
-public class JobNinja extends BasePlayer implements IMagicalUsable {
+public class JobNinja extends BasePlayer implements IMagicalUsable, INinja {
 
 	/**
 	 * コンストラクタ

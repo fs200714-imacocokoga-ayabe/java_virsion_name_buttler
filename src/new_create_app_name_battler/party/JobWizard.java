@@ -3,7 +3,7 @@ package new_create_app_name_battler.party;
 import new_create_app_name_battler.magic.IMagicalUsable;
 import new_create_app_name_battler.magic.Magic;
 
-public class JobWizard extends BasePlayer implements IMagicalUsable {
+public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 
 	/**
 	 * コンストラクタ

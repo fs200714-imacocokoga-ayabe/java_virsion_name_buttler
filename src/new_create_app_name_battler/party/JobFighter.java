@@ -2,7 +2,7 @@ package new_create_app_name_battler.party;
 
 import new_create_app_name_battler.magic.Skill;
 
-public class JobFighter extends BasePlayer {
+public class JobFighter extends BasePlayer implements IFighter {
 
 	/**
 	 * コンストラクタ

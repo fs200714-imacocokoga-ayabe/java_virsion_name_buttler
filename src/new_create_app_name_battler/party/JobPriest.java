@@ -4,7 +4,7 @@ import new_create_app_name_battler.magic.IMagicalUsable;
 import new_create_app_name_battler.magic.IRecoveryMagic;
 import new_create_app_name_battler.magic.Magic;
 
-public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsable {
+public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsable, IPriest {
 
 	boolean isHeal;
 
