@@ -2,17 +2,8 @@ package new_create_app_name_battler.party;
 
 public interface IPlayer {
 
-	void normalAttack(IPlayer defender);
-	void skillAttack(IPlayer defender);
-	void magicAttack(IPlayer defender);
-	void healingMagic(IPlayer defender);
-	void eatGrass();
-	void damageProcess(IPlayer defender, int damage);
-	int recoveryProcess(IPlayer defender, int healValue);
 	void damage(int damage);
 	void recovery(int healValue);
-	int calcDamage(IPlayer defender);
-	void knockedDownCheck(IPlayer defender);
 	void conditionCheck();
 
 	boolean isLive();
@@ -39,5 +30,7 @@ public interface IPlayer {
 	boolean isMark();
 	void setPoison(boolean poison);
 	void setParalysis(boolean paralysis);
+	void setType(int a);
+	int getType();
 
 }

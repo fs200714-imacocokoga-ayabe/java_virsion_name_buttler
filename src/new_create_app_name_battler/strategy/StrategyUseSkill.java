@@ -2,7 +2,7 @@ package new_create_app_name_battler.strategy;
 
 import java.util.List;
 
-import new_create_app_name_battler.party.IPlayer;
+import new_create_app_name_battler.party.BasePlayer;
 
 public class StrategyUseSkill extends BaseStrategy {// スキル攻撃
 
@@ -13,8 +13,8 @@ public class StrategyUseSkill extends BaseStrategy {// スキル攻撃
 	 * @param party2 :パーティ2
 	 */
 	@Override
-	public int attackStrategy(IPlayer player1, List<IPlayer> party1,
-			List<IPlayer> party2) {
+	public int attackStrategy(BasePlayer player1, List<BasePlayer> party1,
+			List<BasePlayer> party2) {
 
 		this.player1 = player1;
 

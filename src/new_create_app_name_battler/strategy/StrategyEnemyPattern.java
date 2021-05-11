@@ -3,22 +3,22 @@ package new_create_app_name_battler.strategy;
 import java.util.ArrayList;
 import java.util.List;
 
+import new_create_app_name_battler.party.BasePlayer;
 import new_create_app_name_battler.party.IFighter;
 import new_create_app_name_battler.party.INinja;
-import new_create_app_name_battler.party.IPlayer;
 import new_create_app_name_battler.party.IPriest;
 import new_create_app_name_battler.party.IWizard;
 
 public class StrategyEnemyPattern extends BaseStrategy{
 
-	List<IPlayer> playerParty = new ArrayList<IPlayer>();
-	List<IPlayer> aiParty = new ArrayList<IPlayer>();
+	List<BasePlayer> playerParty = new ArrayList<BasePlayer>();
+	List<BasePlayer> aiParty = new ArrayList<BasePlayer>();
 
-	IPlayer player2;
+	BasePlayer player2;
 
 	@Override
-	public int attackStrategy(IPlayer player1, List<IPlayer> party1,
-			List<IPlayer> party2) {
+	public int attackStrategy(BasePlayer player1, List<BasePlayer> party1,
+			List<BasePlayer> party2) {
 
 		this.player1 = player1;
 
@@ -168,7 +168,7 @@ private int NinjaAi() {
  * HPの低い相手を選んで返す
  * @return player2 : HPの低い相手
  */
-private IPlayer SelectLowerHP() {
+private BasePlayer SelectLowerHP() {
 
 	player2 = playerParty.get(0);// 敵パーティから1人player2に入れる
 
@@ -191,7 +191,7 @@ private IPlayer SelectLowerHP() {
  * HPの高い相手を選んで返す
  * @return player2 :HPの高い相手
  */
-private IPlayer selectHighHP() {
+private BasePlayer selectHighHP() {
 
 	player2 = playerParty.get(0);// 敵パーティから1人player2に入れる
 
@@ -215,7 +215,7 @@ private IPlayer selectHighHP() {
  * HPの低い味方を返す
  * @return player:HPの低い味方
  */
-private IPlayer lifeImpotance() {
+private BasePlayer lifeImpotance() {
 
 	for (int i = 0; i < aiParty.size(); i++) {
 

@@ -8,21 +8,21 @@ public class Party {
 
 	Random random = new Random();
 
-	public ArrayList<IPlayer> members;// プレイヤーの入れ物
-	public List<IPlayer> party1 = new ArrayList<IPlayer>();// パーティ1の入れ物
-	public List<IPlayer> party2 = new ArrayList<IPlayer>();// パーティ2の入れ物
+	public ArrayList<BasePlayer> members;// プレイヤーの入れ物
+	public List<BasePlayer> party1 = new ArrayList<BasePlayer>();// パーティ1の入れ物
+	public List<BasePlayer> party2 = new ArrayList<BasePlayer>();// パーティ2の入れ物
 
 	/**
 	 * コンストラクタ
 	 */
 	public Party() {
-		members = new ArrayList<IPlayer>();
+		members = new ArrayList<BasePlayer>();
 	}
 
 	/**
 	 * パーティーメンバーをArrayList で取得する
 	 */
-	public ArrayList<IPlayer> getMembers() {
+	public ArrayList<BasePlayer> getMembers() {
 		return members;
 	}
 
@@ -30,7 +30,7 @@ public class Party {
 	 * パーティーにプレイヤーを追加する
 	 * @param player: 追加するプレイヤー
 	 */
-	public void appendPlayer(IPlayer player) {
+	public void appendPlayer(BasePlayer player) {
 
 		if (player.isMark()) {
 			party1.add(player);// playerがtrueならparty1に入れる
@@ -44,7 +44,7 @@ public class Party {
 	 * パーティーからプレイヤーを離脱させる
 	 * @param player : 離脱させるプレイヤー
 	 */
-	public void removePlayer(IPlayer player) {
+	public void removePlayer(BasePlayer player) {
 
 		if (player.isMark()) {
 			party1.remove(player);// playerがtrueならparty1から削除する
@@ -58,7 +58,7 @@ public class Party {
 	 * membersにplayerをセットする
 	 * @param player : プレイヤー
 	 */
-	public void setMembers(IPlayer player) {
+	public void setMembers(BasePlayer player) {
 		members.add(player);
 	}
 
@@ -66,7 +66,7 @@ public class Party {
 	 *  membersにplayerを削除する
 	 * @param player : プレイヤー
 	 */
-	public void removeMembers(IPlayer player) {
+	public void removeMembers(BasePlayer player) {
 		members.remove(player);
 	}
 
@@ -74,7 +74,7 @@ public class Party {
 	 * パーティ1を返す
 	 * @return party1 : パーティ１
 	 */
-	public List<IPlayer> getParty1() {
+	public List<BasePlayer> getParty1() {
 		return party1;
 	}
 
@@ -82,7 +82,7 @@ public class Party {
 	 * パーティ2を返す
 	 * @return party2 : パーティ2
 	 */
-	public List<IPlayer> getParty2() {
+	public List<BasePlayer> getParty2() {
 		return party2;
 	}
 
@@ -91,7 +91,7 @@ public class Party {
 	 * @param id : プレイヤーのID
 	 * @return IDのプレイヤー
 	 */
-	public IPlayer selectMember(int id) {
+	public BasePlayer selectMember(int id) {
 
 		for (int i = 0; i < members.size(); i++) {
 

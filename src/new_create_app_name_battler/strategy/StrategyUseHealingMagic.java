@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import new_create_app_name_battler.magic.IRecoveryMagic;
-import new_create_app_name_battler.party.IPlayer;
+import new_create_app_name_battler.party.BasePlayer;
 
 public class StrategyUseHealingMagic extends BaseStrategy {// 回復優先の作戦
 
-	List<IPlayer> _party1 = new ArrayList<IPlayer>();
-	List<IPlayer> _party2 = new ArrayList<IPlayer>();
+	List<BasePlayer> _party1 = new ArrayList<BasePlayer>();
+	List<BasePlayer> _party2 = new ArrayList<BasePlayer>();
 
 	/**
 	 * player,party1,party2を受け取りhealingMagicまたはnormalAttackを実行する
@@ -18,8 +18,8 @@ public class StrategyUseHealingMagic extends BaseStrategy {// 回復優先の作
 	 * @param party2:パーティ2
 	 */
 	@Override
-	public int attackStrategy(IPlayer player1, List<IPlayer> party1,
-			List<IPlayer> party2) {
+	public int attackStrategy(BasePlayer player1, List<BasePlayer> party1,
+			List<BasePlayer> party2) {
 
 		if (player1.isMark()) {// player1がtrueの場合
 			_party1.addAll(party1);// _party1にparty1を入れる

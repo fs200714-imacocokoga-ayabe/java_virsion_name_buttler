@@ -21,7 +21,7 @@ public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 	protected void makeCharacter() {
 
 		this.job = "魔法使い";
-		this.hp = getNumber(0, 100) + 50;// 50-150
+		this.setHp(getNumber(0, 100) + 50);// 50-150
 		this.mp = getNumber(1, 50) + 30;// 30-80
 		this.str = getNumber(2, 49) + 1;// 1-50
 		this.def = getNumber(3, 49) + 1;// 1-50
@@ -30,24 +30,27 @@ public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 	}
 
 	@Override
-	public void normalAttack(IPlayer defender) {
+	public void normalAttack(BasePlayer defender) {
 
+	  attackType = "A";
 		System.out.printf("%sの攻撃！\n%sは杖を投げつけた！\n", getName(), getName());
 		damage = calcDamage(defender);// 与えるダメージを求める
-		damageProcess(defender, damage);
+		damageProcess(attackType, this, defender, damage);
 		knockedDownCheck(defender);
 	}
 
 	@Override
-	public void skillAttack(IPlayer defender) {
+	public void skillAttack(BasePlayer defender) {
 
+	  attackType = "M";
+	  
 		if (random.nextInt(100) + 1 <= Magic.FIREELEMENTAL.getInvocationRate()) {// 25％で発動
 
 			System.out.printf("%sは魔法陣を描いて%sを召還した\n%sの攻撃！\n", getName(),
 					Magic.FIREELEMENTAL.getName(),
 					Magic.FIREELEMENTAL.getName());
 
-			super.damageProcess(defender, Magic.FIREELEMENTAL.getMinDamage());// ダメージ処理
+			super.damageProcess(attackType, this, defender, Magic.FIREELEMENTAL.getMinDamage());// ダメージ処理
 
 		} else {// 75%で不発
 
@@ -57,12 +60,14 @@ public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 	}
 
 	@Override
-	public void magicAttack(IPlayer defender) {
+	public void magicAttack(BasePlayer defender) {
 
+	  
 		if (hasEnoughMp()) {
 
+		  attackType = "M";
 			damage = effect(defender);
-			super.damageProcess(defender, damage);
+			super.damageProcess(attackType, this, defender, damage);
 			knockedDownCheck(defender);
 
 		} else {
@@ -80,7 +85,7 @@ public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 	}
 
 	@Override
-	public int effect(IPlayer defender) {
+	public int effect(BasePlayer defender) {
 
 		if (20 <= getMp()) {// MPが20以上の場合
 

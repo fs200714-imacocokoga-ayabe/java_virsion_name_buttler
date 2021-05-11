@@ -16,7 +16,7 @@ public class JobFighter extends BasePlayer implements IFighter {
 	protected void makeCharacter() {
 
 		this.job = "戦士";
-		this.hp = getNumber(0, 200) + 100;// 100-300
+		this.setHp(getNumber(0, 200) + 100);// 100-300
 		this.mp = getNumber(1, 0);// 0
 		this.str = getNumber(2, 70) + 30;// 30-100
 		this.def = getNumber(3, 70) + 30;// 30-100
@@ -25,22 +25,25 @@ public class JobFighter extends BasePlayer implements IFighter {
 	}
 
 	@Override
-	public void normalAttack(IPlayer defender) {
+	public void normalAttack(BasePlayer defender) {
 
+	    attackType = "A";
 		System.out.printf("%sの攻撃！\n%sは剣で斬りつけた！\n", getName(), getName());
 		damage = calcDamage(defender); // 与えるダメージを求める
-		damageProcess(defender, damage);
+		damageProcess(attackType, this, defender, damage);
 		knockedDownCheck(defender);
 	}
 
-	public void skillAttack(IPlayer defender) {
+	public void skillAttack(BasePlayer defender) {
+	  
+	  attackType = "A";
 
 		if (random.nextInt(100) + 1 <= Skill.ASSAULT.getInvocationRate()) {// 発動率25%
 
 			System.out.printf("%sの捨て身の突撃！\n", getName());
 			damage = calcDamage(defender); // 与えるダメージを求める
 			damage = damage * 2;// ダメージ2倍
-			damageProcess(defender, damage);
+			damageProcess(attackType, this, defender, damage);
 
 		} else {
 

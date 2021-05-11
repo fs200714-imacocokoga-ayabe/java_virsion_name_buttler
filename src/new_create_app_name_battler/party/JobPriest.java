@@ -23,7 +23,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 	protected void makeCharacter() {
 
 		this.job = "僧侶";
-		this.hp = getNumber(0, 120) + 80;// 80-200
+		this.setHp(getNumber(0, 120) + 80);// 80-200
 		this.mp = getNumber(1, 30) + 20;// 20-50
 		this.str = getNumber(2, 40) + 10;// 10-50
 		this.def = getNumber(3, 60) + 10;// 10-70
@@ -32,17 +32,20 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 	}
 
 	@Override
-	public void normalAttack(IPlayer defender) {
+	public void normalAttack(BasePlayer defender) {
 
+	  attackType = "A";
 		System.out.printf("%sの攻撃！\n錫杖で突いた！\n", getName());
 		damage = calcDamage(defender);// 与えるダメージを求める
-		damageProcess(defender, damage);// ダメージ処理
+		damageProcess(attackType, this, defender, damage);// ダメージ処理
 		knockedDownCheck(defender);
 	}
 
 	@Override
-	public void skillAttack(IPlayer defender) {
+	public void skillAttack(BasePlayer defender) {
 
+	  attackType = "M";
+	  
 		if (random.nextInt(100) + 1 <= Magic.OPTICALELEMENTAL.getInvocationRate()) {
 
 			System.out.printf("%s祈りを捧げて%sを召還した\n%sの祝福を受けた！\n", getName(),
@@ -58,10 +61,11 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 	}
 
 	@Override
-	public void magicAttack(IPlayer defender) {
+	public void magicAttack(BasePlayer defender) {
 
 		if (hasEnoughMp()) {
 
+		  attackType = "M";
 			damage = effect(defender);
 			knockedDownCheck(defender);
 
@@ -73,7 +77,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 	}
 
 	@Override
-	public void healingMagic(IPlayer defender) {
+	public void healingMagic(BasePlayer defender) {
 
 		this.isHeal = true;
 
@@ -96,7 +100,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 			System.out.printf("%sはヒールを唱えようとしたが、MPが足りない！！\n", getName());
 			System.out.printf("%sの攻撃！\n錫杖を振りかざした！\n", getName());
 			damage = calcDamage(defender);// 与えるダメージを求める
-			super.damageProcess(defender, damage);// ダメージ処理
+			super.damageProcess(attackType, this, defender, damage);// ダメージ処理
 			knockedDownCheck(defender);
 		}
 
@@ -110,8 +114,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 		knockedDownCheck(this);
 	}
 
-	@Override
-	public int effect(IPlayer defender) {
+	public int effect(BasePlayer defender) {
 
 		if (!defender.isPoison() && !defender.isParalysis()) {// 相手が毒,麻痺状態にかかっていない場合
 
@@ -183,6 +186,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 			return false;
 		}
 	}
+
 }
 
 

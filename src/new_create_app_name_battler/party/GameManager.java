@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
 import new_create_app_name_battler.strategy.Context;
 import new_create_app_name_battler.strategy.StrategyEnemyPattern;
 import new_create_app_name_battler.strategy.StrategyNormalAttack;
@@ -12,6 +11,7 @@ import new_create_app_name_battler.strategy.StrategyUseHealingMagic;
 import new_create_app_name_battler.strategy.StrategyUseHerb;
 import new_create_app_name_battler.strategy.StrategyUseMagic;
 import new_create_app_name_battler.strategy.StrategyUseSkill;
+import new_create_app_name_battler.type.TypeData;
 
 public class GameManager {
 
@@ -19,21 +19,24 @@ public class GameManager {
 	Context context;
 	Scanner s = new Scanner(System.in);
 	Party party = new Party();// Partyクラスの呼び出し用
-	List<IPlayer> jobList = new ArrayList<IPlayer>();// 職業を格納
+	List<BasePlayer> jobList = new ArrayList<BasePlayer>();// 職業を格納
 
-	IPlayer player;
-	IPlayer player1;
-	IPlayer player2;
+
+	BasePlayer player;
+	BasePlayer player1;
+	BasePlayer player2;
+
 
 	int allyStrategyNumber;// 作戦の選択に使用
 	final int ENEMY_STRATEGY_NUMBER = 6;// 作戦の選択に使用
 	int id;
-	private IPlayer[] speedData = new IPlayer[6];
-	List<IPlayer> attackList = new ArrayList<IPlayer>();// 行動するプレイヤーを格納
+	private BasePlayer[] speedData = new BasePlayer[6];
+	List<BasePlayer> attackList = new ArrayList<BasePlayer>();// 行動するプレイヤーを格納
 
 	int speed1 = 1000;// 開始表示速度
 	int speed2 = 750;// ステータス表示速度
 	int speed3 = 1000;// 戦闘中メッセージ速度
+
 	public void start() throws InterruptedException {
 
 		opening();// 最初のメニュー
@@ -198,6 +201,7 @@ public class GameManager {
 		return id;
 	}
 
+
 	private void attackOrder() throws InterruptedException {
 
 		System.out.println("");
@@ -267,12 +271,12 @@ public class GameManager {
 
 			for (int j = 0; j < speedData.length - i - 1; j++) {
 
-				IPlayer player1 = speedData[j];
-				IPlayer player2 = speedData[j + 1];
+				BasePlayer player1 = speedData[j];
+				BasePlayer player2 = speedData[j + 1];
 
 				if (player1.getAgi() < player2.getAgi()) {
 
-					IPlayer box = speedData[j];
+					BasePlayer box = speedData[j];
 					speedData[j] = speedData[j + 1];
 					speedData[j + 1] = box;
 
@@ -343,9 +347,7 @@ public class GameManager {
 
 	private void Setting() {
 
-		int ss;//
-
-		int es;//
+		int ss;
 
 		while (true) {
 
@@ -413,11 +415,13 @@ public class GameManager {
 			if (i <= 3) {// 最初の3人
 
 				player = jobList.get(i - 1);// 選択した職業をplayerに入れ
+				player.setType(i - 1);
 				player.setMark(true);// プレイヤーにtrue(識別)をセットする
 
 			} else {// 次の3人
 
 				player = jobList.get(i - 1);// 選択した職業をplayerに入れ
+				player.setType(i - 1);
 				player.setMark(false);// プレイヤーにfalse(識別)をセットする
 
 			}
@@ -434,6 +438,7 @@ public class GameManager {
 	private void makePlayer() {
 
 		int job;
+		int genus;
 
 		jobList.add(new JobFighter(""));// プレイヤー作成のメニュに表示するため初期設定jobList0に格納
 		jobList.add(new JobWizard(""));// 初期設定jobList1に格納
@@ -496,6 +501,52 @@ public class GameManager {
 				}
 			}
 
+			while (true)
+
+			{
+
+				System.out
+						.printf("%sの属性を1つ選択して下さい(1-%s 2-%s 3-%s 4-%s 5-%s 6-%s 7-(説明))",
+								name, TypeData.BLOOD.getTypeName(),
+								TypeData.SHIELD.getTypeName(),
+								TypeData.DEVIL.getTypeName(),
+								TypeData.DARK.getTypeName(),
+								TypeData.SHADOW.getTypeName(),
+								TypeData.HOLY.getTypeName());
+
+				try
+
+				{
+
+					 genus = s.nextInt();
+					s.nextLine();
+
+					if (genus == 7) {
+
+						attributeDescription();// 属性の説明
+
+					}
+
+					if (1 <= genus && genus <= 6)
+
+						break;
+
+					else
+
+						new Exception();
+				}
+
+				catch (Exception e)
+
+				{
+
+					s.nextLine();
+
+					System.out.println("適切な値を入力してください");
+
+				}
+			}
+
 			if (i <= 3) {// 最初の3人
 
 				JobSelect(job, name);
@@ -510,6 +561,7 @@ public class GameManager {
 
 			}
 
+			player.setType(genus - 1);
 			player.setIdNumber(i);// IDをセットする
 			player.setMaxHp(player.getHp());// MaxHPをセットする
 			player.printStatus();
@@ -517,6 +569,20 @@ public class GameManager {
 			speedData[i - 1] = player;
 
 		}
+	}
+
+	private void attributeDescription() {
+
+		System.out.println("");
+
+		System.out.printf("%s %s %s %s %s %s\n\n", TypeData.BLOOD.getDescription()
+				, TypeData.SHIELD.getDescription(),
+				TypeData.DEVIL.getDescription(),
+				TypeData.DEVIL.getDescription(),
+				TypeData.SHADOW.getDescription(),
+				TypeData.HOLY.getDescription());
+
+
 	}
 
 	/**

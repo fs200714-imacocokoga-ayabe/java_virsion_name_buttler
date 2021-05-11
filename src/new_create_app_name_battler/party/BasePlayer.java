@@ -3,337 +3,410 @@ package new_create_app_name_battler.party;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Random;
-
 import new_create_app_name_battler.magic.Magic;
+import new_create_app_name_battler.type.TypeBlood;
+import new_create_app_name_battler.type.TypeContext;
+import new_create_app_name_battler.type.TypeDark;
+import new_create_app_name_battler.type.TypeData;
+import new_create_app_name_battler.type.TypeDevil;
+import new_create_app_name_battler.type.TypeHoly;
+import new_create_app_name_battler.type.TypeShadow;
+import new_create_app_name_battler.type.TypeShield;
 
 public class BasePlayer implements IPlayer {
 
-	Random random = new Random();
-
-	protected String name;
-	protected String job;
-	protected int maxHp;// 最大HP
-	protected int maxMp;// 最大MP
-	protected int hp;// HP
-	protected int mp;// MP
-	protected int str;// 攻撃力
-	protected int def;// 防御力
-	protected int luck;// 運
-	protected int agi;// すばやさ
-	protected boolean poison;// 状態異常：毒
-	protected boolean paralysis;// 状態異常：麻痺
-	protected int damage;// damage値
-	protected boolean mark;// 敵味方識別
-	protected int idNumber;// ID値の入れ物
-	protected int strategyData;
-	protected int healValue;
-	private static final int HERB_RECOVERY_VALUE = 30;
-
-	public BasePlayer() {
-	}
-
-	public BasePlayer(String name) {
-
-		this.name = name;
-		makeCharacter();
-	}
-
-	protected void makeCharacter() {
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public String getJob() {
-		return this.job;
-	}
-
-	@Override
-	public String getJobName() {
-		return this.job + this.name;
-	}
-
-	@Override
-	public void setMark(boolean mark) {
-		this.mark = mark;
-	}
-
-	@Override
-	public boolean isMark() {
-		return mark;
-	}
-
-	@Override
-	public void setIdNumber(int id) {
-		this.idNumber = id;
-	}
-
-	@Override
-	public int getIdNumber() {
-		return idNumber;
-	}
-
-	@Override
-	public void setMaxHp(int hp) {
-		this.maxHp = hp;
-	}
-
-	@Override
-	public int getMaxHp() {
-		return this.maxHp;
-	}
-
-	@Override
-	public void setMaxMp(int mp) {
-		this.maxMp = mp;
-	}
-
-	@Override
-	public int getMaxMp() {
-		return this.maxMp;
-	}
-
-	@Override
-	public int getHp() {
-		return this.hp;
-	}
-
-	@Override
-	public int getMp() {
-		return this.mp;
-	}
-
-	@Override
-	public int getStr() {
-		return this.str;
-	}
-
-	@Override
-	public int getDef() {
-		return def;
-	}
-
-	@Override
-	public int getAgi() {
-		return this.agi;
-	}
-
-	@Override
-	public int getLuck() {
-		return luck;
-	}
-
-	@Override
-	public boolean isPoison() {
-		return poison;
-	}
-
-	@Override
-	public void setPoison(boolean poison) {
-		this.poison = poison;
-	}
-
-	@Override
-	public boolean isParalysis() {
-		return paralysis;
-	}
-
-	@Override
-	public void setParalysis(boolean paralysis) {
-		this.paralysis = paralysis;
-	}
-
-	/**
-	 * 名前(name)からハッシュ値を生成し、指定された位置の数値を取り出す
-	 * @param index : 何番目の数値を取り出すか
-	 * @param max : 最大値(内部的に0～255の値を生成するが、0～maxまでの値に補正)
-	 * @return 数値(0～max) ※maxも含む
-	 */
-	protected int getNumber(int index, int max) {
-		try {
-			// 名前からハッシュ値を生成する
-			byte[] result = MessageDigest.getInstance("SHA-1").digest(
-					this.name.getBytes());
-			String digest = String.format("%040x", new BigInteger(1, result));
+  Random random = new Random();
+
+  protected String name;
+  protected String job;
+  protected int maxHp;// 最大HP
+  protected int maxMp;// 最大MP
+  private int hp;// HP
+  protected int mp;// MP
+  protected int str;// 攻撃力
+  protected int def;// 防御力
+  protected int luck;// 運
+  protected int agi;// すばやさ
+  protected boolean poison;// 状態異常：毒
+  protected boolean paralysis;// 状態異常：麻痺
+  protected int damage;// damage値
+  protected boolean mark;// 敵味方識別
+  protected int idNumber;// ID値の入れ物
+  protected int strategyData;
+  protected int healValue;
+  private static final int HERB_RECOVERY_VALUE = 30;
+  protected int type;
+  protected String attackType;
+
+  private TypeContext typeContext;
+
+  protected BasePlayer attacker;
+  protected BasePlayer defender;
+
+  public BasePlayer() {}
+
+  public BasePlayer(String name) {
+
+    this.name = name;
+    makeCharacter();
+  }
+
+  protected void makeCharacter() {}
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
+
+  @Override
+  public String getJob() {
+    return this.job;
+  }
+
+  @Override
+  public String getJobName() {
+    return this.job + this.name;
+  }
+
+  @Override
+  public void setMark(boolean mark) {
+    this.mark = mark;
+  }
+
+  @Override
+  public boolean isMark() {
+    return mark;
+  }
+
+  @Override
+  public void setIdNumber(int id) {
+    this.idNumber = id;
+  }
+
+  @Override
+  public int getIdNumber() {
+    return idNumber;
+  }
+
+  @Override
+  public void setMaxHp(int hp) {
+    this.maxHp = hp;
+  }
+
+  @Override
+  public int getMaxHp() {
+    return this.maxHp;
+  }
+
+  @Override
+  public void setMaxMp(int mp) {
+    this.maxMp = mp;
+  }
+
+  @Override
+  public int getMaxMp() {
+    return this.maxMp;
+  }
+
+  @Override
+  public int getHp() {
+    return this.hp;
+  }
+
+  @Override
+  public int getMp() {
+    return this.mp;
+  }
 
-			// ハッシュ値から指定された位置の文字列を取り出す（２文字分）
-			String hex = digest.substring(index * 2, index * 2 + 2);
-
-			// 取り出した文字列（16進数）を数値に変換する
-			int val = Integer.parseInt(hex, 16);
-			return val * max / 255;
-		} catch (Exception e) {
-			// エラー
-			e.printStackTrace();
-		}
-		return 0;
-	}
+  @Override
+  public int getStr() {
+    return this.str;
+  }
 
-	@Override
-	public void normalAttack(IPlayer defender) {
-	}
+  @Override
+  public int getDef() {
+    return def;
+  }
 
-	public void skillAttack(IPlayer defender) {
-	}
+  @Override
+  public int getAgi() {
+    return this.agi;
+  }
 
-	@Override
-	public void magicAttack(IPlayer defender) {
-	}
+  @Override
+  public int getLuck() {
+    return luck;
+  }
 
-	@Override
-	public void healingMagic(IPlayer defender) {
-	}
+  @Override
+  public boolean isPoison() {
+    return poison;
+  }
 
-	@Override
-	public void eatGrass() {
+  @Override
+  public void setPoison(boolean poison) {
+    this.poison = poison;
+  }
 
-		System.out.printf("%sは革袋の中にあった草を食べた！\n", getName());
+  @Override
+  public boolean isParalysis() {
+    return paralysis;
+  }
 
-		switch (random.nextInt(3)) {
+  @Override
+  public void setParalysis(boolean paralysis) {
+    this.paralysis = paralysis;
+  }
 
-		case 0:
 
-			recoveryProcess(this, HERB_RECOVERY_VALUE);
-			break;
-
-		case 1:
 
-			if (isPoison()) {// 毒状態の場合
+  /**
+   * 名前(name)からハッシュ値を生成し、指定された位置の数値を取り出す
+   *
+   * @param index : 何番目の数値を取り出すか
+   * @param max : 最大値(内部的に0～255の値を生成するが、0～maxまでの値に補正)
+   * @return 数値(0～max) ※maxも含む
+   */
+  protected int getNumber(int index, int max) {
+    try {
+      // 名前からハッシュ値を生成する
+      byte[] result = MessageDigest.getInstance("SHA-1").digest(this.name.getBytes());
+      String digest = String.format("%040x", new BigInteger(1, result));
 
-				System.out.printf("%sは毒が消えた！\n", getName());
-				setPoison(false);
+      // ハッシュ値から指定された位置の文字列を取り出す（２文字分）
+      String hex = digest.substring(index * 2, index * 2 + 2);
 
-			} else {
+      // 取り出した文字列（16進数）を数値に変換する
+      int val = Integer.parseInt(hex, 16);
+      return val * max / 255;
+    } catch (Exception e) {
+      // エラー
+      e.printStackTrace();
+    }
+    return 0;
+  }
 
-				recoveryProcess(this, HERB_RECOVERY_VALUE);
-			}
-			break;
 
-		case 2:
+  public void normalAttack(BasePlayer defender) {}
 
-			System.out.printf("%sは何も起こらなかった！\n", getName());
-			break;
-		}
-	}
+  public void skillAttack(BasePlayer defender) {}
 
-	@Override
-	public int calcDamage(IPlayer defender) {
+  public void magicAttack(BasePlayer defender) {}
 
-		int power = random.nextInt(this.getStr()) + 1;
-		int luk = random.nextInt(100) + 1;
+  public void healingMagic(BasePlayer defender) {}
 
-		if (luk <= this.getLuck()) {// 乱数の値がlukの値の中なら
-			System.out.println("会心の一撃!");
-			damage = this.getStr();
+  public void eatGrass() {
 
-		} else {
-			damage = power - defender.getDef();
+    System.out.printf("%sは革袋の中にあった草を食べた！\n", getName());
 
-			if (damage < 0) {
-				System.out.printf("%sの攻撃はミス！\n", getName());
-				damage = 0;
-			}
-		}
+    switch (random.nextInt(3)) {
 
-		return damage;
-	}
+      case 0:
 
-	@Override
-	public void damageProcess(IPlayer defender, int damage) {
+        recoveryProcess(this, HERB_RECOVERY_VALUE);
+        break;
 
-		System.out.printf("%sに%dのダメージ！\n", defender.getName(), damage);
-		defender.damage(damage);// 求めたダメージを対象プレイヤーに与える
-	}
+      case 1:
 
-	@Override
-	public void damage(int damage) {// ダメージ値分、HPを減少させる
+        if (isPoison()) {// 毒状態の場合
 
-		this.hp = Math.max(this.getHp() - damage, 0);
-	}
+          System.out.printf("%sは毒が消えた！\n", getName());
+          setPoison(false);
 
-	@Override
-	public int recoveryProcess(IPlayer defender, int healValue) {
+        } else {
 
-		healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
-		System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
-		defender.recovery(healValue - defender.getHp());
-		return healValue - defender.getHp();
-	}
+          recoveryProcess(this, HERB_RECOVERY_VALUE);
+        }
+        break;
 
-	@Override
-	public void recovery(int healValue) {
+      case 2:
 
-		this.hp = this.getHp() + healValue;
-	}
+        System.out.printf("%sは何も起こらなかった！\n", getName());
+        break;
+    }
+  }
 
-	@Override
-	public boolean isLive() {
+  public int calcDamage(BasePlayer defender) {
 
-		return 0 < this.hp;
-	}
+    int power = random.nextInt(this.getStr()) + 1;
+    int luk = random.nextInt(100) + 1;
 
-	@Override
-	public void printStatus() {
+    if (luk <= this.getLuck()) {// 乱数の値がlukの値の中なら
+      System.out.println("会心の一撃!");
+      damage = this.getStr();
 
-		String poison;
-		String paralysis;
+    } else {
+      damage = power - defender.getDef();
 
-		if (this.isPoison()) {// 毒状態の場合
-			poison = "[毒]";
-		} else {// 毒になっていない場合
-			poison = "";
-		}
+      if (damage < 0) {
+        System.out.printf("%sの攻撃はミス！\n", getName());
+        damage = 0;
+      }
+    }
 
-		if (this.isParalysis()) {// 麻痺状態の場合
-			paralysis = "[麻痺]";
-		} else {// 麻痺になっていない場合
-			paralysis = "";
-		}
+    return damage;
+  }
 
-		System.out
-				.printf("%s(HP=%3d/%d : MP=%3d : STR=%3d : DEF=%3d : LUCK=%3d : AGI=%3d)%S%S\n",
-						this.getJobName(), this.getHp(), getMaxHp(),
-						this.getMp(), this.getStr(), this.getDef(),
-						this.getLuck(), this.getAgi(), paralysis, poison);
-	}
+  public void damageProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
 
+    damage = selectType(attackType, attacker, defender, damage);// 属性処理
+    System.out.printf("%sに%dのダメージ！\n", defender.getName(), damage);
+    defender.damage(damage);// 求めたダメージを対象プレイヤーに与える
+  }
 
+  @Override
+  public void damage(int damage) {// ダメージ値分、HPを減少させる
 
-	@Override
-	public void knockedDownCheck(IPlayer defender) {
+    this.setHp(Math.max(this.getHp() - damage, 0));
+  }
 
-		if (defender.getHp() <= 0) {
 
-			System.out.printf("%sは力尽きた...\n", defender.getName());
-		}
-			conditionCheck();// 状態異常チェック
-	}
+  public int recoveryProcess(BasePlayer defender, int healValue) {
 
-	/**
-	 * 状態異常のチェック
-	 */
-	public void conditionCheck() {
+    healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
+    System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
+    defender.recovery(healValue - defender.getHp());
+    return healValue - defender.getHp();
+  }
 
-		if (isParalysis()) {// true:麻痺状態 false:麻痺していない
+  @Override
+  public void recovery(int healValue) {
 
-			if(Magic.PARALYSIS.getContinuousRate() < random.nextInt(100) + 1) {// 麻痺の確立より乱数が上なら麻痺の解除
-				setParalysis(false);// 麻痺解除
-				System.out.printf("%sは麻痺が解けた！\n", getName());
-			}
-		}
+    this.setHp(this.getHp() + healValue);
+  }
 
-		if (isPoison()) {// true:毒状態 false:無毒状態
+  @Override
+  public boolean isLive() {
 
-			damage(Magic.POISON.getMaxDamage());// 毒のダメージ計算
-			System.out.printf("%sは毒のダメージを%d受けた！\n", getName(),
-					Magic.POISON.getMaxDamage());
-		}
+    return 0 < this.getHp();
+  }
 
-		if (this.getHp() <= 0) {// playerの倒れた判定
-			System.out.printf("%sは力尽きた...\n", getName());
-		}
-	}
+  @Override
+  public void printStatus() {
+
+    String poison;
+    String paralysis;
+
+    if (this.isPoison()) {// 毒状態の場合
+      poison = "[毒]";
+    } else {// 毒になっていない場合
+      poison = "";
+    }
+
+    if (this.isParalysis()) {// 麻痺状態の場合
+      paralysis = "[麻痺]";
+    } else {// 麻痺になっていない場合
+      paralysis = "";
+    }
+
+    System.out.printf("[%s]%s(HP=%3d/%d : MP=%3d : STR=%3d : DEF=%3d : LUCK=%3d : AGI=%3d)%S%S\n",
+        this.getTypeName(this.type), this.getJobName(), this.getHp(), getMaxHp(), this.getMp(),
+        this.getStr(), this.getDef(), this.getLuck(), this.getAgi(), paralysis, poison);
+  }
+
+  public void knockedDownCheck(BasePlayer defender) {
+
+    if (defender.getHp() <= 0) {
+
+      System.out.printf("%sは力尽きた...\n", defender.getName());
+    }
+    conditionCheck();// 状態異常チェック
+  }
+
+  /**
+   * 状態異常のチェック
+   */
+  public void conditionCheck() {
+
+    if (isParalysis()) {// true:麻痺状態 false:麻痺していない
+
+      if (Magic.PARALYSIS.getContinuousRate() < random.nextInt(100) + 1) {// 麻痺の確立より乱数が上なら麻痺の解除
+        setParalysis(false);// 麻痺解除
+        System.out.printf("%sは麻痺が解けた！\n", getName());
+      }
+    }
+
+    if (isPoison()) {// true:毒状態 false:無毒状態
+
+      damage(Magic.POISON.getMaxDamage());// 毒のダメージ計算
+      System.out.printf("%sは毒のダメージを%d受けた！\n", getName(), Magic.POISON.getMaxDamage());
+    }
+
+    if (this.getHp() <= 0) {// playerの倒れた判定
+      System.out.printf("%sは力尽きた...\n", getName());
+    }
+  }
+
+  private int selectType(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
+
+    switch (defender.getType()) {
+
+      case 1:
+        typeContext = new TypeContext(new TypeBlood());
+        break;
+      case 2:
+        typeContext = new TypeContext(new TypeShield());
+        break;
+      case 3:
+        typeContext = new TypeContext(new TypeDevil());
+        break;
+      case 4:
+        typeContext = new TypeContext(new TypeDark());
+        break;
+      case 5:
+        typeContext = new TypeContext(new TypeShadow());
+        break;
+      case 6:
+        typeContext = new TypeContext(new TypeHoly());
+        break;
+    }
+
+    int d = typeContext.typeProcess(attackType, attacker, defender, damage);
+    return d;
+  }
+  
+  private String getTypeName(int t) {
+
+    String typeName = "";
+
+    switch (t) {
+
+      case 0:
+        typeName = TypeData.BLOOD.getTypeName();
+        break;
+      case 1:
+        typeName = TypeData.SHIELD.getTypeName();
+        break;
+      case 2:
+        typeName = TypeData.DEVIL.getTypeName();
+        break;
+      case 3:
+        typeName = TypeData.DARK.getTypeName();
+        break;
+      case 4:
+        typeName = TypeData.SHADOW.getTypeName();
+        break;
+      case 5:
+        typeName = TypeData.HOLY.getTypeName();
+        break;
+
+    }
+    return typeName;
+  }
+
+  @Override
+  public void setType(int i) {
+    this.type = i;
+
+  }
+
+  @Override
+  public int getType() {
+
+    return type;
+  }
+
+  public void setHp(int hp) {
+    this.hp = hp;
+  }
 }
