@@ -1,11 +1,9 @@
 package new_create_app_name_battler.type;
 
-import java.util.Random;
 import new_create_app_name_battler.party.BasePlayer;
 
 public class TypeBlood implements IType {
 
-  Random random = new Random();
 
   int r = random.nextInt(100) + 1;
 

@@ -5,144 +5,142 @@ import new_create_app_name_battler.magic.Magic;
 
 public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 
-	/**
-	 * コンストラクタ
-	 * @param name : プレイヤー名
-	 */
-	public JobWizard(String name) {
+  /**
+   * コンストラクタ
+   * 
+   * @param name : プレイヤー名
+   */
+  public JobWizard(String name) {
 
-		super(name);
-	}
+    super(name);
+  }
 
-	/**
-	 * 名前(name)からキャラクターに必要なパラメータを生成する
-	 */
-	@Override
-	protected void makeCharacter() {
+  /**
+   * 名前(name)からキャラクターに必要なパラメータを生成する
+   */
+  @Override
+  protected void makeCharacter() {
 
-		this.job = "魔法使い";
-		this.setHp(getNumber(0, 100) + 50);// 50-150
-		this.mp = getNumber(1, 50) + 30;// 30-80
-		this.str = getNumber(2, 49) + 1;// 1-50
-		this.def = getNumber(3, 49) + 1;// 1-50
-		this.luck = getNumber(4, 99) + 1;// 1-100
-		this.agi = getNumber(5, 40) + 20;// 20-60
-	}
+    this.job = "魔法使い";
+    this.setHp(getNumber(0, 100) + 50);// 50-150
+    this.mp = getNumber(1, 50) + 30;// 30-80
+    this.str = getNumber(2, 49) + 1;// 1-50
+    this.def = getNumber(3, 49) + 1;// 1-50
+    this.luck = getNumber(4, 99) + 1;// 1-100
+    this.agi = getNumber(5, 40) + 20;// 20-60
+  }
 
-	@Override
-	public void normalAttack(BasePlayer defender) {
+  @Override
+  public void normalAttack(BasePlayer defender) {
 
-	  attackType = "A";
-		System.out.printf("%sの攻撃！\n%sは杖を投げつけた！\n", getName(), getName());
-		damage = calcDamage(defender);// 与えるダメージを求める
-		damageProcess(attackType, this, defender, damage);
-		knockedDownCheck(defender);
-	}
+    attackType = "A";
+    System.out.printf("%sの攻撃！\n%sは杖を投げつけた！\n", getName(), getName());
+    damage = calcDamage(defender);// 与えるダメージを求める
+    damageProcess(attackType, this, defender, damage);
+    knockedDownCheck(defender);
+  }
 
-	@Override
-	public void skillAttack(BasePlayer defender) {
+  @Override
+  public void skillAttack(BasePlayer defender) {
 
-	  attackType = "M";
-	  
-		if (random.nextInt(100) + 1 <= Magic.FIREELEMENTAL.getInvocationRate()) {// 25％で発動
+    attackType = "M";
 
-			System.out.printf("%sは魔法陣を描いて%sを召還した\n%sの攻撃！\n", getName(),
-					Magic.FIREELEMENTAL.getName(),
-					Magic.FIREELEMENTAL.getName());
+    if (random.nextInt(100) + 1 <= Magic.FIREELEMENTAL.getInvocationRate()) {// 25％で発動
 
-			super.damageProcess(attackType, this, defender, Magic.FIREELEMENTAL.getMinDamage());// ダメージ処理
+      System.out.printf("%sは魔法陣を描いて%sを召還した\n%sの攻撃！\n", getName(), Magic.FIREELEMENTAL.getName(),
+          Magic.FIREELEMENTAL.getName());
 
-		} else {// 75%で不発
+      super.damageProcess(attackType, this, defender, Magic.FIREELEMENTAL.getMinDamage());// ダメージ処理
 
-			System.out.printf("%sの攻撃だがスキルは発動しなかった！\n", getName());
-		}
-		knockedDownCheck(defender);
-	}
+    } else {// 75%で不発
 
-	@Override
-	public void magicAttack(BasePlayer defender) {
+      System.out.printf("%sの攻撃だがスキルは発動しなかった！\n", getName());
+    }
+    knockedDownCheck(defender);
+  }
 
-	  
-		if (hasEnoughMp()) {
+  @Override
+  public void magicAttack(BasePlayer defender) {
 
-		  attackType = "M";
-			damage = effect(defender);
-			super.damageProcess(attackType, this, defender, damage);
-			knockedDownCheck(defender);
 
-		} else {
+    if (hasEnoughMp()) {
 
-			System.out.printf("%sは魔法を唱えようとしたが、MPが足りない！！\n", getName());
-			normalAttack(defender);
-		}
+      attackType = "M";
+      damage = effect(defender);
+      super.damageProcess(attackType, this, defender, damage);
+      knockedDownCheck(defender);
 
-	}
+    } else {
 
-	@Override
-	public void eatGrass() {
-		super.eatGrass();
-		knockedDownCheck(this);
-	}
+      System.out.printf("%sは魔法を唱えようとしたが、MPが足りない！！\n", getName());
+      normalAttack(defender);
+    }
 
-	@Override
-	public int effect(BasePlayer defender) {
+  }
 
-		if (20 <= getMp()) {// MPが20以上の場合
+  @Override
+  public void eatGrass() {
+    super.eatGrass();
+    knockedDownCheck(this);
+  }
 
-			if (random.nextInt(2) == 0) {// 0の場合サンダーを使用
+  @Override
+  public int effect(BasePlayer defender) {
 
-				damage = useThunder();
+    if (20 <= getMp()) {// MPが20以上の場合
 
-			} else {// 1の場合ファイアを使用
+      if (random.nextInt(2) == 0) {// 0の場合サンダーを使用
 
-				damage = useFire();
-			}
+        damage = useThunder();
 
-		} else if (10 <= this.getMp() && this.getMp() < 20) {// MPが10以上20未満の場合ファイアを使用する
+      } else {// 1の場合ファイアを使用
 
-			damage = useFire();// ファイアを使用
-		}
+        damage = useFire();
+      }
 
-		return damage;
-	}
+    } else if (10 <= this.getMp() && this.getMp() < 20) {// MPが10以上20未満の場合ファイアを使用する
 
-	private int useThunder() {
+      damage = useFire();// ファイアを使用
+    }
 
-		System.out.printf("%sは%sを唱えた！\n雷が地面を這っていく！\n", getName(),
-				Magic.THUNDER.getName());
+    return damage;
+  }
 
-		damage = random.nextInt(Magic.THUNDER.getMaxDamage()
-				- Magic.THUNDER.getMinDamage())
-				+ Magic.THUNDER.getMinDamage();// 乱数20～50
+  private int useThunder() {
 
-		this.mp = this.getMp() - Magic.THUNDER.getMpcost();// MPを消費
+    System.out.printf("%sは%sを唱えた！\n雷が地面を這っていく！\n", getName(), Magic.THUNDER.getName());
 
-		return damage;
-	}
+    damage =
+        random.nextInt(Magic.THUNDER.getMaxDamage() - Magic.THUNDER.getMinDamage())
+            + Magic.THUNDER.getMinDamage();// 乱数20～50
 
-	private int useFire() {
-		System.out.printf("%sは%sを唱えた！\n炎が渦を巻いた！\n", getName(),
-				Magic.FIRE.getName());
+    this.mp = this.getMp() - Magic.THUNDER.getMpcost();// MPを消費
 
-		damage = random.nextInt(Magic.FIRE.getMaxDamage()
-				- Magic.FIRE.getMinDamage())
-				+ Magic.FIRE.getMinDamage();// 乱数10～30
+    return damage;
+  }
 
-		this.mp = this.getMp() - Magic.FIRE.getMpcost();// MPを消費
+  private int useFire() {
+    System.out.printf("%sは%sを唱えた！\n炎が渦を巻いた！\n", getName(), Magic.FIRE.getName());
 
-		return damage;
-	}
+    damage =
+        random.nextInt(Magic.FIRE.getMaxDamage() - Magic.FIRE.getMinDamage())
+            + Magic.FIRE.getMinDamage();// 乱数10～30
 
-	@Override
-	public boolean hasEnoughMp() {
+    this.mp = this.getMp() - Magic.FIRE.getMpcost();// MPを消費
 
-		if (10 <= this.getMp()) {
+    return damage;
+  }
 
-			return true;
+  @Override
+  public boolean hasEnoughMp() {
 
-		} else {
+    if (10 <= this.getMp()) {
 
-			return false;
-		}
-	}
+      return true;
+
+    } else {
+
+      return false;
+    }
+  }
 }

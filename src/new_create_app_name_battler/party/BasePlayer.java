@@ -364,7 +364,7 @@ public class BasePlayer implements IPlayer {
     int d = typeContext.typeProcess(attackType, attacker, defender, damage);
     return d;
   }
-  
+
   private String getTypeName(int t) {
 
     String typeName = "";

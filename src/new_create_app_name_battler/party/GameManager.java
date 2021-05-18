@@ -15,604 +15,599 @@ import new_create_app_name_battler.type.TypeData;
 
 public class GameManager {
 
-	Random random = new Random();
-	Context context;
-	Scanner s = new Scanner(System.in);
-	Party party = new Party();// Partyクラスの呼び出し用
-	List<BasePlayer> jobList = new ArrayList<BasePlayer>();// 職業を格納
+  Random random = new Random();
+  Context context;
+  Scanner s = new Scanner(System.in);
+  Party party = new Party();// Partyクラスの呼び出し用
+  List<BasePlayer> jobList = new ArrayList<BasePlayer>();// 職業を格納
 
 
-	BasePlayer player;
-	BasePlayer player1;
-	BasePlayer player2;
+  BasePlayer player;
+  BasePlayer player1;
+  BasePlayer player2;
 
 
-	int allyStrategyNumber;// 作戦の選択に使用
-	final int ENEMY_STRATEGY_NUMBER = 6;// 作戦の選択に使用
-	int id;
-	private BasePlayer[] speedData = new BasePlayer[6];
-	List<BasePlayer> attackList = new ArrayList<BasePlayer>();// 行動するプレイヤーを格納
+  int allyStrategyNumber;// 作戦の選択に使用
+  final int ENEMY_STRATEGY_NUMBER = 6;// 作戦の選択に使用
+  int id;
+  private BasePlayer[] speedData = new BasePlayer[6];
+  List<BasePlayer> attackList = new ArrayList<BasePlayer>();// 行動するプレイヤーを格納
 
-	int speed1 = 1000;// 開始表示速度
-	int speed2 = 750;// ステータス表示速度
-	int speed3 = 1000;// 戦闘中メッセージ速度
+  final int MAKE_CHARACTER = 1;
+  final int CREATED_CHARACTER = 2;
+  final int SETTING = 3;
 
-	public void start() throws InterruptedException {
 
-		opening();// 最初のメニュー
-		speedReordering();// 速さ順にソート
-		divideParty();// パーティを分ける
-		printParty();// パーティの表示
-		attackOrder();// 攻撃順の表示
-		battle();
-	}
+  int speed1 = 1000;// 開始表示速度
+  int speed2 = 750;// ステータス表示速度
+  int speed3 = 1000;// 戦闘中メッセージ速度
 
-	private void battle() throws InterruptedException {
-		// バトル開始の表示
-		Thread.sleep(speed1);// 1000
-		System.out.println("");
-		System.out.println("=== バトル開始 ===");
-		int turnNumber = 1;// ターンの初期値
+  public void start() throws InterruptedException {
 
-		while (turnNumber <= 20) {// 最大でも20ターンまで
+    opening();// 最初のメニュー
+    speedReordering();// 速さ順にソート
+    divideParty();// パーティを分ける
+    printParty();// パーティの表示
+    attackOrder();// 攻撃順の表示
+    battle();
+  }
 
-			System.out.println("--------------------------------");
-			System.out.printf("- ターン%d -\n", turnNumber);
-			System.out.println("-----作戦を選んでください-----");
+  private void battle() throws InterruptedException {
+    // バトル開始の表示
+    Thread.sleep(speed1);// 1000
+    System.out.println("");
+    System.out.println("=== バトル開始 ===");
+    int turnNumber = 1;// ターンの初期値
 
-			while (true)
+    while (turnNumber <= 20) {// 最大でも20ターンまで
 
-			{
-				// 作戦メニューの表示
-				System.out.println("1-通常攻撃 2-魔法 3-スキル 4-回復魔法 5-薬草");
+      System.out.println("--------------------------------");
+      System.out.printf("- ターン%d -\n", turnNumber);
+      System.out.println("-----作戦を選んでください-----");
 
-				try {
-					allyStrategyNumber = s.nextInt();
-					s.nextLine();
+      while (true)
 
-					if (1 <= allyStrategyNumber && allyStrategyNumber <= 5) {
-						break;
-					} else
+      {
+        // 作戦メニューの表示
+        System.out.println("1-通常攻撃 2-魔法 3-スキル 4-回復魔法 5-薬草");
 
-						new Exception();
-				}
+        try {
+          allyStrategyNumber = s.nextInt();
+          s.nextLine();
 
-				catch (Exception e)
+          if (1 <= allyStrategyNumber && allyStrategyNumber <= 5) {
+            break;
+          } else
 
-				{
-					s.nextLine();
-					System.out.printf("1～5の数字を入力して下さい。\n");
-				}
-			}
+            new Exception();
+        }
 
-			// ■プレイヤーの行動ターン
-			// 生きているplayerをattackListに格納
-			for (int i = 0; i < party.getMembers().size(); i++) {
-				player = party.getMembers().get(i);
-				attackList.add(player);// attackにplayerを格納
-			}
+        catch (Exception e)
 
-			// attackに格納したplayerが全員行動する
-			for (int i = 0; i < attackList.size(); i++) {
+        {
+          s.nextLine();
+          System.out.printf("1～5の数字を入力して下さい。\n");
+        }
+      }
 
-				player = attackList.get(i);// 攻撃リストから呼び出し
+      // ■プレイヤーの行動ターン
+      // 生きているplayerをattackListに格納
+      for (int i = 0; i < party.getMembers().size(); i++) {
+        player = party.getMembers().get(i);
+        attackList.add(player);// attackにplayerを格納
+      }
 
-				if (player.isLive()) {
+      // attackに格納したplayerが全員行動する
+      for (int i = 0; i < attackList.size(); i++) {
 
-					if (player.isParalysis()) {// 麻痺している場合
+        player = attackList.get(i);// 攻撃リストから呼び出し
 
-						System.out.printf("%sは麻痺で動けない！！\n", player.getName());
-						player.knockedDownCheck(player);
+        if (player.isLive()) {
 
-					} else {// 麻痺していない場合
+          if (player.isParalysis()) {// 麻痺している場合
 
-						if (player.isMark()) {// player1が味方の場合
+            System.out.printf("%sは麻痺で動けない！！\n", player.getName());
+            player.knockedDownCheck(player);
 
-							selectStrategyType(allyStrategyNumber);
+          } else {// 麻痺していない場合
 
-							player2 = party.selectMember(id);
+            if (player.isMark()) {// player1が味方の場合
 
-						} else {// player1が敵の場合
+              selectStrategyType(allyStrategyNumber);
 
-							selectStrategyType(ENEMY_STRATEGY_NUMBER);
+              player2 = party.selectMember(id);
 
-							player2 = party.selectMember(id);
-						}
-					}
+            } else {// player1が敵の場合
 
-					Thread.sleep(speed3);// 1000
+              selectStrategyType(ENEMY_STRATEGY_NUMBER);
 
-					if (player.getHp() <= 0) {// プレイヤー１の敗北判定
-						party.removePlayer(player);// プレイヤー１がHP0の場合パーティから削除する
-						party.removeMembers(player);// 死亡したプレイヤーを削除する
-					}
+              player2 = party.selectMember(id);
+            }
+          }
 
-					if (player2.getHp() <= 0) {// 相手プレイヤーがHP0の場合
-						party.removePlayer(player2);// 相手プレイヤーをパーティから削除する
-						party.removeMembers(player2);// 死亡したプレイヤーを削除する
-					}
-				}
+          Thread.sleep(speed3);// 1000
 
-				System.out.println("");
+          if (player.getHp() <= 0) {// プレイヤー１の敗北判定
+            party.removePlayer(player);// プレイヤー１がHP0の場合パーティから削除する
+            party.removeMembers(player);// 死亡したプレイヤーを削除する
+          }
 
-				if (party.getParty1().size() <= 0
-						|| party.getParty2().size() <= 0) {
-					break;
-				}
-			}
+          if (player2.getHp() <= 0) {// 相手プレイヤーがHP0の場合
+            party.removePlayer(player2);// 相手プレイヤーをパーティから削除する
+            party.removeMembers(player2);// 死亡したプレイヤーを削除する
+          }
+        }
 
-			printParty();
+        System.out.println("");
 
-			// Party1またはParty2が全滅していた場合処理を抜ける
-			if (party.getParty1().size() <= 0 || party.getParty2().size() <= 0) {
+        if (party.getParty1().size() <= 0 || party.getParty2().size() <= 0) {
+          break;
+        }
+      }
 
-				break;
-			}
+      printParty();
 
-			attackList.clear();
-			turnNumber += 1;
-		}
+      // Party1またはParty2が全滅していた場合処理を抜ける
+      if (party.getParty1().size() <= 0 || party.getParty2().size() <= 0) {
 
-		// 勝ち負けの表示(残っているパーティの勝ち)
-		System.out.println("");
+        break;
+      }
 
-		if (party.getParty1().size() <= 0) {// パーティ1が0の場合
+      attackList.clear();
+      turnNumber += 1;
+    }
 
-			System.out.println("パーティ2の勝利！！");
+    // 勝ち負けの表示(残っているパーティの勝ち)
+    System.out.println("");
 
-		} else if (party.getParty2().size() <= 0) {// パーティ2が0の場合
+    if (party.getParty1().size() <= 0) {// パーティ1が0の場合
 
-			System.out.println("パーティ１の勝利！！");
+      System.out.println("パーティ2の勝利！！");
 
-		} else {
+    } else if (party.getParty2().size() <= 0) {// パーティ2が0の場合
 
-			System.out.println("引き分け");// お互いパーティが全滅していなければ引き分け
+      System.out.println("パーティ１の勝利！！");
 
-		}
+    } else {
 
-		s.close();
-	}
+      System.out.println("引き分け");// お互いパーティが全滅していなければ引き分け
 
-	private int selectStrategyType(int number) {
+    }
 
-		switch (number) {
-		case 1:
-			context = new Context(new StrategyNormalAttack());
-			break;
-		case 2:
-			context = new Context(new StrategyUseMagic());
-			break;
-		case 3:
-			context = new Context(new StrategyUseSkill());
-			break;
-		case 4:
-			context = new Context(new StrategyUseHealingMagic());
-			break;
-		case 5:
-			context = new Context(new StrategyUseHerb());
-			break;
-		case 6:
-			context = new Context(new StrategyEnemyPattern());
-			break;
-		}
+    s.close();
+  }
 
-		id = context.attackStrategy(player, party.getParty1(), party.getParty2());
+  private int selectStrategyType(int number) {
 
-		return id;
-	}
+    switch (number) {
+      case 1:
+        context = new Context(new StrategyNormalAttack());
+        break;
+      case 2:
+        context = new Context(new StrategyUseMagic());
+        break;
+      case 3:
+        context = new Context(new StrategyUseSkill());
+        break;
+      case 4:
+        context = new Context(new StrategyUseHealingMagic());
+        break;
+      case 5:
+        context = new Context(new StrategyUseHerb());
+        break;
+      case 6:
+        context = new Context(new StrategyEnemyPattern());
+        break;
+    }
 
+    id = context.attackStrategy(player, party.getParty1(), party.getParty2());
 
-	private void attackOrder() throws InterruptedException {
+    return id;
+  }
 
-		System.out.println("");
-		Thread.sleep(speed1);// 1000
-		System.out.println("---攻撃の順番---");// 攻撃順
 
-		for (int i = 0; i < party.getMembers().size(); i++) {// パーティ1,パーティ2に振り分ける処理
+  private void attackOrder() throws InterruptedException {
 
-			player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
-			Thread.sleep(speed2);// 750
-			player.printStatus();// ステータスの表示
+    System.out.println("");
+    Thread.sleep(speed1);// 1000
+    System.out.println("---攻撃の順番---");// 攻撃順
 
-		}
-	}
+    for (int i = 0; i < party.getMembers().size(); i++) {// パーティ1,パーティ2に振り分ける処理
 
-	private void printParty() throws InterruptedException {
+      player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
+      Thread.sleep(speed2);// 750
+      player.printStatus();// ステータスの表示
 
-		System.out.println("");
+    }
+  }
 
-		if (0 < party.getParty1().size()) {// パーティ1が1人以上の場合
+  private void printParty() throws InterruptedException {
 
-			System.out.println("パーティ1");
+    System.out.println("");
 
-			for (int i = 0; i < party.getParty1().size(); i++) {
+    if (0 < party.getParty1().size()) {// パーティ1が1人以上の場合
 
-				player = party.getParty1().get(i);
-				Thread.sleep(speed2);// 750
-				player.printStatus();// パーティ1のプレイヤーのステータスを表示する
-			}
-		}
+      System.out.println("パーティ1");
 
-		if (0 < party.getParty2().size()) {// パーティ2が1人以上の場合
+      for (int i = 0; i < party.getParty1().size(); i++) {
 
-			System.out.println("パーティ2");
+        player = party.getParty1().get(i);
+        Thread.sleep(speed2);// 750
+        player.printStatus();// パーティ1のプレイヤーのステータスを表示する
+      }
+    }
 
-			for (int i = 0; i < party.getParty2().size(); i++) {
+    if (0 < party.getParty2().size()) {// パーティ2が1人以上の場合
 
-				player = party.getParty2().get(i);
-				Thread.sleep(speed2);// 750
-				player.printStatus();// パーティ2のプレイヤーのステータスを表示す
+      System.out.println("パーティ2");
 
-			}
-		}
-	}
+      for (int i = 0; i < party.getParty2().size(); i++) {
 
-	private void divideParty() {
+        player = party.getParty2().get(i);
+        Thread.sleep(speed2);// 750
+        player.printStatus();// パーティ2のプレイヤーのステータスを表示す
 
-		for (int i = 0; i < party.getMembers().size(); i++) {
+      }
+    }
+  }
 
-			player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
+  private void divideParty() {
 
-			if (player.isMark()) {
+    for (int i = 0; i < party.getMembers().size(); i++) {
 
-				party.appendPlayer(player);// trueならパーティ1に加える
+      player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
 
-			} else {
+      if (player.isMark()) {
 
-				party.appendPlayer(player);// falseならパーティ2に加える
+        party.appendPlayer(player);// trueならパーティ1に加える
 
-			}
-		}
-	}
+      } else {
 
-	private void speedReordering() {
+        party.appendPlayer(player);// falseならパーティ2に加える
 
-		for (int i = 0; i < speedData.length - 1; i++) {// 速さ順の並び替え処理
+      }
+    }
+  }
 
-			for (int j = 0; j < speedData.length - i - 1; j++) {
+  private void speedReordering() {
 
-				BasePlayer player1 = speedData[j];
-				BasePlayer player2 = speedData[j + 1];
+    for (int i = 0; i < speedData.length - 1; i++) {// 速さ順の並び替え処理
 
-				if (player1.getAgi() < player2.getAgi()) {
+      for (int j = 0; j < speedData.length - i - 1; j++) {
 
-					BasePlayer box = speedData[j];
-					speedData[j] = speedData[j + 1];
-					speedData[j + 1] = box;
+        BasePlayer player1 = speedData[j];
+        BasePlayer player2 = speedData[j + 1];
 
-				}
-			}
-		}
+        if (player1.getAgi() < player2.getAgi()) {
 
-		for (int i = 0; i < speedData.length; i++) {// membersに速さ順に格納
+          BasePlayer box = speedData[j];
+          speedData[j] = speedData[j + 1];
+          speedData[j + 1] = box;
 
-			player = speedData[i];
-			party.setMembers(player);// membersにplayerを加える
+        }
+      }
+    }
 
-		}
-	}
+    for (int i = 0; i < speedData.length; i++) {// membersに速さ順に格納
 
-	private void opening() throws InterruptedException {
+      player = speedData[i];
+      party.setMembers(player);// membersにplayerを加える
 
-		int menu;
+    }
+  }
 
-		while (true)
+  private void opening() throws InterruptedException {
 
-		{
-			System.out.printf("1-プレイヤー作成 2-作成済みプレイヤー 3-設定");
-			System.out.println("");
-			try
+    int menu;
 
-			{
+    while (true)
 
-				menu = s.nextInt();
-				s.nextLine();
+    {
+      System.out.printf("1-プレイヤー作成 2-作成済みプレイヤー 3-設定");
+      System.out.println("");
+      try
 
-				if (menu == 3) {// 設定を選択した場合
+      {
 
-					Setting();
+        menu = s.nextInt();
+        s.nextLine();
 
-				}
+        if (menu == SETTING) {// 設定を選択した場合
 
-				if (menu == 1 || menu == 2) {
+          Setting();
 
-					break;
-				}
+        }
 
-				else
+        if (menu == MAKE_CHARACTER || menu == CREATED_CHARACTER) {
 
-					new Exception();
-			}
+          break;
+        }
 
-			catch (Exception e)
+        else
 
-			{
+          new Exception();
+      }
 
-				s.nextLine();
-				System.out.printf("input 1 or 2\n");
+      catch (Exception e)
 
-			}
-		}
+      {
 
-		if (menu == 1) {
+        s.nextLine();
+        System.out.printf("input 1 or 2\n");
 
-			this.makePlayer();// プレイヤー1～6のキャラクターを作成
+      }
+    }
 
-		} else {
+    if (menu == 1) {
 
-			this.fixePlayer();// 固定playerを使う
+      this.makePlayer();// プレイヤー1～6のキャラクターを作成
 
-		}
-	}
+    } else {
 
-	private void Setting() {
+      this.createdPlayer();// 固定playerを使う
 
-		int ss;
+    }
+  }
 
-		while (true) {
+  private void Setting() {
 
-			System.out.printf("%s\n1-%s 2-%s 3-%s\n", "戦闘中メッセージ", "普通", "早い",
-					"遅い");
+    int ss;
 
-			try {
+    while (true) {
 
-				ss = s.nextInt();
-				s.nextLine();
+      System.out.printf("%s\n1-%s 2-%s 3-%s\n", "戦闘中メッセージ", "普通", "早い", "遅い");
 
-				if (1 <= ss && ss <= 3) {
+      try {
 
-					break;
+        ss = s.nextInt();
+        s.nextLine();
 
-				} else
+        if (1 <= ss && ss <= 3) {
 
-					new Exception();
+          break;
 
-			} catch (Exception e) {
+        } else
 
-				s.nextLine();
+          new Exception();
 
-				System.out.printf("input 1 - 3\n");
+      } catch (Exception e) {
 
-			}
+        s.nextLine();
 
-		}
+        System.out.printf("input 1 - 3\n");
 
-		switch (ss) {
+      }
 
-		case 1:
-			speed1 = 1000;
-			speed2 = 750;
-			speed3 = 1000;
-			break;
+    }
 
-		case 2:
-			speed1 = 0;
-			speed2 = 0;
-			speed3 = 0;
-			break;
+    switch (ss) {
 
-		case 3:
-			speed1 = 1000;
-			speed2 = 750;
-			speed3 = 2000;
-			break;
+      case 1:
+        speed1 = 1000;
+        speed2 = 750;
+        speed3 = 1000;
+        break;
 
-		}
+      case 2:
+        speed1 = 0;
+        speed2 = 0;
+        speed3 = 0;
+        break;
 
-	}
+      case 3:
+        speed1 = 1000;
+        speed2 = 750;
+        speed3 = 2000;
+        break;
 
-	private void fixePlayer() throws InterruptedException {
+    }
 
-		jobList.add(new JobFighter("味方アシュラム"));
-		jobList.add(new JobWizard("味方スレイン"));
-		jobList.add(new JobPriest("味方ゼロス"));
-		jobList.add(new JobNinja("敵ウッド"));
-		jobList.add(new JobWizard("敵ガンダルフ"));
-		jobList.add(new JobPriest("敵バグナード"));
+  }
 
-		for (int i = 1; i <= 6; i++) {
+  private void createdPlayer() throws InterruptedException {
 
-			if (i <= 3) {// 最初の3人
+    jobList.add(new JobFighter("味方アシュラム"));
+    jobList.add(new JobWizard("味方スレイン"));
+    jobList.add(new JobPriest("味方ゼロス"));
+    jobList.add(new JobNinja("敵ウッド"));
+    jobList.add(new JobWizard("敵ガンダルフ"));
+    jobList.add(new JobPriest("敵バグナード"));
 
-				player = jobList.get(i - 1);// 選択した職業をplayerに入れ
-				player.setType(i - 1);
-				player.setMark(true);// プレイヤーにtrue(識別)をセットする
+    for (int i = 1; i <= 6; i++) {
 
-			} else {// 次の3人
+      if (i <= 3) {// 最初の3人
 
-				player = jobList.get(i - 1);// 選択した職業をplayerに入れ
-				player.setType(i - 1);
-				player.setMark(false);// プレイヤーにfalse(識別)をセットする
+        player = jobList.get(i - 1);// 選択した職業をplayerに入れ
+        player.setType(i - 1);
+        player.setMark(true);// プレイヤーにtrue(識別)をセットする
 
-			}
+      } else {// 次の3人
 
-			player.setIdNumber(i);
-			player.setMaxHp(player.getHp());
-			Thread.sleep(speed2);// 750
-			player.printStatus();
-			speedData[i - 1] = player;// 速さ順ソートで使用する
+        player = jobList.get(i - 1);// 選択した職業をplayerに入れ
+        player.setType(i - 1);
+        player.setMark(false);// プレイヤーにfalse(識別)をセットする
 
-		}
-	}
+      }
 
-	private void makePlayer() {
+      player.setIdNumber(i);
+      player.setMaxHp(player.getHp());
+      Thread.sleep(speed2);// 750
+      player.printStatus();
+      speedData[i - 1] = player;// 速さ順ソートで使用する
 
-		int job;
-		int genus;
+    }
+  }
 
-		jobList.add(new JobFighter(""));// プレイヤー作成のメニュに表示するため初期設定jobList0に格納
-		jobList.add(new JobWizard(""));// 初期設定jobList1に格納
-		jobList.add(new JobPriest(""));// 初期設定jobList2に格納
-		jobList.add(new JobNinja(""));// 初期設定jobList3に格納
+  private void makePlayer() {
 
-		for (int i = 1; i <= 6; i++) {// playerの作成
+    int job;
+    int genus;
 
-			if (i == 1) {
+    jobList.add(new JobFighter(""));// プレイヤー作成のメニュに表示するため初期設定jobList0に格納
+    jobList.add(new JobWizard(""));// 初期設定jobList1に格納
+    jobList.add(new JobPriest(""));// 初期設定jobList2に格納
+    jobList.add(new JobNinja(""));// 初期設定jobList3に格納
 
-				System.out.println("操作するプレイヤーを3人作成してください\n");
+    for (int i = 1; i <= 6; i++) {// playerの作成
 
-			} else if (i == 4) {
+      if (i == 1) {
 
-				System.out.println("対戦相手を3人作成してください");
+        System.out.println("操作するプレイヤーを3人作成してください\n");
 
-			}
+      } else if (i == 4) {
 
-			if (1 <= i && i <= 3) {
+        System.out.println("対戦相手を3人作成してください");
 
-				System.out.printf("プレイヤー%dの名前を入力してください：", i);
+      }
 
-			} else if (4 <= i && i <= 6) {
+      if (1 <= i && i <= 3) {
 
-				System.out.printf("対戦相手%dの名前を入力してください：", i - 3);
+        System.out.printf("プレイヤー%dの名前を入力してください：", i);
 
-			}
+      } else if (4 <= i && i <= 6) {
 
-			String name = s.nextLine();
+        System.out.printf("対戦相手%dの名前を入力してください：", i - 3);
 
-			while (true)
+      }
 
-			{
+      String name = s.nextLine();
 
-				System.out.printf("%sの職業を選択して下さい(1-戦士 2-魔法使い 3-僧侶 4-忍者)", name);
-				try
+      while (true)
 
-				{
+      {
 
-					job = s.nextInt();
-					s.nextLine();
+        System.out.printf("%sの職業を選択して下さい(1-戦士 2-魔法使い 3-僧侶 4-忍者)", name);
+        try
 
-					if (1 <= job && job <= 4)
+        {
 
-						break;
+          job = s.nextInt();
+          s.nextLine();
 
-					else
+          if (1 <= job && job <= 4)
 
-						new Exception();
-				}
+            break;
 
-				catch (Exception e)
+          else
 
-				{
+            new Exception();
+        }
 
-					s.nextLine();
+        catch (Exception e)
 
-					System.out.println("適切な値を入力してください");
+        {
 
-				}
-			}
+          s.nextLine();
 
-			while (true)
+          System.out.println("適切な値を入力してください");
 
-			{
+        }
+      }
 
-				System.out
-						.printf("%sの属性を1つ選択して下さい(1-%s 2-%s 3-%s 4-%s 5-%s 6-%s 7-(説明))",
-								name, TypeData.BLOOD.getTypeName(),
-								TypeData.SHIELD.getTypeName(),
-								TypeData.DEVIL.getTypeName(),
-								TypeData.DARK.getTypeName(),
-								TypeData.SHADOW.getTypeName(),
-								TypeData.HOLY.getTypeName());
+      while (true)
 
-				try
+      {
 
-				{
+        System.out.printf("%sの属性を1つ選択して下さい(1-%s 2-%s 3-%s 4-%s 5-%s 6-%s 7-(説明))", name,
+            TypeData.BLOOD.getTypeName(), TypeData.SHIELD.getTypeName(),
+            TypeData.DEVIL.getTypeName(), TypeData.DARK.getTypeName(),
+            TypeData.SHADOW.getTypeName(), TypeData.HOLY.getTypeName());
 
-					 genus = s.nextInt();
-					s.nextLine();
+        try
 
-					if (genus == 7) {
+        {
 
-						attributeDescription();// 属性の説明
+          genus = s.nextInt();
+          s.nextLine();
 
-					}
+          if (genus == 7) {
 
-					if (1 <= genus && genus <= 6)
+            attributeDescription();// 属性の説明
 
-						break;
+          }
 
-					else
+          if (1 <= genus && genus <= 6)
 
-						new Exception();
-				}
+            break;
 
-				catch (Exception e)
+          else
 
-				{
+            new Exception();
+        }
 
-					s.nextLine();
+        catch (Exception e)
 
-					System.out.println("適切な値を入力してください");
+        {
 
-				}
-			}
+          s.nextLine();
 
-			if (i <= 3) {// 最初の3人
+          System.out.println("適切な値を入力してください");
 
-				JobSelect(job, name);
-				player = jobList.get(i + 3);
-				player.setMark(true);// 操作するプレイヤーにtrue(識別)をセットする
+        }
+      }
 
-			} else {// 次の3人
+      if (i <= 3) {// 最初の3人
 
-				JobSelect(job, name);
-				player = jobList.get(i + 3);
-				player.setMark(false);// 対戦相手ににfalse(識別)をセットする
+        JobSelect(job, name);
+        player = jobList.get(i + 3);
+        player.setMark(true);// 操作するプレイヤーにtrue(識別)をセットする
 
-			}
+      } else {// 次の3人
 
-			player.setType(genus - 1);
-			player.setIdNumber(i);// IDをセットする
-			player.setMaxHp(player.getHp());// MaxHPをセットする
-			player.printStatus();
-			System.out.println("");
-			speedData[i - 1] = player;
+        JobSelect(job, name);
+        player = jobList.get(i + 3);
+        player.setMark(false);// 対戦相手ににfalse(識別)をセットする
 
-		}
-	}
+      }
 
-	private void attributeDescription() {
+      player.setType(genus - 1);
+      player.setIdNumber(i);// IDをセットする
+      player.setMaxHp(player.getHp());// MaxHPをセットする
+      player.printStatus();
+      System.out.println("");
+      speedData[i - 1] = player;
 
-		System.out.println("");
+    }
+  }
 
-		System.out.printf("%s %s %s %s %s %s\n\n", TypeData.BLOOD.getDescription()
-				, TypeData.SHIELD.getDescription(),
-				TypeData.DEVIL.getDescription(),
-				TypeData.DEVIL.getDescription(),
-				TypeData.SHADOW.getDescription(),
-				TypeData.HOLY.getDescription());
+  private void attributeDescription() {
 
+    System.out.println("");
 
-	}
+    System.out.printf("%s %s %s %s %s %s\n\n", TypeData.BLOOD.getDescription(),
+        TypeData.SHIELD.getDescription(), TypeData.DEVIL.getDescription(),
+        TypeData.DEVIL.getDescription(), TypeData.SHADOW.getDescription(),
+        TypeData.HOLY.getDescription());
 
-	/**
-	 * 選択した職業をjobListに格納する
-	 *
-	 * @param job
-	 *            :選択した職業の数字
-	 * @param name
-	 *            :入力した名前
-	 */
-	private void JobSelect(int job, String name) {
 
-		switch (job) {
+  }
 
-		case 1:
-			jobList.add(new JobFighter(name));
-			break;
+  /**
+   * 選択した職業をjobListに格納する
+   *
+   * @param job :選択した職業の数字
+   * @param name :入力した名前
+   */
+  private void JobSelect(int job, String name) {
 
-		case 2:
-			jobList.add(new JobWizard(name));
-			break;
+    switch (job) {
 
-		case 3:
-			jobList.add(new JobPriest(name));
-			break;
+      case 1:
+        jobList.add(new JobFighter(name));
+        break;
 
-		case 4:
-			jobList.add(new JobNinja(name));
-			break;
+      case 2:
+        jobList.add(new JobWizard(name));
+        break;
 
-		}
-	}
+      case 3:
+        jobList.add(new JobPriest(name));
+        break;
+
+      case 4:
+        jobList.add(new JobNinja(name));
+        break;
+
+    }
+  }
 }

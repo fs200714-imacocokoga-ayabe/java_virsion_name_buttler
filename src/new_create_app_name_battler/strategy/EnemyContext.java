@@ -3,7 +3,7 @@ package new_create_app_name_battler.strategy;
 import java.util.List;
 import new_create_app_name_battler.party.BasePlayer;
 
-public class Context {
+class EnemyContext {
 
   IStrategy istrategy;
   BasePlayer player1 = null;
@@ -11,7 +11,7 @@ public class Context {
   List<BasePlayer> party1 = null;
   List<BasePlayer> party2 = null;
 
-  public Context(IStrategy istrategy) {
+  public EnemyContext(IStrategy istrategy) {
 
     this.istrategy = istrategy;
   }
@@ -21,4 +21,5 @@ public class Context {
     return this.istrategy.attackStrategy(player1, party1, party2);
 
   }
+
 }
