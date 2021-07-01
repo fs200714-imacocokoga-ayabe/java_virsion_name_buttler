@@ -8,26 +8,15 @@ public class JobNinja extends BasePlayer implements IMagicalUsable, INinja {
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param name: プレイヤー名
    */
   public JobNinja(String name) {
     super(name);
   }
 
-  /**
-   * 名前(name)からキャラクターに必要なパラメータを生成する
-   */
-  @Override
-  protected void makeCharacter() {
-
-    this.job = "忍者";
-    this.setHp(getNumber(0, 100) + 70);
-    this.mp = getNumber(1, 20) + 10;
-    this.str = getNumber(2, 50) + 20;
-    this.def = getNumber(3, 49) + 1;
-    this.luck = getNumber(4, 99) + 1;
-    this.agi = getNumber(5, 40) + 40;
+  public void initJob(){
+    jobData = JobData.NINJA;
   }
 
   @Override

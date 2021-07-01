@@ -10,26 +10,15 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param name: プレイヤー名
    */
   public JobPriest(String name) {
     super(name);
   }
 
-  /**
-   * 名前(name)からキャラクターに必要なパラメータを生成する
-   */
-  @Override
-  protected void makeCharacter() {
-
-    this.job = "僧侶";
-    this.setHp(getNumber(0, 120) + 80);// 80-200
-    this.mp = getNumber(1, 30) + 20;// 20-50
-    this.str = getNumber(2, 40) + 10;// 10-50
-    this.def = getNumber(3, 60) + 10;// 10-70
-    this.luck = getNumber(4, 99) + 1;// 1-100
-    this.agi = getNumber(5, 40) + 20;// 20-60
+  public void initJob(){
+    jobData = JobData.PRIEST;
   }
 
   @Override

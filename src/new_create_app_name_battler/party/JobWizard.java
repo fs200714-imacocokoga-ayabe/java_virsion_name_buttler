@@ -7,7 +7,6 @@ public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
 
   /**
    * コンストラクタ
-   * 
    * @param name : プレイヤー名
    */
   public JobWizard(String name) {
@@ -15,19 +14,9 @@ public class JobWizard extends BasePlayer implements IMagicalUsable, IWizard {
     super(name);
   }
 
-  /**
-   * 名前(name)からキャラクターに必要なパラメータを生成する
-   */
   @Override
-  protected void makeCharacter() {
-
-    this.job = "魔法使い";
-    this.setHp(getNumber(0, 100) + 50);// 50-150
-    this.mp = getNumber(1, 50) + 30;// 30-80
-    this.str = getNumber(2, 49) + 1;// 1-50
-    this.def = getNumber(3, 49) + 1;// 1-50
-    this.luck = getNumber(4, 99) + 1;// 1-100
-    this.agi = getNumber(5, 40) + 20;// 20-60
+  public void initJob(){
+    jobData = JobData.WIZARD;
   }
 
   @Override

@@ -2,6 +2,10 @@ package new_create_app_name_battler.party;
 
 public interface IPlayer {
 
+  void initJob();
+
+  void makeCharacter();
+
   void damage(int damage);
 
   void recovery(int healValue);

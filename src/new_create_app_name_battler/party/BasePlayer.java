@@ -17,6 +17,7 @@ public class BasePlayer implements IPlayer {
 
   Random random = new Random();
 
+  protected JobData jobData;
   protected String name;
   protected String job;
   protected int maxHp;// 最大HP
@@ -48,10 +49,26 @@ public class BasePlayer implements IPlayer {
   public BasePlayer(String name) {
 
     this.name = name;
+    initJob();
     makeCharacter();
   }
 
-  protected void makeCharacter() {}
+
+  @Override
+  public void initJob() {}
+
+  public void makeCharacter() {
+
+    this.job = jobData.getJob();
+    this.hp = getNumber(0, jobData.getHp()) + jobData.getMinHp();
+    this.mp = getNumber(1, jobData.getMp()) + jobData.getMinMp();
+    this.str = getNumber(2, jobData.getStr()) + jobData.getMinStr();
+    this.def = getNumber(3, jobData.getDef()) + jobData.getMinDef();
+    this.agi = getNumber(5, jobData.getAgi()) + jobData.getMinAgi();
+    this.luck = getNumber(4, jobData.getLuck()) + jobData.getMinLuck();
+  }
+
+
 
   @Override
   public String getName() {

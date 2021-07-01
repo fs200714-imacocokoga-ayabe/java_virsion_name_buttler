@@ -6,23 +6,15 @@ public class JobFighter extends BasePlayer implements IFighter {
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param name : プレイヤー名
    */
   public JobFighter(String name) {
     super(name);
   }
 
-  @Override
-  protected void makeCharacter() {
-
-    this.job = "戦士";
-    this.setHp(getNumber(0, 200) + 100);// 100-300
-    this.mp = getNumber(1, 0);// 0
-    this.str = getNumber(2, 70) + 30;// 30-100
-    this.def = getNumber(3, 70) + 30;// 30-100
-    this.luck = getNumber(4, 99) + 1;// 1-100
-    this.agi = getNumber(5, 49) + 1;// 1-50
+  public void initJob(){
+    jobData = JobData.FIGHTER;
   }
 
   @Override
