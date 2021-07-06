@@ -62,4 +62,7 @@ public interface IPlayer {
 
   int getType();
 
+  void downMp(int mpcost);
+
+
 }

@@ -1,7 +1,7 @@
 package new_create_app_name_battler.strategy;
 
 import java.util.List;
-import new_create_app_name_battler.magic.IMagicalUsable;
+import new_create_app_name_battler.magic.IUseMagic;
 import new_create_app_name_battler.party.BasePlayer;
 
 public class StrategyUseMagic extends BaseStrategy {// 魔法を使用
@@ -31,7 +31,7 @@ public class StrategyUseMagic extends BaseStrategy {// 魔法を使用
 
     id = player2.getIdNumber();
 
-    if (player1 instanceof IMagicalUsable) {
+    if (player1 instanceof IUseMagic) {
 
       player1.magicAttack(player2);
 

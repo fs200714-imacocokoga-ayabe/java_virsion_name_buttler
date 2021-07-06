@@ -1,10 +1,9 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.magic.IMagicalUsable;
-import new_create_app_name_battler.magic.Magic;
+import new_create_app_name_battler.magic.FireRoll;
 import new_create_app_name_battler.magic.Skill;
 
-public class JobNinja extends BasePlayer implements IMagicalUsable, INinja {
+public class JobNinja extends BasePlayer implements INinja {
 
   /**
    * コンストラクタ
@@ -13,10 +12,15 @@ public class JobNinja extends BasePlayer implements IMagicalUsable, INinja {
    */
   public JobNinja(String name) {
     super(name);
+    initMagics();
   }
 
   public void initJob(){
     jobData = JobData.NINJA;
+  }
+
+  public void initMagics(){
+    magics.add(new FireRoll());
   }
 
   @Override
@@ -60,18 +64,18 @@ public class JobNinja extends BasePlayer implements IMagicalUsable, INinja {
   @Override
   public void magicAttack(BasePlayer defender) {
 
-    if (hasEnoughMp()) {
+ // if (hasEnoughMp()) {
+    magic = choiceMagic();
+    attackType = "M";
+    damage = magic.effect(this, defender);
+    super.damageProcess(attackType, this, defender, damage);
+    knockedDownCheck(defender);
 
-      attackType = "M";
-      damage = effect(defender);
-      super.damageProcess(attackType, this, defender, damage);
-      knockedDownCheck(defender);
+    // } else {
 
-    } else {
-
-      System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", getName());
-      normalAttack(defender);
-    }
+    // System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", getName());
+    // normalAttack(defender);
+    // }
   }
 
   @Override
@@ -80,31 +84,31 @@ public class JobNinja extends BasePlayer implements IMagicalUsable, INinja {
     knockedDownCheck(this);
   }
 
-  @Override
-  public int effect(BasePlayer defender) {
-
-    damage =
-        random.nextInt(Magic.FIREROLL.getMaxDamage() - Magic.FIREROLL.getMinDamage())
-            + Magic.FIREROLL.getMinDamage();// 乱数10～30
-
-    this.mp = this.getMp() - Magic.FIREROLL.getMpcost();// MP消費
-
-    System.out.printf("%sは%sを唱えた！\n火の球が飛んでいく！\n", getName(), Magic.FIREROLL.getName());
-
-    return damage;
-  }
-
-  @Override
-  public boolean hasEnoughMp() {
-
-    if (10 <= this.getMp()) {
-
-      return true;
-
-    } else {
-
-      return false;
-
-    }
-  }
+//  @Override
+//  public int effect(BasePlayer defender) {
+//
+//    damage =
+//        random.nextInt(MagicData.FIREROLL.getMaxDamage() - MagicData.FIREROLL.getMinDamage())
+//            + MagicData.FIREROLL.getMinDamage();// 乱数10～30
+//
+//    this.mp = this.getMp() - MagicData.FIREROLL.getMpcost();// MP消費
+//
+//    System.out.printf("%sは%sを唱えた！\n火の球が飛んでいく！\n", getName(), MagicData.FIREROLL.getName());
+//
+//    return damage;
+//  }
+//
+//  @Override
+//  public boolean hasEnoughMp() {
+//
+//    if (10 <= this.getMp()) {
+//
+//      return true;
+//
+//    } else {
+//
+//      return false;
+//
+//    }
+//  }
 }

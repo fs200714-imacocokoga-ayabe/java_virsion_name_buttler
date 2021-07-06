@@ -1,10 +1,12 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.magic.IMagicalUsable;
+import new_create_app_name_battler.magic.Heal;
 import new_create_app_name_battler.magic.IRecoveryMagic;
-import new_create_app_name_battler.magic.Magic;
+import new_create_app_name_battler.magic.MagicData;
+import new_create_app_name_battler.magic.Paralysis;
+import new_create_app_name_battler.magic.Poison;
 
-public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsable, IPriest {
+public class JobPriest extends BasePlayer implements IRecoveryMagic, IPriest {
 
   boolean isHeal;
 
@@ -15,11 +17,20 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
    */
   public JobPriest(String name) {
     super(name);
+    initMagics();
   }
 
   public void initJob(){
     jobData = JobData.PRIEST;
   }
+
+  @Override
+  public void initMagics() {
+    magics.add(new Poison());
+    magics.add(new Paralysis());
+    magics.add(new Heal());
+  }
+
 
   @Override
   public void normalAttack(BasePlayer defender) {
@@ -36,12 +47,12 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
 
     attackType = "M";
 
-    if (random.nextInt(100) + 1 <= Magic.OPTICALELEMENTAL.getInvocationRate()) {
+    if (random.nextInt(100) + 1 <= MagicData.OPTICALELEMENTAL.getInvocationRate()) {
 
       System.out.printf("%s祈りを捧げて%sを召還した\n%sの祝福を受けた！\n", getName(),
-          Magic.OPTICALELEMENTAL.getName(), Magic.OPTICALELEMENTAL.getName());
+          MagicData.OPTICALELEMENTAL.getName(), MagicData.OPTICALELEMENTAL.getName());
 
-      recoveryProcess(this, Magic.OPTICALELEMENTAL.getRecoveryValue());
+      recoveryProcess(this, MagicData.OPTICALELEMENTAL.getRecoveryValue());
 
     } else {
 
@@ -53,44 +64,50 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
   @Override
   public void magicAttack(BasePlayer defender) {
 
-    if (hasEnoughMp()) {
+    // if (hasEnoughMp()) {
 
-      attackType = "M";
-      damage = effect(defender);
-      knockedDownCheck(defender);
+    magic = choiceMagic();
+   // attackType = "M";
+    damage =  magic.effect(this, defender);
+   // super.damageProcess(attackType, this, defender, damage);
+    knockedDownCheck(defender);
 
-    } else {
-
-      System.out.printf("%sは魔法を唱えようとしたが、MPが足りない！！\n", getName());
-      normalAttack(defender);
-    }
+    // } else {
+    //
+    // System.out.printf("%sは魔法を唱えようとしたが、MPが足りない！！\n", getName());
+    // normalAttack(defender);
+    //
   }
 
   @Override
   public void healingMagic(BasePlayer defender) {
 
-    this.isHeal = true;
+    magic = magics.get(2);
+    damage =  magic.effect(this, defender);
+    knockedDownCheck(this);
 
-    if (hasEnoughMp()) {// MPが20以上の場合ヒールを使用
-
-      this.mp = this.getMp() - Magic.HEAL.getMpcost();// MP消費
-
-      System.out.printf("%sはヒールを唱えた！\n光が%sを包んだ\n", getName(), defender.getName(),
-          defender.getName());
-
-      recoveryProcess(defender, Magic.HEAL.getRecoveryValue());
-      knockedDownCheck(this);
-
-    } else {// MPが20未満の場合
-
-      System.out.printf("%sはヒールを唱えようとしたが、MPが足りない！！\n", getName());
-      System.out.printf("%sの攻撃！\n錫杖を振りかざした！\n", getName());
-      damage = calcDamage(defender);// 与えるダメージを求める
-      super.damageProcess(attackType, this, defender, damage);// ダメージ処理
-      knockedDownCheck(defender);
-    }
-
-    this.isHeal = false;
+//    this.isHeal = true;
+//
+//    if (hasEnoughMp()) {// MPが20以上の場合ヒールを使用
+//
+//      this.mp = this.getMp() - MagicData.HEAL.getMpcost();// MP消費
+//
+//      System.out.printf("%sはヒールを唱えた！\n光が%sを包んだ\n", getName(), defender.getName(),
+//          defender.getName());
+//
+//      recoveryProcess(defender, MagicData.HEAL.getRecoveryValue());
+//      knockedDownCheck(this);
+//
+//    } else {// MPが20未満の場合
+//
+//      System.out.printf("%sはヒールを唱えようとしたが、MPが足りない！！\n", getName());
+//      System.out.printf("%sの攻撃！\n錫杖を振りかざした！\n", getName());
+//      damage = calcDamage(defender);// 与えるダメージを求める
+//      super.damageProcess(attackType, this, defender, damage);// ダメージ処理
+//      knockedDownCheck(defender);
+//    }
+//
+//    this.isHeal = false;
 
   }
 
@@ -100,62 +117,62 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IMagicalUsa
     knockedDownCheck(this);
   }
 
-  public int effect(BasePlayer defender) {
+//  public int effect(BasePlayer defender) {
+//
+//    if (!defender.isPoison() && !defender.isParalysis()) {// 相手が毒,麻痺状態にかかっていない場合
+//
+//      if (random.nextInt(2) == 0) {// 乱数1の場合パライズを使用
+//
+//        useParalysis(defender);
+//
+//      } else {// 乱数2の場合ポイズンを使用
+//
+//        usePoison(defender);
+//      }
+//
+//    } else if (defender.isPoison() || defender.isParalysis()) {// 相手が毒または麻痺にかかっている場合
+//
+//      if (defender.isPoison()) {// 相手が毒にかかっている場合パライズを使う
+//
+//        useParalysis(defender);
+//
+//      } else if (defender.isParalysis()) {// 相手が麻痺にかかっている場合パライズを使う
+//
+//        usePoison(defender);
+//      }
+//    }
+//
+//    return damage;
+//  }
+//
+//  private void usePoison(IPlayer defender) {
+//
+//    this.mp = this.getMp() - MagicData.POISON.getMpcost();// MP消費
+//
+//    System.out.printf("%sは%sを唱えた！\n瘴気が相手を包んだ！\n", getName(), MagicData.POISON.getName());
+//    defender.setPoison(true);// 相手に毒をセット
+//    System.out.printf("%sは毒状態になった！\n", defender.getName());
+//
+//  }
+//
+//  private void useParalysis(IPlayer defender) {
+//
+//    this.mp = this.getMp() - MagicData.PARALYSIS.getMpcost();// MP消費
+//
+//    System.out.printf("%sは%sを唱えた！\n蒼い霧が相手を包んだ！\n", getName(), MagicData.PARALYSIS.getName());
+//
+//    if (random.nextInt(100) + 1 <= MagicData.PARALYSIS.getContinuousRate()) {// 乱数がPARALYSISの値以下の場合麻痺状態になる
+//
+//      defender.setParalysis(true);// 相手に麻痺をセット
+//      System.out.printf("%sは麻痺を受けた！\n", defender.getName());
+//
+//    } else {// 麻痺を状態にならなかった場合
+//
+//      System.out.printf("%sは麻痺を受けなかった！\n", defender.getName());
+//    }
+//  }
 
-    if (!defender.isPoison() && !defender.isParalysis()) {// 相手が毒,麻痺状態にかかっていない場合
-
-      if (random.nextInt(2) == 0) {// 乱数1の場合パライズを使用
-
-        useParalysis(defender);
-
-      } else {// 乱数2の場合ポイズンを使用
-
-        usePoison(defender);
-      }
-
-    } else if (defender.isPoison() || defender.isParalysis()) {// 相手が毒または麻痺にかかっている場合
-
-      if (defender.isPoison()) {// 相手が毒にかかっている場合パライズを使う
-
-        useParalysis(defender);
-
-      } else if (defender.isParalysis()) {// 相手が麻痺にかかっている場合パライズを使う
-
-        usePoison(defender);
-      }
-    }
-
-    return damage;
-  }
-
-  private void usePoison(IPlayer defender) {
-
-    this.mp = this.getMp() - Magic.POISON.getMpcost();// MP消費
-
-    System.out.printf("%sは%sを唱えた！\n瘴気が相手を包んだ！\n", getName(), Magic.POISON.getName());
-    defender.setPoison(true);// 相手に毒をセット
-    System.out.printf("%sは毒状態になった！\n", defender.getName());
-
-  }
-
-  private void useParalysis(IPlayer defender) {
-
-    this.mp = this.getMp() - Magic.PARALYSIS.getMpcost();// MP消費
-
-    System.out.printf("%sは%sを唱えた！\n蒼い霧が相手を包んだ！\n", getName(), Magic.PARALYSIS.getName());
-
-    if (random.nextInt(100) + 1 <= Magic.PARALYSIS.getContinuousRate()) {// 乱数がPARALYSISの値以下の場合麻痺状態になる
-
-      defender.setParalysis(true);// 相手に麻痺をセット
-      System.out.printf("%sは麻痺を受けた！\n", defender.getName());
-
-    } else {// 麻痺を状態にならなかった場合
-
-      System.out.printf("%sは麻痺を受けなかった！\n", defender.getName());
-    }
-  }
-
-  @Override
+ // @Override
   public boolean hasEnoughMp() {
 
     if (10 <= this.getMp() && !isHeal) {
