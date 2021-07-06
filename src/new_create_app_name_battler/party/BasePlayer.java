@@ -2,8 +2,12 @@ package new_create_app_name_battler.party;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
-import new_create_app_name_battler.magic.Magic;
+import new_create_app_name_battler.magic.IUseMagic;
+import new_create_app_name_battler.magic.MagicData;
 import new_create_app_name_battler.type.TypeBlood;
 import new_create_app_name_battler.type.TypeContext;
 import new_create_app_name_battler.type.TypeDark;
@@ -17,6 +21,8 @@ public class BasePlayer implements IPlayer {
 
   Random random = new Random();
 
+  protected List<IUseMagic> magics;
+  protected IUseMagic magic;
   protected JobData jobData;
   protected String name;
   protected String job;
@@ -48,6 +54,7 @@ public class BasePlayer implements IPlayer {
 
   public BasePlayer(String name) {
 
+    magics = new ArrayList<>();
     this.name = name;
     initJob();
     makeCharacter();
@@ -280,9 +287,9 @@ public class BasePlayer implements IPlayer {
 
   public int recoveryProcess(BasePlayer defender, int healValue) {
 
-    healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
-    System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
-    defender.recovery(healValue - defender.getHp());
+//    healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
+//    System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
+//    defender.recovery(healValue - defender.getHp());
     return healValue - defender.getHp();
   }
 
@@ -337,7 +344,7 @@ public class BasePlayer implements IPlayer {
 
     if (isParalysis()) {// true:麻痺状態 false:麻痺していない
 
-      if (Magic.PARALYSIS.getContinuousRate() < random.nextInt(100) + 1) {// 麻痺の確立より乱数が上なら麻痺の解除
+      if (MagicData.PARALYSIS.getContinuousRate() < random.nextInt(100) + 1) {// 麻痺の確立より乱数が上なら麻痺の解除
         setParalysis(false);// 麻痺解除
         System.out.printf("%sは麻痺が解けた！\n", getName());
       }
@@ -345,8 +352,8 @@ public class BasePlayer implements IPlayer {
 
     if (isPoison()) {// true:毒状態 false:無毒状態
 
-      damage(Magic.POISON.getMaxDamage());// 毒のダメージ計算
-      System.out.printf("%sは毒のダメージを%d受けた！\n", getName(), Magic.POISON.getMaxDamage());
+      damage(MagicData.POISON.getMaxDamage());// 毒のダメージ計算
+      System.out.printf("%sは毒のダメージを%d受けた！\n", getName(), MagicData.POISON.getMaxDamage());
     }
 
     if (this.getHp() <= 0) {// playerの倒れた判定
@@ -426,4 +433,39 @@ public class BasePlayer implements IPlayer {
   public void setHp(int hp) {
     this.hp = hp;
   }
+
+  @Override
+  public void downMp(int mpCost) {
+    this.mp = this.mp - mpCost;// MPを消費
+
+  }
+
+  public IUseMagic choiceMagic() {
+
+    Collections.shuffle(magics);
+
+    for (IUseMagic magic : magics) {
+//
+//        if (!magic.canUse(this.mp))
+//            return null;
+//
+//        if (this instanceof IRecoveryMagic) {
+//
+//            if (this.isNotFullHp())
+//                return magic;
+//        }
+
+        return magic;
+    }
+    return null;
 }
+
+}
+
+
+
+
+
+
+
+
