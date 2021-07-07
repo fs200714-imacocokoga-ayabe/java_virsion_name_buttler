@@ -25,7 +25,6 @@ public class Fire extends BaseUseMagic{
   @Override
   public void initMagic(){
     this.magicData = MagicData.FIRE;
-
   }
 
 }

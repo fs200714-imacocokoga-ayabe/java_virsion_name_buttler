@@ -1,7 +1,7 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.skill.Assault;
 import new_create_app_name_battler.skill.IOwnSkill;
+import new_create_app_name_battler.skill.skilltype.Assault;
 
 public class JobFighter extends BasePlayer implements IOwnSkill, IFighter {
 

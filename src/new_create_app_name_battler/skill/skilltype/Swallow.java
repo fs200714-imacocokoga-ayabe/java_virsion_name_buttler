@@ -1,6 +1,8 @@
-package new_create_app_name_battler.skill;
+package new_create_app_name_battler.skill.skilltype;
 
 import new_create_app_name_battler.party.IPlayer;
+import new_create_app_name_battler.skill.BaseUseSkill;
+import new_create_app_name_battler.skill.SkillData;
 
 public class Swallow extends BaseUseSkill {
 
