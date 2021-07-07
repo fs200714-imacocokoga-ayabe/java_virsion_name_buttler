@@ -2,12 +2,13 @@ package new_create_app_name_battler.party;
 
 import new_create_app_name_battler.magic.IOwnMagic;
 import new_create_app_name_battler.magic.IRecoveryMagic;
-import new_create_app_name_battler.magic.MagicData;
 import new_create_app_name_battler.magic.magictype.Heal;
 import new_create_app_name_battler.magic.magictype.Paralysis;
 import new_create_app_name_battler.magic.magictype.Poison;
+import new_create_app_name_battler.skill.IOwnSkill;
+import new_create_app_name_battler.skill.skilltype.OpticalElemental;
 
-public class JobPriest extends BasePlayer implements IRecoveryMagic, IOwnMagic, IPriest {
+public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, IOwnMagic, IPriest {
 
   boolean isHeal;
 
@@ -19,8 +20,10 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IOwnMagic, 
   public JobPriest(String name) {
     super(name);
     initMagics();
+    initSkills();
   }
 
+  @Override
   public void initJob(){
     jobData = JobData.PRIEST;
   }
@@ -30,6 +33,11 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IOwnMagic, 
     magics.add(new Poison());
     magics.add(new Paralysis());
     magics.add(new Heal());
+  }
+
+  @Override
+  public void initSkills(){
+    skills.add(new OpticalElemental());
   }
 
 
@@ -46,19 +54,10 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IOwnMagic, 
   @Override
   public void skillAttack(BasePlayer defender) {
 
+    skill = skills.get(0);
     attackType = "M";
+    skill.effect(this, defender);
 
-    if (random.nextInt(100) + 1 <= MagicData.OPTICALELEMENTAL.getInvocationRate()) {
-
-      System.out.printf("%s祈りを捧げて%sを召還した\n%sの祝福を受けた！\n", getName(),
-          MagicData.OPTICALELEMENTAL.getName(), MagicData.OPTICALELEMENTAL.getName());
-
-      recoveryProcess(this, MagicData.OPTICALELEMENTAL.getRecoveryValue());
-
-    } else {
-
-      System.out.printf("%sは祈りを捧げたが何も起こらなかった！\n", getName());
-    }
     knockedDownCheck(this);
   }
 
@@ -68,7 +67,7 @@ public class JobPriest extends BasePlayer implements IRecoveryMagic, IOwnMagic, 
     // if (hasEnoughMp()) {
 
     magic = choiceMagic();
-   // attackType = "M";
+    attackType = "M";
     damage =  magic.effect(this, defender);
    // super.damageProcess(attackType, this, defender, damage);
     knockedDownCheck(defender);

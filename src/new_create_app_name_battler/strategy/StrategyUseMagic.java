@@ -1,14 +1,14 @@
 package new_create_app_name_battler.strategy;
 
 import java.util.List;
-import new_create_app_name_battler.magic.IUseMagic;
+import new_create_app_name_battler.magic.IOwnMagic;
 import new_create_app_name_battler.party.BasePlayer;
 
 public class StrategyUseMagic extends BaseStrategy {// 魔法を使用
 
   /**
    * player,party1,party2を受け取りmagicAttackを実行する
-   * 
+   *
    * @param player1 :自身
    * @param party1 :パーティ1
    * @param party2 :パーティ2
@@ -31,7 +31,7 @@ public class StrategyUseMagic extends BaseStrategy {// 魔法を使用
 
     id = player2.getIdNumber();
 
-    if (player1 instanceof IUseMagic) {
+    if (player1 instanceof IOwnMagic) {
 
       player1.magicAttack(player2);
 

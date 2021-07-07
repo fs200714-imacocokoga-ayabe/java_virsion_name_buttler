@@ -7,8 +7,7 @@ public enum MagicData {
 
   FIRE("ファイア", 10, 10, 30, 0, 0, 0), THUNDER("サンダー", 20, 20, 50, 0, 0, 0), HEAL("ヒール", 20, 0, 0,
       50, 0, 0), PARALYSIS("パライズ", 10, 0, 0, 0, 20, 0), POISON("ポイズン", 10, 0, 20, 0, 0, 0), FIREROLL(
-      "火遁の術", 10, 10, 30, 0, 0, 0), FIREELEMENTAL("炎の精霊", 0, 60, 60, 0, 0, 30), OPTICALELEMENTAL(
-      "光の精霊", 0, 0, 0, 70, 0, 40), ;
+      "火遁の術", 10, 10, 30, 0, 0, 0), ;
 
   private String name;// 魔法の名前
   private int mpCost;// 消費MP
@@ -45,7 +44,7 @@ public enum MagicData {
 
   /**
    * 魔法の名前を取得する
-   * 
+   *
    * @return name :魔法の名前
    */
   public String getName() {
@@ -55,7 +54,7 @@ public enum MagicData {
 
   /**
    * 消費MPを取得する
-   * 
+   *
    * @return mpcost :消費MP
    */
   public int getMpcost() {
@@ -65,7 +64,7 @@ public enum MagicData {
 
   /**
    * 最小ダメージを取得する
-   * 
+   *
    * @return mindamage :最小ダメージ
    */
   public int getMinDamage() {
@@ -75,7 +74,7 @@ public enum MagicData {
 
   /**
    * 最大ダメージを取得する
-   * 
+   *
    * @return maxdamage :最大ダメージ
    */
   public int getMaxDamage() {
@@ -85,7 +84,7 @@ public enum MagicData {
 
   /**
    * 回復量を取得する
-   * 
+   *
    * @return recoveryvalue :回復量
    */
   public int getRecoveryValue() {
@@ -95,7 +94,7 @@ public enum MagicData {
 
   /**
    * 継続率を取得する
-   * 
+   *
    * @return continuousrate :継続率
    */
   public int getContinuousRate() {
