@@ -1,8 +1,9 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.magic.Skill;
+import new_create_app_name_battler.skill.Assault;
+import new_create_app_name_battler.skill.IOwnSkill;
 
-public class JobFighter extends BasePlayer implements IFighter {
+public class JobFighter extends BasePlayer implements IOwnSkill, IFighter {
 
   /**
    * コンストラクタ
@@ -11,10 +12,16 @@ public class JobFighter extends BasePlayer implements IFighter {
    */
   public JobFighter(String name) {
     super(name);
+    initSkills();
   }
 
   public void initJob(){
     jobData = JobData.FIGHTER;
+  }
+
+  @Override
+  public void initSkills() {
+    skills.add(new Assault());
   }
 
   @Override
@@ -30,18 +37,11 @@ public class JobFighter extends BasePlayer implements IFighter {
   public void skillAttack(BasePlayer defender) {
 
     attackType = "A";
+    skill = skills.get(0);
+    damage = calcDamage(defender); // 与えるダメージを求める
+    damage = damage * skill.effect(this, defender);// ダメージ2倍
+    damageProcess(attackType, this, defender, damage);
 
-    if (random.nextInt(100) + 1 <= Skill.ASSAULT.getInvocationRate()) {// 発動率25%
-
-      System.out.printf("%sの捨て身の突撃！\n", getName());
-      damage = calcDamage(defender); // 与えるダメージを求める
-      damage = damage * 2;// ダメージ2倍
-      damageProcess(attackType, this, defender, damage);
-
-    } else {
-
-      System.out.printf("%sの捨て身の突撃はかわされた！\n", getName());
-    }
     knockedDownCheck(defender);
   }
 

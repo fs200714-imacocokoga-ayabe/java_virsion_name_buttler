@@ -1,12 +1,13 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.magic.Heal;
+import new_create_app_name_battler.magic.IOwnMagic;
 import new_create_app_name_battler.magic.IRecoveryMagic;
 import new_create_app_name_battler.magic.MagicData;
-import new_create_app_name_battler.magic.Paralysis;
-import new_create_app_name_battler.magic.Poison;
+import new_create_app_name_battler.magic.magictype.Heal;
+import new_create_app_name_battler.magic.magictype.Paralysis;
+import new_create_app_name_battler.magic.magictype.Poison;
 
-public class JobPriest extends BasePlayer implements IRecoveryMagic, IPriest {
+public class JobPriest extends BasePlayer implements IRecoveryMagic, IOwnMagic, IPriest {
 
   boolean isHeal;
 

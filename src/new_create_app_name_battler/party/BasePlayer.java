@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import new_create_app_name_battler.magic.IUseMagic;
 import new_create_app_name_battler.magic.MagicData;
+import new_create_app_name_battler.skill.IUseSkill;
 import new_create_app_name_battler.type.TypeBlood;
 import new_create_app_name_battler.type.TypeContext;
 import new_create_app_name_battler.type.TypeDark;
@@ -23,6 +24,8 @@ public class BasePlayer implements IPlayer {
 
   protected List<IUseMagic> magics;
   protected IUseMagic magic;
+  protected List<IUseSkill> skills;
+  protected IUseSkill skill;
   protected JobData jobData;
   protected String name;
   protected String job;
@@ -55,6 +58,7 @@ public class BasePlayer implements IPlayer {
   public BasePlayer(String name) {
 
     magics = new ArrayList<>();
+    skills = new ArrayList<>();
     this.name = name;
     initJob();
     makeCharacter();

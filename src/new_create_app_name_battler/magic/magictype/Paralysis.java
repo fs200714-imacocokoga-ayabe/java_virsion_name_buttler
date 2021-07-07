@@ -1,5 +1,7 @@
-package new_create_app_name_battler.magic;
+package new_create_app_name_battler.magic.magictype;
 
+import new_create_app_name_battler.magic.BaseUseMagic;
+import new_create_app_name_battler.magic.MagicData;
 import new_create_app_name_battler.party.IPlayer;
 
 public class Paralysis extends BaseUseMagic{
