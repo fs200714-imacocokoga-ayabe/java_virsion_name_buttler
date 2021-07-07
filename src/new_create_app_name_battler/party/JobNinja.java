@@ -1,9 +1,11 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.magic.FireRoll;
-import new_create_app_name_battler.magic.Skill;
+import new_create_app_name_battler.magic.IOwnMagic;
+import new_create_app_name_battler.magic.magictype.FireRoll;
+import new_create_app_name_battler.skill.IOwnSkill;
+import new_create_app_name_battler.skill.Swallow;
 
-public class JobNinja extends BasePlayer implements INinja {
+public class JobNinja extends BasePlayer implements IOwnSkill, IOwnMagic, INinja {
 
   /**
    * コンストラクタ
@@ -15,13 +17,18 @@ public class JobNinja extends BasePlayer implements INinja {
     initMagics();
   }
 
-  public void initJob(){
+  public void initJob() {
     jobData = JobData.NINJA;
   }
 
-  public void initMagics(){
+  public void initMagics() {
     magics.add(new FireRoll());
   }
+
+  public void initSkills(){
+    skills.add(new Swallow());
+  }
+
 
   @Override
   public void normalAttack(BasePlayer defender) {
@@ -37,34 +44,18 @@ public class JobNinja extends BasePlayer implements INinja {
   public void skillAttack(BasePlayer defender) {
 
     attackType = "A";
-    if (random.nextInt(100) + 1 <= Skill.SWALLOW.getInvocationRate()) {// 25%で発動
+    skill = skills.get(0);
 
-      System.out.printf("%sは目にも止まらぬ速さで攻撃した！\n", getName());
-
-      for (int i = 1; i <= 2; i++) {
-
-        System.out.printf("%d回目の攻撃\n", i);
-        damage = calcDamage(defender);// 攻撃処理
-
-        super.damageProcess(attackType, this, defender, damage);// ダメージ処理
-
-        if (defender.getHp() <= 0) {// 倒れた判定
-
-          break;
-        }
-      }
-
-    } else {// 75%で不発
-
-      System.out.printf("%sは転んだ！\n", getName());
-    }
+    damage = calcDamage(defender);// 攻撃処理
+    damage = damage * skill.effect(this, defender);// ダメージ2倍
+    super.damageProcess(attackType, this, defender, damage);// ダメージ処理
     knockedDownCheck(defender);
   }
 
   @Override
   public void magicAttack(BasePlayer defender) {
 
- // if (hasEnoughMp()) {
+    // if (hasEnoughMp()) {
     magic = choiceMagic();
     attackType = "M";
     damage = magic.effect(this, defender);
@@ -84,31 +75,17 @@ public class JobNinja extends BasePlayer implements INinja {
     knockedDownCheck(this);
   }
 
-//  @Override
-//  public int effect(BasePlayer defender) {
-//
-//    damage =
-//        random.nextInt(MagicData.FIREROLL.getMaxDamage() - MagicData.FIREROLL.getMinDamage())
-//            + MagicData.FIREROLL.getMinDamage();// 乱数10～30
-//
-//    this.mp = this.getMp() - MagicData.FIREROLL.getMpcost();// MP消費
-//
-//    System.out.printf("%sは%sを唱えた！\n火の球が飛んでいく！\n", getName(), MagicData.FIREROLL.getName());
-//
-//    return damage;
-//  }
-//
-//  @Override
-//  public boolean hasEnoughMp() {
-//
-//    if (10 <= this.getMp()) {
-//
-//      return true;
-//
-//    } else {
-//
-//      return false;
-//
-//    }
-//  }
+  // @Override
+  // public boolean hasEnoughMp() {
+  //
+  // if (10 <= this.getMp()) {
+  //
+  // return true;
+  //
+  // } else {
+  //
+  // return false;
+  //
+  // }
+  // }
 }

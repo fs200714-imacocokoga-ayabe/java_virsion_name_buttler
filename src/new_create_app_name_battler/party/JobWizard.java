@@ -1,10 +1,12 @@
 package new_create_app_name_battler.party;
 
-import new_create_app_name_battler.magic.Fire;
+import new_create_app_name_battler.magic.IOwnMagic;
 import new_create_app_name_battler.magic.MagicData;
-import new_create_app_name_battler.magic.Thunder;
+import new_create_app_name_battler.magic.magictype.Fire;
+import new_create_app_name_battler.magic.magictype.Thunder;
+import new_create_app_name_battler.skill.IOwnSkill;
 
-public class JobWizard extends BasePlayer implements IWizard {
+public class JobWizard extends BasePlayer implements IOwnMagic, IOwnSkill, IWizard {
 
   /**
    * コンストラクタ
@@ -14,6 +16,7 @@ public class JobWizard extends BasePlayer implements IWizard {
 
     super(name);
     initMagics();
+    initSkills();
   }
 
   @Override
@@ -25,6 +28,12 @@ public class JobWizard extends BasePlayer implements IWizard {
   public void initMagics() {
     magics.add(new Fire());
     magics.add(new Thunder());
+
+  }
+
+  @Override
+  public void initSkills(){
+
 
   }
 
