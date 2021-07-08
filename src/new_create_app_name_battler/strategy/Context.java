@@ -17,8 +17,6 @@ public class Context {
   }
 
   public int attackStrategy(BasePlayer player1, List<BasePlayer> party1, List<BasePlayer> party2) {
-
     return this.istrategy.attackStrategy(player1, party1, party2);
-
   }
 }

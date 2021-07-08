@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import new_create_app_name_battler.magic.IRecoveryMagic;
 import new_create_app_name_battler.magic.IUseMagic;
 import new_create_app_name_battler.magic.MagicData;
 import new_create_app_name_battler.skill.IUseSkill;
@@ -291,9 +292,9 @@ public class BasePlayer implements IPlayer {
 
   public int recoveryProcess(BasePlayer defender, int healValue) {
 
-//    healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
-//    System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
-//    defender.recovery(healValue - defender.getHp());
+    // healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
+    // System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
+    // defender.recovery(healValue - defender.getHp());
     return healValue - defender.getHp();
   }
 
@@ -449,27 +450,12 @@ public class BasePlayer implements IPlayer {
     Collections.shuffle(magics);
 
     for (IUseMagic magic : magics) {
-//
-//        if (!magic.canUse(this.mp))
-//            return null;
-//
-//        if (this instanceof IRecoveryMagic) {
-//
-//            if (this.isNotFullHp())
-//                return magic;
-//        }
 
+      if (!(magic instanceof IRecoveryMagic)) {
         return magic;
+      }
     }
     return null;
-}
+  }
 
 }
-
-
-
-
-
-
-
-

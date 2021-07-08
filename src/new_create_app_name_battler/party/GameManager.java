@@ -406,7 +406,7 @@ public class GameManager {
 
   private void createdPlayer() throws InterruptedException {
 
-    jobList.add(new JobFighter("bb味方アシュラム"));
+    jobList.add(new JobFighter("味方アシュラム"));
     jobList.add(new JobWizard("味方スレイン"));
     jobList.add(new JobPriest("味方ゼロス"));
     jobList.add(new JobNinja("敵ウッド"));
