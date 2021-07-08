@@ -9,7 +9,7 @@ public class Poison extends BaseUseMagic{
   @Override
   public int effect(IPlayer attacker, IPlayer defender) {
 
-    super.effect(attacker, defender);
+    if(hasEnoughMp(attacker.getMp())){
 
     System.out.printf("%sは%sを唱えた！\n瘴気が相手を包んだ！\n", attacker.getName(), magicData.getName());
     defender.setPoison(true);// 相手に毒をセット
@@ -17,8 +17,18 @@ public class Poison extends BaseUseMagic{
 
     attacker.downMp(this.magicData.getMpcost());
 
-    return damage;
+    return 1;
 
+    }else{
+
+      System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
+   }
+   return 0;
+ }
+
+  @Override
+  public boolean hasEnoughMp(int mp){
+   return super.hasEnoughMp(mp);
   }
 
   @Override

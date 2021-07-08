@@ -9,7 +9,7 @@ public class Thunder extends BaseUseMagic{
   @Override
   public int effect(IPlayer attacker, IPlayer defender) {
 
-    super.effect(attacker, defender);
+    if(hasEnoughMp(attacker.getMp())){
 
     System.out.printf("%sは%sを唱えた！\n雷が地面を這っていく！\n", attacker.getName(), MagicData.THUNDER.getName());
 
@@ -20,6 +20,16 @@ public class Thunder extends BaseUseMagic{
 
     return damage;
 
+    } else {
+
+      System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
+    }
+    return 0;
+  }
+
+  @Override
+  public boolean hasEnoughMp(int mp){
+   return super.hasEnoughMp(mp);
   }
 
   @Override

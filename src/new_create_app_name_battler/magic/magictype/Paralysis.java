@@ -9,8 +9,7 @@ public class Paralysis extends BaseUseMagic{
   @Override
   public int effect(IPlayer attacker, IPlayer defender) {
 
-    super.effect(attacker, defender);
-
+    if(hasEnoughMp(attacker.getMp())){
     System.out.printf("%sは%sを唱えた！\n蒼い霧が相手を包んだ！\n", attacker.getName(), MagicData.PARALYSIS.getName());
 
     if (random.nextInt(100) + 1 <= MagicData.PARALYSIS.getContinuousRate()) {// 乱数がPARALYSISの値以下の場合麻痺状態になる
@@ -25,14 +24,24 @@ public class Paralysis extends BaseUseMagic{
 
     attacker.downMp(this.magicData.getMpcost());
 
-    return damage;
+    return 1;
 
-  }
+    }else{
+
+      System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
+   }
+   return 0;
+ }
 
   @Override
   public void initMagic(){
     this.magicData = MagicData.PARALYSIS;
-
   }
+
+  @Override
+  public boolean hasEnoughMp(int mp){
+   return super.hasEnoughMp(mp);
+  }
+
 
 }

@@ -38,7 +38,6 @@ public enum MagicData {
   }
 
   public List<MagicData> getMagicalList() {
-
     return magicalList;
   }
 
@@ -48,7 +47,6 @@ public enum MagicData {
    * @return name :魔法の名前
    */
   public String getName() {
-
     return this.name;
   }
 
@@ -58,7 +56,6 @@ public enum MagicData {
    * @return mpcost :消費MP
    */
   public int getMpcost() {
-
     return mpCost;
   }
 
@@ -68,7 +65,6 @@ public enum MagicData {
    * @return mindamage :最小ダメージ
    */
   public int getMinDamage() {
-
     return minDamage;
   }
 
@@ -78,7 +74,6 @@ public enum MagicData {
    * @return maxdamage :最大ダメージ
    */
   public int getMaxDamage() {
-
     return maxDamage;
   }
 
@@ -88,7 +83,6 @@ public enum MagicData {
    * @return recoveryvalue :回復量
    */
   public int getRecoveryValue() {
-
     return recoveryValue;
   }
 
@@ -98,12 +92,10 @@ public enum MagicData {
    * @return continuousrate :継続率
    */
   public int getContinuousRate() {
-
     return continuousRate;
   }
 
   public int getInvocationRate() {
-
     return invocationRate;
   }
 }

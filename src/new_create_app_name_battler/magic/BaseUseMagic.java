@@ -23,6 +23,6 @@ public class BaseUseMagic implements IUseMagic {
 
   @Override
   public boolean hasEnoughMp(int mp) {
-      return this.magicData.getMpcost() <= mp;
+    return this.magicData.getMpcost() <= mp;
   }
 }
