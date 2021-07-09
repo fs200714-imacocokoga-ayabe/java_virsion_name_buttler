@@ -38,8 +38,8 @@ public class JobFighter extends BasePlayer implements IOwnSkill, IFighter {
   }
 
   @Override
-  public void eatGrass() {
-    super.eatGrass();
+  public void eat() {
+    super.eat();
     knockedDownCheck(this);
   }
 }

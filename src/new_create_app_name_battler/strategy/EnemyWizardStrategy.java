@@ -15,7 +15,7 @@ public class EnemyWizardStrategy extends StrategyEnemyPattern {
 
     if (player1.isPoison()) {// player1が毒状態の場合
 
-      player1.eatGrass();
+      player1.eat();
       // 攻撃力の1/2より相手の防御力の方が大きい場合
     } else if (player2.getDef() < (player1.getStr() / 2)) {
 

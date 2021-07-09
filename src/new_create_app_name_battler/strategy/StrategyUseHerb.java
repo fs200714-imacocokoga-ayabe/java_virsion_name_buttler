@@ -23,7 +23,7 @@ public class StrategyUseHerb extends BaseStrategy {// 草を食べる
 
     id = player2.getIdNumber();
 
-    player1.eatGrass();
+    player1.eat();
 
     return id;
   }
