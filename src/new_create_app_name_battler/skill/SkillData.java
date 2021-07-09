@@ -2,8 +2,8 @@ package new_create_app_name_battler.skill;
 
 public enum SkillData {
 
-  ASSAULT("突撃", 30, 0, 0, 0), SWALLOW("燕返し", 30, 0, 0, 0),
-  FIREELEMENTAL("炎の精霊", 30, 0, 60, 0),OPTICALELEMENTAL("光の精霊", 40, 0, 0, 70), ;
+  ASSAULT("突撃", 30, 0, 0, 0), SWALLOW("燕返し", 30, 0, 0, 0), FIREELEMENTAL("炎の精霊", 30, 0, 60, 0), OPTICALELEMENTAL(
+      "光の精霊", 40, 0, 0, 70), ;
 
   private String name;// スキルの名前
   private int invocationRate;// 発動率
@@ -40,6 +40,3 @@ public enum SkillData {
     return recoveryValue;
   }
 }
-
-
-

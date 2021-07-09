@@ -14,7 +14,7 @@ public interface IEat {
     switch (random.nextInt(3)) {
 
       case 0:
-       eatPoisonousGrass(attacker);
+        eatPoisonousGrass(attacker);
         break;
 
       case 1:
@@ -22,7 +22,7 @@ public interface IEat {
         break;
 
       case 2:
-       eatGrass(attacker);
+        eatGrass(attacker);
         break;
     }
   }
@@ -37,16 +37,16 @@ public interface IEat {
     }
   }
 
- default public void eatHerb(BasePlayer attacker) {
+  default public void eatHerb(BasePlayer attacker) {
     System.out.printf("%sは革袋の中にあった草を食べた！\n", attacker.getName());
     int healValue = Math.min(attacker.getMaxHp(), attacker.getHp() + HERB_RECOVERY_VALUE);
     System.out.printf("%sはHPが%d回復した！\n", attacker.getName(), healValue - attacker.getHp());
     attacker.recovery(healValue - attacker.getHp());
   }
 
- default public void eatGrass(BasePlayer attacker) {
-   System.out.printf("%sは革袋の中にあった草を食べた！\n", attacker.getName());
-   System.out.printf("%sは何も起こらなかった！\n", attacker.getName());
- }
+  default public void eatGrass(BasePlayer attacker) {
+    System.out.printf("%sは革袋の中にあった草を食べた！\n", attacker.getName());
+    System.out.printf("%sは何も起こらなかった！\n", attacker.getName());
+  }
 
 }

@@ -4,10 +4,10 @@ import new_create_app_name_battler.party.IPlayer;
 import new_create_app_name_battler.skill.BaseUseSkill;
 import new_create_app_name_battler.skill.SkillData;
 
-public class Assault extends BaseUseSkill{
+public class Assault extends BaseUseSkill {
 
   @Override
-  public int effect(IPlayer attacker, IPlayer defender){
+  public int effect(IPlayer attacker, IPlayer defender) {
 
     super.effect(attacker, defender);
 
@@ -15,19 +15,18 @@ public class Assault extends BaseUseSkill{
 
       System.out.printf("%sの捨て身の突撃！\n", attacker.getName());
 
-    return 2;
+      return 2;
 
-    }else{
+    } else {
 
       System.out.printf("%sの捨て身の突撃はかわされた！\n", attacker.getName());
     }
-
     return 0;
 
   }
 
   @Override
-  public void initSkill(){
+  public void initSkill() {
     this.skillData = SkillData.ASSAULT;
   }
 

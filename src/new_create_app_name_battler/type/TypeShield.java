@@ -12,11 +12,8 @@ public class TypeShield implements IType {
     if (r <= TypeData.SHIELD.getInvocationRate() && attackType.equals("A")) {// 1/2で物理攻撃を半減する
 
       System.out.println(TypeData.SHIELD.getMessage());// 属性のメッセージ
-
       damage = (int) (damage * TypeData.SHIELD.getCollectionValue());// 属性処理を加えてダメージを求める
-
     };
-
     return damage;
   }
 }

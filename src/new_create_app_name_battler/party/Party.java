@@ -12,25 +12,14 @@ public class Party {
   public List<BasePlayer> party1 = new ArrayList<BasePlayer>();// パーティ1の入れ物
   public List<BasePlayer> party2 = new ArrayList<BasePlayer>();// パーティ2の入れ物
 
-  /**
-   * コンストラクタ
-   */
   public Party() {
     members = new ArrayList<BasePlayer>();
   }
 
-  /**
-   * パーティーメンバーをArrayList で取得する
-   */
   public ArrayList<BasePlayer> getMembers() {
     return members;
   }
 
-  /**
-   * パーティーにプレイヤーを追加する
-   * 
-   * @param player: 追加するプレイヤー
-   */
   public void appendPlayer(BasePlayer player) {
 
     if (player.isMark()) {
@@ -41,11 +30,6 @@ public class Party {
     }
   }
 
-  /**
-   * パーティーからプレイヤーを離脱させる
-   * 
-   * @param player : 離脱させるプレイヤー
-   */
   public void removePlayer(BasePlayer player) {
 
     if (player.isMark()) {
@@ -56,48 +40,22 @@ public class Party {
     }
   }
 
-  /**
-   * membersにplayerをセットする
-   * 
-   * @param player : プレイヤー
-   */
   public void setMembers(BasePlayer player) {
     members.add(player);
   }
 
-  /**
-   * membersにplayerを削除する
-   * 
-   * @param player : プレイヤー
-   */
   public void removeMembers(BasePlayer player) {
     members.remove(player);
   }
 
-  /**
-   * パーティ1を返す
-   * 
-   * @return party1 : パーティ１
-   */
   public List<BasePlayer> getParty1() {
     return party1;
   }
 
-  /**
-   * パーティ2を返す
-   * 
-   * @return party2 : パーティ2
-   */
   public List<BasePlayer> getParty2() {
     return party2;
   }
 
-  /**
-   * パーティから1人返す処理
-   * 
-   * @param id : プレイヤーのID
-   * @return IDのプレイヤー
-   */
   public BasePlayer selectMember(int id) {
 
     for (int i = 0; i < members.size(); i++) {

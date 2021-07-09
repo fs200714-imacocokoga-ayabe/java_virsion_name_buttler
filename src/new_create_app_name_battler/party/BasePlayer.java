@@ -20,7 +20,7 @@ import new_create_app_name_battler.type.TypeHoly;
 import new_create_app_name_battler.type.TypeShadow;
 import new_create_app_name_battler.type.TypeShield;
 
-public class BasePlayer implements IPlayer, IEat{
+public class BasePlayer implements IPlayer, IEat {
 
   Random random = new Random();
 
@@ -46,7 +46,7 @@ public class BasePlayer implements IPlayer, IEat{
   protected int idNumber;// ID値の入れ物
   protected int strategyData;
   protected int healValue;
- // private final int HERB_RECOVERY_VALUE = 30;
+  // private final int HERB_RECOVERY_VALUE = 30;
   protected int type;
   protected String attackType;
 

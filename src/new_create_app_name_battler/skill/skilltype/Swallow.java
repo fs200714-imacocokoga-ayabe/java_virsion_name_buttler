@@ -11,17 +11,16 @@ public class Swallow extends BaseUseSkill {
 
     super.effect(attacker, defender);
 
-    if (random.nextInt(100) + 1 <= skillData.getInvocationRate()) {// 25%で発動
+    if (random.nextInt(100) + 1 <= skillData.getInvocationRate()) {
 
       System.out.printf("%sは目にも止まらぬ速さで2回攻撃した！\n", attacker.getName());
 
       return 2;
 
-    } else {// 75%で不発
+    } else {
 
       System.out.printf("%sは転んだ！\n", attacker.getName());
     }
-
     return 0;
   }
 

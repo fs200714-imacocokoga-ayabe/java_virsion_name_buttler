@@ -12,9 +12,7 @@ public class TypeDevil implements IType {
     if (r <= TypeData.DEVIL.getInvocationRate() && attackType.equals("M")) {// 1/2で魔法攻撃を半減する
 
       System.out.println(TypeData.DEVIL.getMessage());// 属性のメッセージ
-
       damage = (int) (damage * TypeData.DEVIL.getCollectionValue());// 属性処理を加えてダメージを求める
-
     };
     return damage;
   }

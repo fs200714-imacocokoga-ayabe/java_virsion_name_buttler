@@ -1,6 +1,6 @@
 package new_create_app_name_battler.party;
 
-public interface IPlayer{
+public interface IPlayer {
 
   void initJob();
 

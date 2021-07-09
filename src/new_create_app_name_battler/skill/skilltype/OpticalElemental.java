@@ -22,10 +22,8 @@ public class OpticalElemental extends BaseUseSkill{
       return healValue;
 
     } else {
-
       System.out.printf("%sの攻撃だがスキルは発動しなかった！\n", attacker.getName());
     }
-
     return 0;
 
   }
