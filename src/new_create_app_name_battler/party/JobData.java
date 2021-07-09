@@ -5,10 +5,9 @@ import java.util.List;
 
 public enum JobData {
 
-  FIGHTER(1, "戦士", 200, 100, 0, 0, 70, 30, 70, 30, 99, 1, 49, 1),
-  WIZARD(2, "魔法使い", 100, 50, 50, 30, 49, 1, 49, 1, 99, 1, 40, 20),
-  PRIEST(3, "僧侶", 120, 80, 30, 20, 40, 10, 60, 10, 99, 1, 40,20),
-  NINJA(4, "忍者", 100, 70, 20, 10, 50, 20, 49, 1, 99, 1, 40, 40), ;
+  FIGHTER(1, "戦士", 200, 100, 0, 0, 70, 30, 70, 30, 99, 1, 49, 1), WIZARD(2, "魔法使い", 100, 50, 50,
+      30, 49, 1, 49, 1, 99, 1, 40, 20), PRIEST(3, "僧侶", 120, 80, 30, 20, 40, 10, 60, 10, 99, 1, 40,
+      20), NINJA(4, "忍者", 100, 70, 20, 10, 50, 20, 49, 1, 99, 1, 40, 40), ;
 
   private int id;
   private String job;
@@ -46,14 +45,14 @@ public enum JobData {
 
   List<JobData> jobList = new ArrayList<JobData>();
 
-  public void jobList(){
+  public void jobList() {
 
-    for(JobData j : JobData.values()){
+    for (JobData j : JobData.values()) {
       jobList.add(j);
     }
   }
 
-  public List<JobData> getJobList(){
+  public List<JobData> getJobList() {
     return jobList;
   }
 
@@ -113,4 +112,3 @@ public enum JobData {
     return minLuck;
   }
 }
-

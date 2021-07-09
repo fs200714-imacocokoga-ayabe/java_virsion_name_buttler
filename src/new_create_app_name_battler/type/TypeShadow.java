@@ -12,9 +12,7 @@ public class TypeShadow implements IType {
     if (r <= TypeData.SHADOW.getInvocationRate() && attackType.equals("A")) {// 1/4で物理攻撃を避ける
 
       System.out.println(TypeData.SHADOW.getMessage());// 属性のメッセージ
-
       damage = (int) (damage * TypeData.SHADOW.getCollectionValue());// 属性処理を加えてダメージを求める
-
     };
     return damage;
   }

@@ -12,11 +12,9 @@ public class TypeHoly implements IType {
     if (r <= TypeData.HOLY.getInvocationRate() && attackType.equals("M")) {// 1/4で魔法攻撃を無効にする
 
       System.out.println(TypeData.HOLY.getMessage());// 属性のメッセージ
-
       damage = (int) (damage * TypeData.HOLY.getCollectionValue());// 属性処理を加えてダメージを求める
 
     };
-
     return damage;
   }
 

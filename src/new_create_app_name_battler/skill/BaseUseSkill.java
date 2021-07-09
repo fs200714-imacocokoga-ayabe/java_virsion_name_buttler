@@ -3,13 +3,13 @@ package new_create_app_name_battler.skill;
 import java.util.Random;
 import new_create_app_name_battler.party.IPlayer;
 
-public class BaseUseSkill implements IUseSkill{
+public class BaseUseSkill implements IUseSkill {
 
   protected Random random = new Random();
   protected SkillData skillData;
   protected int damage;
 
-  public BaseUseSkill(){
+  public BaseUseSkill() {
     this.initSkill();
   }
 

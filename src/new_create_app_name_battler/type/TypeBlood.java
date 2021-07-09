@@ -9,7 +9,6 @@ public class TypeBlood implements IType {
 
   int heal;
 
-
   // 属性の処理をする
   @Override
   public int typeProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
@@ -27,17 +26,14 @@ public class TypeBlood implements IType {
 
     }
 
-
     if (heal != 0) {// 属性が発動した場合表示
 
       System.out.printf("%sはHPが%d回復した！\n", defender.getName(), heal);
-
 
       defender.setHp(defender.getHp() + heal);// 対象相手HPが回復する
     }
 
     damage = damage - heal;// 吸収された分の計算
-
 
     return damage;
   }

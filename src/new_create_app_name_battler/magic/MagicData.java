@@ -41,56 +41,26 @@ public enum MagicData {
     return magicalList;
   }
 
-  /**
-   * 魔法の名前を取得する
-   *
-   * @return name :魔法の名前
-   */
   public String getName() {
     return this.name;
   }
 
-  /**
-   * 消費MPを取得する
-   *
-   * @return mpcost :消費MP
-   */
   public int getMpcost() {
     return mpCost;
   }
 
-  /**
-   * 最小ダメージを取得する
-   *
-   * @return mindamage :最小ダメージ
-   */
   public int getMinDamage() {
     return minDamage;
   }
 
-  /**
-   * 最大ダメージを取得する
-   *
-   * @return maxdamage :最大ダメージ
-   */
   public int getMaxDamage() {
     return maxDamage;
   }
 
-  /**
-   * 回復量を取得する
-   *
-   * @return recoveryvalue :回復量
-   */
   public int getRecoveryValue() {
     return recoveryValue;
   }
 
-  /**
-   * 継続率を取得する
-   *
-   * @return continuousrate :継続率
-   */
   public int getContinuousRate() {
     return continuousRate;
   }
