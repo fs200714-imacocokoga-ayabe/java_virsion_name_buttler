@@ -1,4 +1,4 @@
-package java_virsion_name_battler.herb;
+package new_create_app_name_battler.herb;
 
 import java.util.Random;
 import new_create_app_name_battler.party.BasePlayer;

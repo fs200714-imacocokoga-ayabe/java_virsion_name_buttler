@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java_virsion_name_battler.herb.IEat;
+import new_create_app_name_battler.herb.IEat;
 import new_create_app_name_battler.magic.IRecoveryMagic;
 import new_create_app_name_battler.magic.IUseMagic;
 import new_create_app_name_battler.magic.MagicData;
