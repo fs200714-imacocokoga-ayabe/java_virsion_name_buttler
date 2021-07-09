@@ -13,24 +13,19 @@ public class Heal extends BaseUseMagic implements IRecoveryMagic {
   public int effect(IPlayer attacker, IPlayer defender) {
 
     if (hasEnoughMp(attacker.getMp())) {
-
       System.out.printf("%sはヒールを唱えた！\n光が%sを包んだ\n", attacker.getName(), defender.getName());
-
       healValue = recoveryProcess(defender, magicData.getRecoveryValue());
-
       attacker.downMp(this.magicData.getMpcost());
 
       return healValue;
 
     } else {
-
       System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
     }
     return damage;
   }
 
   public int recoveryProcess(IPlayer defender, int healValue) {
-
     healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
     System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
     defender.recovery(healValue - defender.getHp());
@@ -43,8 +38,8 @@ public class Heal extends BaseUseMagic implements IRecoveryMagic {
   }
 
   @Override
-  public boolean hasEnoughMp(int mp){
-   return super.hasEnoughMp(mp);
+  public boolean hasEnoughMp(int mp) {
+    return super.hasEnoughMp(mp);
   }
 
 }

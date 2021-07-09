@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java_virsion_name_battler.herb.IEat;
 import new_create_app_name_battler.magic.IRecoveryMagic;
 import new_create_app_name_battler.magic.IUseMagic;
 import new_create_app_name_battler.magic.MagicData;
@@ -19,7 +20,7 @@ import new_create_app_name_battler.type.TypeHoly;
 import new_create_app_name_battler.type.TypeShadow;
 import new_create_app_name_battler.type.TypeShield;
 
-public class BasePlayer implements IPlayer {
+public class BasePlayer implements IPlayer, IEat{
 
   Random random = new Random();
 
@@ -45,7 +46,7 @@ public class BasePlayer implements IPlayer {
   protected int idNumber;// ID値の入れ物
   protected int strategyData;
   protected int healValue;
-  private static final int HERB_RECOVERY_VALUE = 30;
+ // private final int HERB_RECOVERY_VALUE = 30;
   protected int type;
   protected String attackType;
 
@@ -57,7 +58,6 @@ public class BasePlayer implements IPlayer {
   public BasePlayer() {}
 
   public BasePlayer(String name) {
-
     magics = new ArrayList<>();
     skills = new ArrayList<>();
     this.name = name;
@@ -70,7 +70,6 @@ public class BasePlayer implements IPlayer {
   public void initJob() {}
 
   public void makeCharacter() {
-
     this.job = jobData.getJob();
     this.hp = getNumber(0, jobData.getHp()) + jobData.getMinHp();
     this.mp = getNumber(1, jobData.getMp()) + jobData.getMinMp();
@@ -79,8 +78,6 @@ public class BasePlayer implements IPlayer {
     this.agi = getNumber(5, jobData.getAgi()) + jobData.getMinAgi();
     this.luck = getNumber(4, jobData.getLuck()) + jobData.getMinLuck();
   }
-
-
 
   @Override
   public String getName() {
@@ -187,8 +184,6 @@ public class BasePlayer implements IPlayer {
     this.paralysis = paralysis;
   }
 
-
-
   /**
    * 名前(name)からハッシュ値を生成し、指定された位置の数値を取り出す
    *
@@ -215,7 +210,6 @@ public class BasePlayer implements IPlayer {
     return 0;
   }
 
-
   public void normalAttack(BasePlayer defender) {}
 
   public void skillAttack(BasePlayer defender) {}
@@ -224,35 +218,10 @@ public class BasePlayer implements IPlayer {
 
   public void healingMagic(BasePlayer defender) {}
 
-  public void eatGrass() {
+  public void eat() {
 
-    System.out.printf("%sは革袋の中にあった草を食べた！\n", getName());
+    selectEat(this);
 
-    switch (random.nextInt(3)) {
-
-      case 0:
-
-        recoveryProcess(this, HERB_RECOVERY_VALUE);
-        break;
-
-      case 1:
-
-        if (isPoison()) {// 毒状態の場合
-
-          System.out.printf("%sは毒が消えた！\n", getName());
-          setPoison(false);
-
-        } else {
-
-          recoveryProcess(this, HERB_RECOVERY_VALUE);
-        }
-        break;
-
-      case 2:
-
-        System.out.printf("%sは何も起こらなかった！\n", getName());
-        break;
-    }
   }
 
   public int calcDamage(BasePlayer defender) {
@@ -291,10 +260,6 @@ public class BasePlayer implements IPlayer {
 
 
   public int recoveryProcess(BasePlayer defender, int healValue) {
-
-    // healValue = Math.min(defender.getMaxHp(), defender.getHp() + healValue);
-    // System.out.printf("%sはHPが%d回復した！\n", defender.getName(), healValue - defender.getHp());
-    // defender.recovery(healValue - defender.getHp());
     return healValue - defender.getHp();
   }
 

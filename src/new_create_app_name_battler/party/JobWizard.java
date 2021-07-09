@@ -63,8 +63,8 @@ public class JobWizard extends BasePlayer implements IOwnMagic, IOwnSkill, IWiza
   }
 
   @Override
-  public void eatGrass() {
-    super.eatGrass();
+  public void eat() {
+    super.eat();
     knockedDownCheck(this);
   }
 }

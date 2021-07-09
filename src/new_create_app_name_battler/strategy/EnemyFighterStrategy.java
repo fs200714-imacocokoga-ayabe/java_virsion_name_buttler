@@ -15,7 +15,7 @@ public class EnemyFighterStrategy extends StrategyEnemyPattern {
 
     if (player1.isPoison()) {// 毒状態の場合
 
-      player1.eatGrass();
+      player1.eat();
 
       // 攻撃力の1/2が相手の防御力より大きい場合
     } else if (player2.getDef() < (player1.getStr() / 2)) {

@@ -61,8 +61,8 @@ public class JobNinja extends BasePlayer implements IOwnSkill, IOwnMagic, INinja
   }
 
   @Override
-  public void eatGrass() {
-    super.eatGrass();
+  public void eat() {
+    super.eat();
     knockedDownCheck(this);
   }
 }

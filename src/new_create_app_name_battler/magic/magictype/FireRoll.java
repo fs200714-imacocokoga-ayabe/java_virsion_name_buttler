@@ -10,11 +10,8 @@ public class FireRoll extends BaseUseMagic {
   public int effect(IPlayer attacker, IPlayer defender) {
 
     if (hasEnoughMp(attacker.getMp())) {
-
       System.out.printf("%sは%sを唱えた！\n火の球が飛んでいく！\n", attacker.getName(), magicData.getName());
-
       attacker.downMp(this.magicData.getMpcost());
-
       damage =
           random.nextInt(magicData.getMaxDamage() - magicData.getMinDamage())
               + magicData.getMinDamage();// 乱数10～30
@@ -22,15 +19,14 @@ public class FireRoll extends BaseUseMagic {
       return damage;
 
     } else {
-
       System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
     }
     return 0;
   }
 
   @Override
-  public boolean hasEnoughMp(int mp){
-   return super.hasEnoughMp(mp);
+  public boolean hasEnoughMp(int mp) {
+    return super.hasEnoughMp(mp);
   }
 
   @Override

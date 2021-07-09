@@ -74,8 +74,8 @@ public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, 
   }
 
   @Override
-  public void eatGrass() {
-    super.eatGrass();
+  public void eat() {
+    super.eat();
     knockedDownCheck(this);
   }
 }

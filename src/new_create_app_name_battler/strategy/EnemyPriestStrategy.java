@@ -16,11 +16,11 @@ public class EnemyPriestStrategy extends StrategyEnemyPattern {
 
     if (player1.isPoison()) {// playerが毒状態の場合
 
-      player1.eatGrass();
+      player1.eat();
 
     } else if (player1.getHp() < (player1.getMaxHp() / 4)) {
 
-      player1.eatGrass();
+      player1.eat();
 
     } else if (PRIEST_MP <= player1.getMp()) {
 
