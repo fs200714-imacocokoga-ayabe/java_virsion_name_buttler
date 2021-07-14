@@ -33,6 +33,11 @@ public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, 
     skills.add(new OpticalElemental());
   }
 
+  @Override
+  public void initTypes(int typeNumber){
+
+    super.initTypes(typeNumber);
+  }
 
   @Override
   public void normalAttack(BasePlayer defender) {

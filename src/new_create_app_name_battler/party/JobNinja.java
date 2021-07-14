@@ -2,10 +2,9 @@ package new_create_app_name_battler.party;
 
 import new_create_app_name_battler.magic.IOwnMagic;
 import new_create_app_name_battler.magic.magictype.FireRoll;
-import new_create_app_name_battler.skill.IOwnSkill;
 import new_create_app_name_battler.skill.skilltype.Swallow;
 
-public class JobNinja extends BasePlayer implements IOwnSkill, IOwnMagic, INinja {
+public class JobNinja extends BasePlayer implements  IOwnMagic, INinja {
 
   public JobNinja(String name) {
     super(name);
@@ -23,6 +22,12 @@ public class JobNinja extends BasePlayer implements IOwnSkill, IOwnMagic, INinja
 
   public void initSkills() {
     skills.add(new Swallow());
+  }
+
+  @Override
+  public void initTypes(int typeNumber){
+
+    super.initTypes(typeNumber);
   }
 
   @Override

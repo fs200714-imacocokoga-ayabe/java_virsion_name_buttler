@@ -2,7 +2,7 @@ package new_create_app_name_battler.type;
 
 import new_create_app_name_battler.party.BasePlayer;
 
-public class TypeBlood implements IType {
+public class TypeBlood extends BaseUseType {
 
 
   int r = random.nextInt(100) + 1;
@@ -13,11 +13,11 @@ public class TypeBlood implements IType {
   @Override
   public int typeProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
 
-    if (r <= TypeData.BLOOD.getInvocationRate() && attackType.equals("A")) {// 1/5で物理攻撃を1/2吸収される
+    if (r <= typeData.getInvocationRate() && attackType.equals("A")) {// 1/5で物理攻撃を1/2吸収される
 
-      System.out.println(TypeData.BLOOD.getMessage());// 属性のメッセージ
+      System.out.println(typeData.getMessage());// 属性のメッセージ
 
-      heal = (int) (damage * TypeData.BLOOD.getCollectionValue());// 属性補正値を加えて回復値を求める
+      heal = (int) (damage * typeData.getCollectionValue());// 属性補正値を加えて回復値を求める
 
 
     } else {// 発動しなかった場合
@@ -38,4 +38,10 @@ public class TypeBlood implements IType {
     return damage;
   }
 
+  @Override
+  public void initType() {
+   this.typeData = TypeData.BLOOD;
+  }
+  
+  
 }
