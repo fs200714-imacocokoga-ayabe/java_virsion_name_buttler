@@ -1,13 +1,10 @@
 package new_create_app_name_battler.type;
 
-import java.util.Random;
 import new_create_app_name_battler.party.BasePlayer;
 
+public interface IUseType {
 
-public interface IType {
-
-  Random random = new Random();
-
+  void initType();
   int typeProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage);
-
+  public TypeData getType();
 }

@@ -2,8 +2,9 @@ package new_create_app_name_battler.party;
 
 import new_create_app_name_battler.skill.IOwnSkill;
 import new_create_app_name_battler.skill.skilltype.Assault;
+import new_create_app_name_battler.type.IOwnType;
 
-public class JobFighter extends BasePlayer implements IOwnSkill, IFighter {
+public class JobFighter extends BasePlayer implements IOwnType, IOwnSkill, IFighter {
 
   public JobFighter(String name) {
     super(name);
@@ -42,4 +43,8 @@ public class JobFighter extends BasePlayer implements IOwnSkill, IFighter {
     super.eat();
     knockedDownCheck(this);
   }
+
+
+
+
 }

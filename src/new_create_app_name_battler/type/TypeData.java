@@ -24,7 +24,6 @@ public enum TypeData {
   }
 
   public String getTypeName() {
-
     return this.name;
   }
 

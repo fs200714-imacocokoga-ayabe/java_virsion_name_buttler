@@ -401,7 +401,6 @@ public class GameManager {
         break;
 
     }
-
   }
 
   private void createdPlayer() throws InterruptedException {
@@ -418,13 +417,12 @@ public class GameManager {
       if (i <= 3) {// 最初の3人
 
         player = jobList.get(i - 1);// 選択した職業をplayerに入れ
-        player.setType(i - 1);
+        player.initTypes(i - 1);
         player.setMark(true);// プレイヤーにtrue(識別)をセットする
 
       } else {// 次の3人
-
         player = jobList.get(i - 1);// 選択した職業をplayerに入れ
-        player.setType(i - 1);
+        player.initTypes(i - 1);
         player.setMark(false);// プレイヤーにfalse(識別)をセットする
 
       }
@@ -560,7 +558,7 @@ public class GameManager {
 
       }
 
-      player.setType(genus - 1);
+      player.initTypes(genus - 1);
       player.setIdNumber(i);// IDをセットする
       player.setMaxHp(player.getHp());// MaxHPをセットする
       player.printStatus();

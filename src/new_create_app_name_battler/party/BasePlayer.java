@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java_virsion_name_battler.herb.IEat;
+import new_create_app_name_battler.herb.IEat;
 import new_create_app_name_battler.magic.IRecoveryMagic;
 import new_create_app_name_battler.magic.IUseMagic;
 import new_create_app_name_battler.magic.MagicData;
 import new_create_app_name_battler.skill.IUseSkill;
+import new_create_app_name_battler.type.BaseUseType;
+import new_create_app_name_battler.type.IOwnType;
 import new_create_app_name_battler.type.TypeBlood;
-import new_create_app_name_battler.type.TypeContext;
 import new_create_app_name_battler.type.TypeDark;
 import new_create_app_name_battler.type.TypeData;
 import new_create_app_name_battler.type.TypeDevil;
@@ -20,7 +21,7 @@ import new_create_app_name_battler.type.TypeHoly;
 import new_create_app_name_battler.type.TypeShadow;
 import new_create_app_name_battler.type.TypeShield;
 
-public class BasePlayer implements IPlayer, IEat {
+public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   Random random = new Random();
 
@@ -29,6 +30,9 @@ public class BasePlayer implements IPlayer, IEat {
   protected List<IUseSkill> skills;
   protected IUseSkill skill;
   protected JobData jobData;
+  protected TypeData typeData;
+  protected BaseUseType type;
+  protected int typeNumber;
   protected String name;
   protected String job;
   protected int maxHp;// 最大HP
@@ -46,12 +50,8 @@ public class BasePlayer implements IPlayer, IEat {
   protected int idNumber;// ID値の入れ物
   protected int strategyData;
   protected int healValue;
-  // private final int HERB_RECOVERY_VALUE = 30;
-  protected int type;
+
   protected String attackType;
-
-  private TypeContext typeContext;
-
   protected BasePlayer attacker;
   protected BasePlayer defender;
 
@@ -65,9 +65,34 @@ public class BasePlayer implements IPlayer, IEat {
     makeCharacter();
   }
 
-
   @Override
   public void initJob() {}
+
+  @Override
+  public void initTypes(int typeNumber) {
+
+    switch (typeNumber) {
+
+      case 0:
+        this.type = new TypeBlood();
+        break;
+      case 1:
+        this.type = new TypeShield();
+        break;
+      case 2:
+        this.type = new TypeDevil();
+        break;
+      case 3:
+        this.type = new TypeDark();
+        break;
+      case 4:
+        this.type = new TypeShadow();
+        break;
+      case 5:
+       this.type = new TypeHoly();
+        break;
+    }
+  }
 
   public void makeCharacter() {
     this.job = jobData.getJob();
@@ -77,6 +102,10 @@ public class BasePlayer implements IPlayer, IEat {
     this.def = getNumber(3, jobData.getDef()) + jobData.getMinDef();
     this.agi = getNumber(5, jobData.getAgi()) + jobData.getMinAgi();
     this.luck = getNumber(4, jobData.getLuck()) + jobData.getMinLuck();
+  }
+
+  public TypeData getTypeName(){
+    return this.type.getType();
   }
 
   @Override
@@ -246,8 +275,7 @@ public class BasePlayer implements IPlayer, IEat {
   }
 
   public void damageProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
-
-    damage = selectType(attackType, attacker, defender, damage);// 属性処理
+    damage = type.typeProcess(attackType, attacker, defender, damage);
     System.out.printf("%sに%dのダメージ！\n", defender.getName(), damage);
     defender.damage(damage);// 求めたダメージを対象プレイヤーに与える
   }
@@ -294,14 +322,16 @@ public class BasePlayer implements IPlayer, IEat {
     }
 
     System.out.printf("[%s]%s(HP=%3d/%d : MP=%3d : STR=%3d : DEF=%3d : LUCK=%3d : AGI=%3d)%S%S\n",
-        this.getTypeName(this.type), this.getJobName(), this.getHp(), getMaxHp(), this.getMp(),
-        this.getStr(), this.getDef(), this.getLuck(), this.getAgi(), paralysis, poison);
+     //   this.getType().getTypeName(),
+        type.getType().getTypeName(),
+        this.getJobName(), this.getHp(), getMaxHp(),
+        this.getMp(), this.getStr(), this.getDef(), this.getLuck(), this.getAgi(), paralysis,
+        poison);
   }
 
   public void knockedDownCheck(BasePlayer defender) {
 
     if (defender.getHp() <= 0) {
-
       System.out.printf("%sは力尽きた...\n", defender.getName());
     }
     conditionCheck();// 状態異常チェック
@@ -331,73 +361,16 @@ public class BasePlayer implements IPlayer, IEat {
     }
   }
 
-  private int selectType(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
-
-    switch (defender.getType()) {
-
-      case 1:
-        typeContext = new TypeContext(new TypeBlood());
-        break;
-      case 2:
-        typeContext = new TypeContext(new TypeShield());
-        break;
-      case 3:
-        typeContext = new TypeContext(new TypeDevil());
-        break;
-      case 4:
-        typeContext = new TypeContext(new TypeDark());
-        break;
-      case 5:
-        typeContext = new TypeContext(new TypeShadow());
-        break;
-      case 6:
-        typeContext = new TypeContext(new TypeHoly());
-        break;
-    }
-
-    int d = typeContext.typeProcess(attackType, attacker, defender, damage);
-    return d;
-  }
-
-  private String getTypeName(int t) {
-
-    String typeName = "";
-
-    switch (t) {
-
-      case 0:
-        typeName = TypeData.BLOOD.getTypeName();
-        break;
-      case 1:
-        typeName = TypeData.SHIELD.getTypeName();
-        break;
-      case 2:
-        typeName = TypeData.DEVIL.getTypeName();
-        break;
-      case 3:
-        typeName = TypeData.DARK.getTypeName();
-        break;
-      case 4:
-        typeName = TypeData.SHADOW.getTypeName();
-        break;
-      case 5:
-        typeName = TypeData.HOLY.getTypeName();
-        break;
-
-    }
-    return typeName;
-  }
-
   @Override
   public void setType(int i) {
-    this.type = i;
+    this.typeNumber = i;
 
   }
 
   @Override
   public int getType() {
 
-    return type;
+    return typeNumber;
   }
 
   public void setHp(int hp) {
@@ -422,5 +395,4 @@ public class BasePlayer implements IPlayer, IEat {
     }
     return null;
   }
-
 }
