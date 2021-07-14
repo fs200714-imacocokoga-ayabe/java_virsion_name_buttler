@@ -6,5 +6,5 @@ public interface IUseType {
 
   void initType();
   int typeProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage);
-  public TypeData getType();
+  TypeData getType();
 }

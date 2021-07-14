@@ -25,35 +25,35 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   Random random = new Random();
 
-  protected List<IUseMagic> magics;
-  protected IUseMagic magic;
-  protected List<IUseSkill> skills;
-  protected IUseSkill skill;
-  protected JobData jobData;
-  protected TypeData typeData;
-  protected BaseUseType type;
-  protected int typeNumber;
-  protected String name;
-  protected String job;
-  protected int maxHp;// 最大HP
-  protected int maxMp;// 最大MP
-  private int hp;// HP
-  protected int mp;// MP
-  protected int str;// 攻撃力
-  protected int def;// 防御力
-  protected int luck;// 運
-  protected int agi;// すばやさ
-  protected boolean poison;// 状態異常：毒
-  protected boolean paralysis;// 状態異常：麻痺
-  protected int damage;// damage値
-  protected boolean mark;// 敵味方識別
-  protected int idNumber;// ID値の入れ物
-  protected int strategyData;
-  protected int healValue;
+  List<IUseMagic> magics;
+  IUseMagic magic;
+  List<IUseSkill> skills;
+  IUseSkill skill;
+  JobData jobData;
+  TypeData typeData;
+  BaseUseType type;
+  int typeNumber;
+  String name;
+  String job;
+  int maxHp;// 最大HP
+  int maxMp;// 最大MP
+  int hp;// HP
+  int mp;// MP
+  int str;// 攻撃力
+  int def;// 防御力
+  int luck;// 運
+  int agi;// すばやさ
+  boolean poison;// 状態異常：毒
+  boolean paralysis;// 状態異常：麻痺
+  int damage;// damage値
+  boolean mark;// 敵味方識別
+  int idNumber;// ID値の入れ物
+  int strategyData;
+  int healValue;
 
-  protected String attackType;
-  protected BasePlayer attacker;
-  protected BasePlayer defender;
+  String attackType;
+  BasePlayer attacker;
+  BasePlayer defender;
 
   public BasePlayer() {}
 
@@ -89,7 +89,7 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
         this.type = new TypeShadow();
         break;
       case 5:
-       this.type = new TypeHoly();
+        this.type = new TypeHoly();
         break;
     }
   }
@@ -104,7 +104,7 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
     this.luck = getNumber(4, jobData.getLuck()) + jobData.getMinLuck();
   }
 
-  public TypeData getTypeName(){
+  public TypeData getTypeName() {
     return this.type.getType();
   }
 
@@ -215,7 +215,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   /**
    * 名前(name)からハッシュ値を生成し、指定された位置の数値を取り出す
-   *
    * @param index : 何番目の数値を取り出すか
    * @param max : 最大値(内部的に0～255の値を生成するが、0～maxまでの値に補正)
    * @return 数値(0～max) ※maxも含む
@@ -248,10 +247,8 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
   public void healingMagic(BasePlayer defender) {}
 
   public void eat() {
-
     selectEat(this);
-
-  }
+    }
 
   public int calcDamage(BasePlayer defender) {
 
@@ -270,7 +267,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
         damage = 0;
       }
     }
-
     return damage;
   }
 
@@ -282,7 +278,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   @Override
   public void damage(int damage) {// ダメージ値分、HPを減少させる
-
     this.setHp(Math.max(this.getHp() - damage, 0));
   }
 
@@ -293,13 +288,11 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   @Override
   public void recovery(int healValue) {
-
     this.setHp(this.getHp() + healValue);
   }
 
   @Override
   public boolean isLive() {
-
     return 0 < this.getHp();
   }
 
@@ -322,11 +315,8 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
     }
 
     System.out.printf("[%s]%s(HP=%3d/%d : MP=%3d : STR=%3d : DEF=%3d : LUCK=%3d : AGI=%3d)%S%S\n",
-     //   this.getType().getTypeName(),
-        type.getType().getTypeName(),
-        this.getJobName(), this.getHp(), getMaxHp(),
-        this.getMp(), this.getStr(), this.getDef(), this.getLuck(), this.getAgi(), paralysis,
-        poison);
+        type.getType().getTypeName(), this.getJobName(), this.getHp(), getMaxHp(), this.getMp(),
+        this.getStr(), this.getDef(), this.getLuck(), this.getAgi(), paralysis, poison);
   }
 
   public void knockedDownCheck(BasePlayer defender) {
@@ -359,18 +349,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
     if (this.getHp() <= 0) {// playerの倒れた判定
       System.out.printf("%sは力尽きた...\n", getName());
     }
-  }
-
-  @Override
-  public void setType(int i) {
-    this.typeNumber = i;
-
-  }
-
-  @Override
-  public int getType() {
-
-    return typeNumber;
   }
 
   public void setHp(int hp) {

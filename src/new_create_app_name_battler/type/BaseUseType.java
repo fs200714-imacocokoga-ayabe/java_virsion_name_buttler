@@ -8,7 +8,7 @@ public class BaseUseType implements IUseType {
   Random random = new Random();
   protected TypeData typeData;
   protected int damage = 0;
-  
+
   public BaseUseType(){
     this.initType();
   }

@@ -5,7 +5,6 @@ import new_create_app_name_battler.party.BasePlayer;
 public class TypeDark extends BaseUseType {
 
   int r = random.nextInt(100) + 1;
-
   private int processedvalue;
 
   @Override

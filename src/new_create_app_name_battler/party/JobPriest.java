@@ -35,14 +35,13 @@ public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, 
 
   @Override
   public void initTypes(int typeNumber){
-
     super.initTypes(typeNumber);
   }
 
   @Override
   public void normalAttack(BasePlayer defender) {
     attackType = "A";
-    System.out.printf("%sの攻撃！\n錫杖で突いた！\n", getName());
+    priestAttackMessage(this);
     damage = calcDamage(defender);// 与えるダメージを求める
     damageProcess(attackType, this, defender, damage);// ダメージ処理
     knockedDownCheck(defender);

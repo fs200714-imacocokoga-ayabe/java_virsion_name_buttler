@@ -6,6 +6,8 @@ import new_create_app_name_battler.skill.SkillData;
 
 public class Assault extends BaseUseSkill {
 
+  final int ASSAULT_POWER = 2;
+
   @Override
   public int effect(IPlayer attacker, IPlayer defender) {
 
@@ -15,7 +17,7 @@ public class Assault extends BaseUseSkill {
 
       System.out.printf("%sの捨て身の突撃！\n", attacker.getName());
 
-      return 2;
+      return  ASSAULT_POWER;
 
     } else {
 
