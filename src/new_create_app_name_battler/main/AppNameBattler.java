@@ -1,4 +1,5 @@
-package new_create_app_name_battler.party;
+package new_create_app_name_battler.main;
+
 
 public class AppNameBattler {
 

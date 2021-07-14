@@ -26,14 +26,14 @@ public class JobNinja extends BasePlayer implements  IOwnMagic, INinja {
 
   @Override
   public void initTypes(int typeNumber){
-
     super.initTypes(typeNumber);
   }
 
   @Override
   public void normalAttack(BasePlayer defender) {
     attackType = "A";
-    System.out.printf("%sの攻撃！\n手裏剣を投げつけた！\n", getName());
+    ninjaAttackMessage(this);
+  //  System.out.printf("%sの攻撃！\n手裏剣を投げつけた！\n", getName());
     damage = calcDamage(defender); // 与えるダメージを求める
     damageProcess(attackType, this, defender, damage);// ダメージ処理
     knockedDownCheck(defender);

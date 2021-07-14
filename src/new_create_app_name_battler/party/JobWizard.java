@@ -32,14 +32,13 @@ public class JobWizard extends BasePlayer implements IOwnMagic, IOwnSkill, IWiza
 
   @Override
   public void initTypes(int typeNumber){
-
     super.initTypes(typeNumber);
   }
 
   @Override
   public void normalAttack(BasePlayer defender) {
     attackType = "A";
-    System.out.printf("%sの攻撃！\n%sは杖を投げつけた！\n", getName(), getName());
+    wizardAttackMessage(this);
     damage = calcDamage(defender);// 与えるダメージを求める
     damageProcess(attackType, this, defender, damage);
     knockedDownCheck(defender);

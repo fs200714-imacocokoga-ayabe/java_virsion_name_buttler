@@ -5,6 +5,8 @@ import new_create_app_name_battler.skill.BaseUseSkill;
 import new_create_app_name_battler.skill.SkillData;
 
 public class Swallow extends BaseUseSkill {
+  
+  final int SWALLOW_POWER = 2;
 
   @Override
   public int effect(IPlayer attacker, IPlayer defender) {
@@ -15,7 +17,7 @@ public class Swallow extends BaseUseSkill {
 
       System.out.printf("%sは目にも止まらぬ速さで2回攻撃した！\n", attacker.getName());
 
-      return 2;
+      return SWALLOW_POWER;
 
     } else {
 

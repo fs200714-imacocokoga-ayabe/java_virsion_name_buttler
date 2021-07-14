@@ -58,10 +58,6 @@ public interface IPlayer {
 
   void setParalysis(boolean paralysis);
 
-  void setType(int a);
-
-  int getType();
-
   void downMp(int mpcost);
 
 }

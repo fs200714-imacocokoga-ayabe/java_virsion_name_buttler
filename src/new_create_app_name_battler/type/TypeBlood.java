@@ -16,7 +16,6 @@ public class TypeBlood extends BaseUseType {
     if (r <= typeData.getInvocationRate() && attackType.equals("A")) {// 1/5で物理攻撃を1/2吸収される
 
       System.out.println(typeData.getMessage());// 属性のメッセージ
-
       heal = (int) (damage * typeData.getCollectionValue());// 属性補正値を加えて回復値を求める
 
 
@@ -29,7 +28,6 @@ public class TypeBlood extends BaseUseType {
     if (heal != 0) {// 属性が発動した場合表示
 
       System.out.printf("%sはHPが%d回復した！\n", defender.getName(), heal);
-
       defender.setHp(defender.getHp() + heal);// 対象相手HPが回復する
     }
 
@@ -40,8 +38,8 @@ public class TypeBlood extends BaseUseType {
 
   @Override
   public void initType() {
-   this.typeData = TypeData.BLOOD;
+    this.typeData = TypeData.BLOOD;
   }
-  
-  
+
+
 }

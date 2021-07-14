@@ -23,7 +23,7 @@ public class JobFighter extends BasePlayer implements IOwnType, IOwnSkill, IFigh
   @Override
   public void normalAttack(BasePlayer defender) {
     attackType = "A";
-    System.out.printf("%sの攻撃！\n%sは剣で斬りつけた！\n", getName(), getName());
+    fighterAttackMessage(this);
     damage = calcDamage(defender); // 与えるダメージを求める
     damageProcess(attackType, this, defender, damage);
     knockedDownCheck(defender);

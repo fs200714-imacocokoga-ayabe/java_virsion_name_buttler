@@ -1,9 +1,15 @@
-package new_create_app_name_battler.party;
+package new_create_app_name_battler.main;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import new_create_app_name_battler.party.BasePlayer;
+import new_create_app_name_battler.party.JobFighter;
+import new_create_app_name_battler.party.JobNinja;
+import new_create_app_name_battler.party.JobPriest;
+import new_create_app_name_battler.party.JobWizard;
+import new_create_app_name_battler.party.Party;
 import new_create_app_name_battler.strategy.Context;
 import new_create_app_name_battler.strategy.StrategyEnemyPattern;
 import new_create_app_name_battler.strategy.StrategyNormalAttack;
