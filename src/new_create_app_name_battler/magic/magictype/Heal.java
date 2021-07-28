@@ -22,7 +22,7 @@ public class Heal extends BaseUseMagic implements IRecoveryMagic {
     } else {
       System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
     }
-    return damage;
+    return 0;
   }
 
   public int recoveryProcess(IPlayer defender, int healValue) {

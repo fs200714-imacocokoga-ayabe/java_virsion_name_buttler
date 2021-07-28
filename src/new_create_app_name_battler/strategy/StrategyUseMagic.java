@@ -18,8 +18,7 @@ public class StrategyUseMagic extends BaseStrategy {// 魔法を使用
       party.addAll(party1);// partyにparty1を入れる
     }
     player2 = party.get(random.nextInt(party.size()));
-    id = player2.getIdNumber();
-
+   
     if (player1 instanceof IOwnMagic) {
       player1.magicAttack(player2);
 
@@ -28,6 +27,6 @@ public class StrategyUseMagic extends BaseStrategy {// 魔法を使用
     }
     party.clear();
 
-    return id;
+    return player2.getIdNumber();
   }
 }

@@ -21,12 +21,10 @@ public class StrategyUseSkill extends BaseStrategy {// スキル攻撃
 
     player2 = party.get(random.nextInt(party.size()));
 
-    id = player2.getIdNumber();
-
     player1.skillAttack(player2);
 
     party.clear();
 
-    return id;
+    return player2.getIdNumber();
   }
 }

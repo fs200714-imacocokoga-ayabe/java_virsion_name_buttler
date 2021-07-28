@@ -10,10 +10,9 @@ import new_create_app_name_battler.party.IWizard;
 
 public class StrategyEnemyPattern extends BaseStrategy {
 
-  EnemyContext enemyContext;
+  Context enemyContext;
   protected List<BasePlayer> playerParty = new ArrayList<BasePlayer>();
   protected List<BasePlayer> aiParty = new ArrayList<BasePlayer>();
-
   protected BasePlayer player2;
 
   final int NINJA_MP = 10;
@@ -21,32 +20,27 @@ public class StrategyEnemyPattern extends BaseStrategy {
 
   @Override
   public int attackStrategy(BasePlayer player1, List<BasePlayer> party1, List<BasePlayer> party2) {
-
     this.player1 = player1;
     playerParty.addAll(party1);
     aiParty.addAll(party2);
 
-
     if (player1 instanceof IFighter) {
 
-      enemyContext = new EnemyContext(new EnemyFighterStrategy());
+      enemyContext = new Context(new EnemyFighterStrategy());
 
     } else if (player1 instanceof IWizard) {
 
-      enemyContext = new EnemyContext(new EnemyWizardStrategy());
+      enemyContext = new Context(new EnemyWizardStrategy());
 
     } else if (player1 instanceof IPriest) {
 
-      enemyContext = new EnemyContext(new EnemyPriestStrategy());
+      enemyContext = new Context(new EnemyPriestStrategy());
 
     } else if (player1 instanceof INinja) {
 
-      enemyContext = new EnemyContext(new EnemyNinjaStrategy());
+      enemyContext = new Context(new EnemyNinjaStrategy());
 
     }
-
-    id = enemyContext.attackStrategy(player1, playerParty, aiParty);
-
-    return id;
+    return enemyContext.attackStrategy(player1, playerParty, aiParty);
   }
 }

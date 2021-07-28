@@ -11,7 +11,6 @@ public class OpticalElemental extends BaseUseSkill{
   @Override
   public int effect(IPlayer attacker, IPlayer defender) {
 
-
     if (random.nextInt(100) + 1 <= skillData.getInvocationRate()) {
 
       System.out.printf("%s祈りを捧げて%sを召還した\n%sの祝福を受けた！\n", attacker.getName(),
@@ -40,7 +39,4 @@ public class OpticalElemental extends BaseUseSkill{
   public void initSkill(){
     this.skillData = SkillData.OPTICALELEMENTAL;
   }
-
-
-
 }

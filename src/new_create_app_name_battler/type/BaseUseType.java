@@ -14,7 +14,7 @@ public class BaseUseType implements IUseType {
   }
 
   @Override
-  public int typeProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
+  public int typeProcess(boolean isPhysicalAttack, BasePlayer attacker, BasePlayer defender, int damage) {
     return 0;
   }
 

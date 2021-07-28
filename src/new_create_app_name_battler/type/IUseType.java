@@ -5,6 +5,6 @@ import new_create_app_name_battler.party.BasePlayer;
 public interface IUseType {
 
   void initType();
-  int typeProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage);
+  int typeProcess(boolean isPhysicalAttack, BasePlayer attacker, BasePlayer defender, int damage);
   TypeData getType();
 }

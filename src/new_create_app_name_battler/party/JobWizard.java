@@ -31,35 +31,30 @@ public class JobWizard extends BasePlayer implements IOwnMagic, IOwnSkill, IWiza
   }
 
   @Override
-  public void initTypes(int typeNumber){
-    super.initTypes(typeNumber);
-  }
-
-  @Override
   public void normalAttack(BasePlayer defender) {
-    attackType = "A";
+    isPhysicalAttack = true;
     wizardAttackMessage(this);
-    damage = calcDamage(defender);// 与えるダメージを求める
-    damageProcess(attackType, this, defender, damage);
+    damage = calcDamage(defender);
+    damageProcess(isPhysicalAttack, this, defender, damage);
     knockedDownCheck(defender);
   }
 
   @Override
   public void skillAttack(BasePlayer defender) {
+    isPhysicalAttack = false;
     skill = skills.get(0);
-    attackType = "M";
-    super.damageProcess(attackType, this, defender, skill.effect(this, defender));// ダメージ処理
+    damageProcess(isPhysicalAttack, this, defender, skill.effect(this, defender));
     knockedDownCheck(defender);
   }
 
   @Override
   public void magicAttack(BasePlayer defender) {
     magic = choiceMagic();
-    attackType = "M";
     damage = magic.effect(this, defender);
 
     if (damage != 0) {
-      super.damageProcess(attackType, this, defender, damage);
+      isPhysicalAttack = false;
+      damageProcess(isPhysicalAttack, this, defender, damage);
       knockedDownCheck(defender);
 
     } else {

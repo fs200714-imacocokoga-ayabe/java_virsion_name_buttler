@@ -21,10 +21,8 @@ public class StrategyUseHerb extends BaseStrategy {// 草を食べる
 
     player2 = party.get(random.nextInt(party.size()));
 
-    id = player2.getIdNumber();
-
     player1.eat();
 
-    return id;
+    return player2.getIdNumber();
   }
 }

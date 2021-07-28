@@ -21,28 +21,24 @@ import new_create_app_name_battler.type.TypeData;
 
 public class GameManager {
 
-  Random random = new Random();
   Context context;
+  Random random = new Random();
   Scanner s = new Scanner(System.in);
   Party party = new Party();// Partyクラスの呼び出し用
   List<BasePlayer> jobList = new ArrayList<BasePlayer>();// 職業を格納
-
 
   BasePlayer player;
   BasePlayer player1;
   BasePlayer player2;
 
-
   int allyStrategyNumber;// 作戦の選択に使用
   final int ENEMY_STRATEGY_NUMBER = 6;// 作戦の選択に使用
-  int id;
   private BasePlayer[] speedData = new BasePlayer[6];
   List<BasePlayer> attackList = new ArrayList<BasePlayer>();// 行動するプレイヤーを格納
 
   final int MAKE_CHARACTER = 1;
   final int CREATED_CHARACTER = 2;
   final int SETTING = 3;
-
 
   int speed1 = 1000;// 開始表示速度
   int speed2 = 750;// ステータス表示速度
@@ -60,7 +56,7 @@ public class GameManager {
 
   private void battle() throws InterruptedException {
     // バトル開始の表示
-    Thread.sleep(speed1);// 1000
+    Thread.sleep(speed1);
     System.out.println("");
     System.out.println("=== バトル開始 ===");
     int turnNumber = 1;// ターンの初期値
@@ -119,19 +115,15 @@ public class GameManager {
 
             if (player.isMark()) {// player1が味方の場合
 
-              selectStrategyType(allyStrategyNumber);
-
-              player2 = party.selectMember(id);
+              player2 = party.selectMember(selectStrategyType(allyStrategyNumber));
 
             } else {// player1が敵の場合
 
-              selectStrategyType(ENEMY_STRATEGY_NUMBER);
-
-              player2 = party.selectMember(id);
+              player2 = party.selectMember(selectStrategyType(ENEMY_STRATEGY_NUMBER));
             }
           }
 
-          Thread.sleep(speed3);// 1000
+          Thread.sleep(speed3);
 
           if (player.getHp() <= 0) {// プレイヤー１の敗北判定
             party.removePlayer(player);// プレイヤー１がHP0の場合パーティから削除する
@@ -177,9 +169,7 @@ public class GameManager {
     } else {
 
       System.out.println("引き分け");// お互いパーティが全滅していなければ引き分け
-
     }
-
     s.close();
   }
 
@@ -205,25 +195,20 @@ public class GameManager {
         context = new Context(new StrategyEnemyPattern());
         break;
     }
-
-    id = context.attackStrategy(player, party.getParty1(), party.getParty2());
-
-    return id;
+    return context.attackStrategy(player, party.getParty1(), party.getParty2());
   }
 
 
   private void attackOrder() throws InterruptedException {
 
     System.out.println("");
-    Thread.sleep(speed1);// 1000
+    Thread.sleep(speed1);
     System.out.println("---攻撃の順番---");// 攻撃順
 
     for (int i = 0; i < party.getMembers().size(); i++) {// パーティ1,パーティ2に振り分ける処理
-
       player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
-      Thread.sleep(speed2);// 750
+      Thread.sleep(speed2);
       player.printStatus();// ステータスの表示
-
     }
   }
 
@@ -238,7 +223,7 @@ public class GameManager {
       for (int i = 0; i < party.getParty1().size(); i++) {
 
         player = party.getParty1().get(i);
-        Thread.sleep(speed2);// 750
+        Thread.sleep(speed2);
         player.printStatus();// パーティ1のプレイヤーのステータスを表示する
       }
     }
@@ -248,11 +233,9 @@ public class GameManager {
       System.out.println("パーティ2");
 
       for (int i = 0; i < party.getParty2().size(); i++) {
-
         player = party.getParty2().get(i);
-        Thread.sleep(speed2);// 750
+        Thread.sleep(speed2);
         player.printStatus();// パーティ2のプレイヤーのステータスを表示す
-
       }
     }
   }
@@ -270,7 +253,6 @@ public class GameManager {
       } else {
 
         party.appendPlayer(player);// falseならパーティ2に加える
-
       }
     }
   }
@@ -280,25 +262,20 @@ public class GameManager {
     for (int i = 0; i < speedData.length - 1; i++) {// 速さ順の並び替え処理
 
       for (int j = 0; j < speedData.length - i - 1; j++) {
-
         BasePlayer player1 = speedData[j];
         BasePlayer player2 = speedData[j + 1];
 
         if (player1.getAgi() < player2.getAgi()) {
-
           BasePlayer box = speedData[j];
           speedData[j] = speedData[j + 1];
           speedData[j + 1] = box;
-
         }
       }
     }
 
     for (int i = 0; i < speedData.length; i++) {// membersに速さ順に格納
-
       player = speedData[i];
       party.setMembers(player);// membersにplayerを加える
-
     }
   }
 
@@ -314,7 +291,6 @@ public class GameManager {
       try
 
       {
-
         menu = s.nextInt();
         s.nextLine();
 
@@ -325,7 +301,6 @@ public class GameManager {
         }
 
         if (menu == MAKE_CHARACTER || menu == CREATED_CHARACTER) {
-
           break;
         }
 
@@ -337,10 +312,8 @@ public class GameManager {
       catch (Exception e)
 
       {
-
         s.nextLine();
         System.out.printf("input 1 or 2\n");
-
       }
     }
 
@@ -351,7 +324,6 @@ public class GameManager {
     } else {
 
       this.createdPlayer();// 固定playerを使う
-
     }
   }
 
@@ -364,7 +336,6 @@ public class GameManager {
       System.out.printf("%s\n1-%s 2-%s 3-%s\n", "戦闘中メッセージ", "普通", "早い", "遅い");
 
       try {
-
         ss = s.nextInt();
         s.nextLine();
 
@@ -379,9 +350,7 @@ public class GameManager {
       } catch (Exception e) {
 
         s.nextLine();
-
         System.out.printf("input 1 - 3\n");
-
       }
 
     }
@@ -430,15 +399,13 @@ public class GameManager {
         player = jobList.get(i - 1);// 選択した職業をplayerに入れ
         player.initTypes(i - 1);
         player.setMark(false);// プレイヤーにfalse(識別)をセットする
-
       }
 
       player.setIdNumber(i);
       player.setMaxHp(player.getHp());
-      Thread.sleep(speed2);// 750
+      Thread.sleep(speed2);
       player.printStatus();
       speedData[i - 1] = player;// 速さ順ソートで使用する
-
     }
   }
 
@@ -455,7 +422,6 @@ public class GameManager {
     for (int i = 1; i <= 6; i++) {// playerの作成
 
       if (i == 1) {
-
         System.out.println("操作するプレイヤーを3人作成してください\n");
 
       } else if (i == 4) {
@@ -465,7 +431,6 @@ public class GameManager {
       }
 
       if (1 <= i && i <= 3) {
-
         System.out.printf("プレイヤー%dの名前を入力してください：", i);
 
       } else if (4 <= i && i <= 6) {
@@ -502,9 +467,7 @@ public class GameManager {
         {
 
           s.nextLine();
-
           System.out.println("適切な値を入力してください");
-
         }
       }
 
@@ -525,9 +488,7 @@ public class GameManager {
           s.nextLine();
 
           if (genus == 7) {
-
             attributeDescription();// 属性の説明
-
           }
 
           if (1 <= genus && genus <= 6)
@@ -542,11 +503,8 @@ public class GameManager {
         catch (Exception e)
 
         {
-
           s.nextLine();
-
           System.out.println("適切な値を入力してください");
-
         }
       }
 
@@ -561,7 +519,6 @@ public class GameManager {
         JobSelect(job, name);
         player = jobList.get(i + 3);
         player.setMark(false);// 対戦相手ににfalse(識別)をセットする
-
       }
 
       player.initTypes(genus - 1);
@@ -570,7 +527,6 @@ public class GameManager {
       player.printStatus();
       System.out.println("");
       speedData[i - 1] = player;
-
     }
   }
 
@@ -582,16 +538,8 @@ public class GameManager {
         TypeData.SHIELD.getDescription(), TypeData.DEVIL.getDescription(),
         TypeData.DEVIL.getDescription(), TypeData.SHADOW.getDescription(),
         TypeData.HOLY.getDescription());
-
-
   }
 
-  /**
-   * 選択した職業をjobListに格納する
-   *
-   * @param job :選択した職業の数字
-   * @param name :入力した名前
-   */
   private void JobSelect(int job, String name) {
 
     switch (job) {
@@ -611,7 +559,6 @@ public class GameManager {
       case 4:
         jobList.add(new JobNinja(name));
         break;
-
     }
   }
 }
