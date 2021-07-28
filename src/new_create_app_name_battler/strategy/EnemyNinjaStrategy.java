@@ -30,11 +30,7 @@ public class EnemyNinjaStrategy extends StrategyEnemyPattern {
 
       player1.skillAttack(player2);
     }
-
-    id = player2.getIdNumber();
-
-    return id;
-
+    return player2.getIdNumber();
   }
 
   BasePlayer selectLowerHP() {
@@ -53,7 +49,5 @@ public class EnemyNinjaStrategy extends StrategyEnemyPattern {
     playerParty.clear();
 
     return player2;
-
   }
-
 }

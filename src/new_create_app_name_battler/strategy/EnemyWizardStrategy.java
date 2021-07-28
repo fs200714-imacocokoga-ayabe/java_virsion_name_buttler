@@ -26,10 +26,7 @@ public class EnemyWizardStrategy extends StrategyEnemyPattern {
       player1.magicAttack(player2);
 
     }
-
-    id = player2.getIdNumber();
-
-    return id;
+    return  player2.getIdNumber();
   }
 
   BasePlayer selectLowerHP() {

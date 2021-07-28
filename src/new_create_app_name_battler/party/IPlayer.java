@@ -12,6 +12,8 @@ public interface IPlayer {
 
   void conditionCheck();
 
+  boolean isPhysicalAttack = false;
+
   boolean isLive();
 
   boolean isPoison();

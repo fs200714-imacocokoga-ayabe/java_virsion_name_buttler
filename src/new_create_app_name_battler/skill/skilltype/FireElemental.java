@@ -20,7 +20,6 @@ public class FireElemental extends BaseUseSkill {
       System.out.printf("%sの攻撃だがスキルは発動しなかった！\n", attacker.getName());
     }
     return skillData.getMinDamage();
-
   }
 
   @Override

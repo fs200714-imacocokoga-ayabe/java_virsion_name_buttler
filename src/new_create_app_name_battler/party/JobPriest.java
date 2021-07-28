@@ -34,23 +34,17 @@ public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, 
   }
 
   @Override
-  public void initTypes(int typeNumber){
-    super.initTypes(typeNumber);
-  }
-
-  @Override
   public void normalAttack(BasePlayer defender) {
-    attackType = "A";
+    isPhysicalAttack = true;
     priestAttackMessage(this);
     damage = calcDamage(defender);// 与えるダメージを求める
-    damageProcess(attackType, this, defender, damage);// ダメージ処理
+    damageProcess(isPhysicalAttack, this, defender, damage);// ダメージ処理
     knockedDownCheck(defender);
   }
 
   @Override
   public void skillAttack(BasePlayer defender) {
     skill = skills.get(0);
-    attackType = "M";
     skill.effect(this, defender);
     knockedDownCheck(this);
   }
@@ -58,12 +52,10 @@ public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, 
   @Override
   public void magicAttack(BasePlayer defender) {
     magic = choiceMagic();
-    attackType = "M";
     damage = magic.effect(this, defender);
 
     if (damage != 0) {
       knockedDownCheck(defender);
-
     } else {
       this.normalAttack(defender);
     }
@@ -74,7 +66,6 @@ public class JobPriest extends BasePlayer implements IOwnSkill, IRecoveryMagic, 
     magic = magics.get(2);
     damage = magic.effect(this, defender);
     knockedDownCheck(this);
-
   }
 
   @Override

@@ -24,7 +24,6 @@ public class StrategyUseHealingMagic extends BaseStrategy {// 回復優先の作
 
     if (0 < _party2.size()) {
       player2 = _party2.get(random.nextInt(_party2.size()));
-      id = player2.getIdNumber();
     }
 
     if (player1 instanceof IRecoveryMagic) {
@@ -45,6 +44,6 @@ public class StrategyUseHealingMagic extends BaseStrategy {// 回復優先の作
     _party1.clear();// _party1をクリア
     _party2.clear();// _party2をクリア
 
-    return id;
+    return  player2.getIdNumber();
   }
 }

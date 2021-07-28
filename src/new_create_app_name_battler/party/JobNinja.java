@@ -25,27 +25,21 @@ public class JobNinja extends BasePlayer implements  IOwnMagic, INinja {
   }
 
   @Override
-  public void initTypes(int typeNumber){
-    super.initTypes(typeNumber);
-  }
-
-  @Override
   public void normalAttack(BasePlayer defender) {
-    attackType = "A";
+    isPhysicalAttack = true;
     ninjaAttackMessage(this);
-  //  System.out.printf("%sの攻撃！\n手裏剣を投げつけた！\n", getName());
     damage = calcDamage(defender); // 与えるダメージを求める
-    damageProcess(attackType, this, defender, damage);// ダメージ処理
+    damageProcess(isPhysicalAttack, this, defender, damage);// ダメージ処理
     knockedDownCheck(defender);
   }
 
   @Override
   public void skillAttack(BasePlayer defender) {
-    attackType = "A";
+    isPhysicalAttack = true;
     skill = skills.get(0);
     damage = calcDamage(defender);// 攻撃処理
     damage = damage * skill.effect(this, defender);// ダメージ2倍
-    super.damageProcess(attackType, this, defender, damage);// ダメージ処理
+    super.damageProcess(isPhysicalAttack, this, defender, damage);// ダメージ処理
     knockedDownCheck(defender);
   }
 
@@ -53,11 +47,11 @@ public class JobNinja extends BasePlayer implements  IOwnMagic, INinja {
   public void magicAttack(BasePlayer defender) {
 
     magic = choiceMagic();
-    attackType = "M";
     damage = magic.effect(this, defender);
 
     if (damage != 0) {
-      super.damageProcess(attackType, this, defender, damage);
+      isPhysicalAttack = false;
+      super.damageProcess(isPhysicalAttack, this, defender, damage);
       knockedDownCheck(defender);
 
     } else {

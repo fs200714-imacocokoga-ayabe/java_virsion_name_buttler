@@ -1,7 +1,5 @@
 package new_create_app_name_battler.party;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +22,6 @@ import new_create_app_name_battler.type.TypeShield;
 public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   Random random = new Random();
-
   List<IUseMagic> magics;
   IUseMagic magic;
   List<IUseSkill> skills;
@@ -50,7 +47,7 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
   int idNumber;// ID値の入れ物
   int strategyData;
   int healValue;
-
+  boolean isPhysicalAttack;
   String attackType;
   BasePlayer attacker;
   BasePlayer defender;
@@ -96,12 +93,12 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   public void makeCharacter() {
     this.job = jobData.getJob();
-    this.hp = getNumber(0, jobData.getHp()) + jobData.getMinHp();
-    this.mp = getNumber(1, jobData.getMp()) + jobData.getMinMp();
-    this.str = getNumber(2, jobData.getStr()) + jobData.getMinStr();
-    this.def = getNumber(3, jobData.getDef()) + jobData.getMinDef();
-    this.agi = getNumber(5, jobData.getAgi()) + jobData.getMinAgi();
-    this.luck = getNumber(4, jobData.getLuck()) + jobData.getMinLuck();
+    this.hp = jobData.getNumber(this.name, 0, jobData.getHp()) + jobData.getMinHp();
+    this.mp = jobData.getNumber(this.name, 1, jobData.getMp()) + jobData.getMinMp();
+    this.str = jobData.getNumber(this.name, 2, jobData.getStr()) + jobData.getMinStr();
+    this.def = jobData.getNumber(this.name, 3, jobData.getDef()) + jobData.getMinDef();
+    this.agi = jobData.getNumber(this.name, 4, jobData.getAgi()) + jobData.getMinAgi();
+    this.luck = jobData.getNumber(this.name,5, jobData.getLuck()) + jobData.getMinLuck();
   }
 
   public TypeData getTypeName() {
@@ -213,31 +210,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
     this.paralysis = paralysis;
   }
 
-  /**
-   * 名前(name)からハッシュ値を生成し、指定された位置の数値を取り出す
-   * @param index : 何番目の数値を取り出すか
-   * @param max : 最大値(内部的に0～255の値を生成するが、0～maxまでの値に補正)
-   * @return 数値(0～max) ※maxも含む
-   */
-  protected int getNumber(int index, int max) {
-    try {
-      // 名前からハッシュ値を生成する
-      byte[] result = MessageDigest.getInstance("SHA-1").digest(this.name.getBytes());
-      String digest = String.format("%040x", new BigInteger(1, result));
-
-      // ハッシュ値から指定された位置の文字列を取り出す（２文字分）
-      String hex = digest.substring(index * 2, index * 2 + 2);
-
-      // 取り出した文字列（16進数）を数値に変換する
-      int val = Integer.parseInt(hex, 16);
-      return val * max / 255;
-    } catch (Exception e) {
-      // エラー
-      e.printStackTrace();
-    }
-    return 0;
-  }
-
   public void normalAttack(BasePlayer defender) {}
 
   public void skillAttack(BasePlayer defender) {}
@@ -248,6 +220,7 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   public void eat() {
     selectEat(this);
+   // conditionCheck();
     }
 
   public int calcDamage(BasePlayer defender) {
@@ -270,8 +243,8 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
     return damage;
   }
 
-  public void damageProcess(String attackType, BasePlayer attacker, BasePlayer defender, int damage) {
-    damage = type.typeProcess(attackType, attacker, defender, damage);
+  public void damageProcess(boolean isPhysicalAttack, BasePlayer attacker, BasePlayer defender, int damage) {
+    damage = type.typeProcess(isPhysicalAttack, attacker, defender, damage);
     System.out.printf("%sに%dのダメージ！\n", defender.getName(), damage);
     defender.damage(damage);// 求めたダメージを対象プレイヤーに与える
   }
@@ -371,6 +344,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
         return magic;
       }
     }
-    return null;
+    return magic;
   }
 }

@@ -27,10 +27,7 @@ public class EnemyFighterStrategy extends StrategyEnemyPattern {
       player1.skillAttack(player2);
 
     }
-
-    id = player2.getIdNumber();
-
-    return id;// 自身のIDと相手playerID
+    return player2.getIdNumber();// 自身のIDと相手playerID
   }
 
   BasePlayer selectLowerHP() {
@@ -42,15 +39,10 @@ public class EnemyFighterStrategy extends StrategyEnemyPattern {
       if (playerParty.get(i).getHp() < player2.getHp()) {// player2よりHPが低い場合
 
         player2 = playerParty.get(i);// HPのひくい敵をplayer2に入れる
-
       }
     }
-
     playerParty.clear();
 
     return player2;
-
   }
-
-
 }

@@ -22,19 +22,19 @@ public class JobFighter extends BasePlayer implements IOwnType, IOwnSkill, IFigh
 
   @Override
   public void normalAttack(BasePlayer defender) {
-    attackType = "A";
+    isPhysicalAttack = true;
     fighterAttackMessage(this);
     damage = calcDamage(defender); // 与えるダメージを求める
-    damageProcess(attackType, this, defender, damage);
+    damageProcess(isPhysicalAttack, this, defender, damage);// P:物理攻撃
     knockedDownCheck(defender);
   }
 
   public void skillAttack(BasePlayer defender) {
-    attackType = "A";
+    isPhysicalAttack = true;
     skill = skills.get(0);
     damage = calcDamage(defender); // 与えるダメージを求める
     damage = damage * skill.effect(this, defender);// ダメージ2倍
-    damageProcess(attackType, this, defender, damage);
+    damageProcess(isPhysicalAttack, this, defender, damage);
     knockedDownCheck(defender);
   }
 
@@ -43,8 +43,4 @@ public class JobFighter extends BasePlayer implements IOwnType, IOwnSkill, IFigh
     super.eat();
     knockedDownCheck(this);
   }
-
-
-
-
 }

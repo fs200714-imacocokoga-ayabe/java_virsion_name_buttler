@@ -77,5 +77,4 @@ public class EnemyPriestStrategy extends StrategyEnemyPattern {
     return player;
 
   }
-
 }

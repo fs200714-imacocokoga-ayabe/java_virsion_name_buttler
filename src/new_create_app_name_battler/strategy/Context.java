@@ -12,7 +12,6 @@ public class Context {
   List<BasePlayer> party2 = null;
 
   public Context(IStrategy istrategy) {
-
     this.istrategy = istrategy;
   }
 

@@ -13,7 +13,7 @@ public class Assault extends BaseUseSkill {
 
     super.effect(attacker, defender);
 
-    if (random.nextInt(100) + 1 <= skillData.getInvocationRate()) {// 発動率25%
+    if (random.nextInt(100) + 1 <= skillData.getInvocationRate()) {
 
       System.out.printf("%sの捨て身の突撃！\n", attacker.getName());
 

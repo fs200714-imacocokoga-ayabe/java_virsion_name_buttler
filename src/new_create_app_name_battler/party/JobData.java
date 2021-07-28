@@ -1,5 +1,7 @@
 package new_create_app_name_battler.party;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,5 +112,30 @@ public enum JobData {
 
   public int getMinLuck() {
     return minLuck;
+  }
+
+  /**
+   * 名前(name)からハッシュ値を生成し、指定された位置の数値を取り出す
+   * @param index : 何番目の数値を取り出すか
+   * @param max : 最大値(内部的に0～255の値を生成するが、0～maxまでの値に補正)
+   * @return 数値(0～max) ※maxも含む
+   */
+  public int getNumber(String name, int index, int max) {
+    try {
+      // 名前からハッシュ値を生成する
+      byte[] result = MessageDigest.getInstance("SHA-1").digest(name.getBytes());
+      String digest = String.format("%040x", new BigInteger(1, result));
+
+      // ハッシュ値から指定された位置の文字列を取り出す（２文字分）
+      String hex = digest.substring(index * 2, index * 2 + 2);
+
+      // 取り出した文字列（16進数）を数値に変換する
+      int val = Integer.parseInt(hex, 16);
+      return val * max / 255;
+    } catch (Exception e) {
+      // エラー
+      e.printStackTrace();
+    }
+    return 0;
   }
 }
