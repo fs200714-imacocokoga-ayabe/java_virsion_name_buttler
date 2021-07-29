@@ -220,7 +220,6 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
 
   public void eat() {
     selectEat(this);
-   // conditionCheck();
     }
 
   public int calcDamage(BasePlayer defender) {

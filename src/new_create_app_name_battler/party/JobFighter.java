@@ -25,7 +25,7 @@ public class JobFighter extends BasePlayer implements IOwnType, IOwnSkill, IFigh
     isPhysicalAttack = true;
     fighterAttackMessage(this);
     damage = calcDamage(defender); // 与えるダメージを求める
-    damageProcess(isPhysicalAttack, this, defender, damage);// P:物理攻撃
+    damageProcess(isPhysicalAttack, this, defender, damage);
     knockedDownCheck(defender);
   }
 

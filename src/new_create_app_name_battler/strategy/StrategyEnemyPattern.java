@@ -8,7 +8,7 @@ import new_create_app_name_battler.party.INinja;
 import new_create_app_name_battler.party.IPriest;
 import new_create_app_name_battler.party.IWizard;
 
-public class StrategyEnemyPattern extends BaseStrategy {
+ public class StrategyEnemyPattern extends BaseStrategy {
 
   Context enemyContext;
   protected List<BasePlayer> playerParty = new ArrayList<BasePlayer>();
@@ -17,6 +17,7 @@ public class StrategyEnemyPattern extends BaseStrategy {
 
   final int NINJA_MP = 10;
   final int PRIEST_MP = 10;
+  final int HEAL_MP = 20;
 
   @Override
   public int attackStrategy(BasePlayer player1, List<BasePlayer> party1, List<BasePlayer> party2) {
@@ -42,5 +43,38 @@ public class StrategyEnemyPattern extends BaseStrategy {
 
     }
     return enemyContext.attackStrategy(player1, playerParty, aiParty);
+  }
+
+  public BasePlayer selectLowerHP() {
+
+    player2 = playerParty.get(0);// 敵パーティから1人player2に入れる
+
+    for (int i = 1; i < playerParty.size(); i++) {
+
+      if (playerParty.get(i).getHp() < player2.getHp()) {// player2よりHPが低い場合
+
+        player2 = playerParty.get(i);// HPのひくい敵をplayer2に入れる
+      }
+    }
+    playerParty.clear();
+
+    return player2;
+  }
+
+  public BasePlayer lifeImpotance() {
+
+    player = aiParty.get(0);
+
+    for (int i = 0; i < aiParty.size(); i++) {// HPの低い味方を選ぶ
+
+      if ((player.getMaxHp() - player.getHp() < aiParty.get(i).getMaxHp()
+          - aiParty.get(i).getHp())) {
+        player = aiParty.get(i);
+      }
+    }
+    aiParty.clear();
+
+    return player;
+
   }
 }

@@ -39,10 +39,16 @@ public class GameManager {
   final int MAKE_CHARACTER = 1;
   final int CREATED_CHARACTER = 2;
   final int SETTING = 3;
+  final int DISPLAY_SPEED_FAST = 0;
+  final int DISPLAY_SPEED_NORMAL = 750;
+  final int DISPLAY_SPEED_SLOW = 1000;
+  final int DISPLAY_SPEED_VERY_SLOW = 2000;
+  final int MAX_TURN_NUMBER = 20;
 
-  int speed1 = 1000;// 開始表示速度
-  int speed2 = 750;// ステータス表示速度
-  int speed3 = 1000;// 戦闘中メッセージ速度
+  // 初期表示速度
+  int speedChanePlace1 = DISPLAY_SPEED_SLOW;// 開始表示速度
+  int speedChanePlace2 = DISPLAY_SPEED_NORMAL;// ステータス表示速度
+  int speedChanePlace3 = DISPLAY_SPEED_SLOW;// 戦闘中メッセージ速度
 
   public void start() throws InterruptedException {
 
@@ -56,12 +62,12 @@ public class GameManager {
 
   private void battle() throws InterruptedException {
     // バトル開始の表示
-    Thread.sleep(speed1);
+    Thread.sleep(speedChanePlace1);
     System.out.println("");
     System.out.println("=== バトル開始 ===");
     int turnNumber = 1;// ターンの初期値
 
-    while (turnNumber <= 20) {// 最大でも20ターンまで
+    while (turnNumber <= MAX_TURN_NUMBER) {
 
       System.out.println("--------------------------------");
       System.out.printf("- ターン%d -\n", turnNumber);
@@ -123,7 +129,7 @@ public class GameManager {
             }
           }
 
-          Thread.sleep(speed3);
+          Thread.sleep(speedChanePlace3);
 
           if (player.getHp() <= 0) {// プレイヤー１の敗北判定
             party.removePlayer(player);// プレイヤー１がHP0の場合パーティから削除する
@@ -202,12 +208,12 @@ public class GameManager {
   private void attackOrder() throws InterruptedException {
 
     System.out.println("");
-    Thread.sleep(speed1);
+    Thread.sleep(speedChanePlace1);
     System.out.println("---攻撃の順番---");// 攻撃順
 
     for (int i = 0; i < party.getMembers().size(); i++) {// パーティ1,パーティ2に振り分ける処理
       player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
-      Thread.sleep(speed2);
+      Thread.sleep(speedChanePlace2);
       player.printStatus();// ステータスの表示
     }
   }
@@ -223,7 +229,7 @@ public class GameManager {
       for (int i = 0; i < party.getParty1().size(); i++) {
 
         player = party.getParty1().get(i);
-        Thread.sleep(speed2);
+        Thread.sleep(speedChanePlace2);
         player.printStatus();// パーティ1のプレイヤーのステータスを表示する
       }
     }
@@ -234,7 +240,7 @@ public class GameManager {
 
       for (int i = 0; i < party.getParty2().size(); i++) {
         player = party.getParty2().get(i);
-        Thread.sleep(speed2);
+        Thread.sleep(speedChanePlace2);
         player.printStatus();// パーティ2のプレイヤーのステータスを表示す
       }
     }
@@ -358,21 +364,21 @@ public class GameManager {
     switch (ss) {
 
       case 1:
-        speed1 = 1000;
-        speed2 = 750;
-        speed3 = 1000;
+        speedChanePlace1 = DISPLAY_SPEED_SLOW;
+        speedChanePlace2 = DISPLAY_SPEED_NORMAL;
+        speedChanePlace3 = DISPLAY_SPEED_SLOW;
         break;
 
       case 2:
-        speed1 = 0;
-        speed2 = 0;
-        speed3 = 0;
+        speedChanePlace1 = DISPLAY_SPEED_FAST;
+        speedChanePlace2 = DISPLAY_SPEED_FAST;
+        speedChanePlace3 = DISPLAY_SPEED_FAST;
         break;
 
       case 3:
-        speed1 = 1000;
-        speed2 = 750;
-        speed3 = 2000;
+        speedChanePlace1 = DISPLAY_SPEED_SLOW;
+        speedChanePlace2 = DISPLAY_SPEED_NORMAL;
+        speedChanePlace3 = DISPLAY_SPEED_VERY_SLOW;
         break;
 
     }
@@ -403,7 +409,7 @@ public class GameManager {
 
       player.setIdNumber(i);
       player.setMaxHp(player.getHp());
-      Thread.sleep(speed2);
+      Thread.sleep(speedChanePlace2);
       player.printStatus();
       speedData[i - 1] = player;// 速さ順ソートで使用する
     }
@@ -412,7 +418,8 @@ public class GameManager {
   private void makePlayer() {
 
     int job;
-    int genus;
+    int type;
+    String name = "";
 
     jobList.add(new JobFighter(""));// プレイヤー作成のメニュに表示するため初期設定jobList0に格納
     jobList.add(new JobWizard(""));// 初期設定jobList1に格納
@@ -431,15 +438,18 @@ public class GameManager {
       }
 
       if (1 <= i && i <= 3) {
+
         System.out.printf("プレイヤー%dの名前を入力してください：", i);
+
+        name = checkInputLength();
 
       } else if (4 <= i && i <= 6) {
 
         System.out.printf("対戦相手%dの名前を入力してください：", i - 3);
 
-      }
+        name = checkInputLength();
 
-      String name = s.nextLine();
+      }
 
       while (true)
 
@@ -484,14 +494,14 @@ public class GameManager {
 
         {
 
-          genus = s.nextInt();
+          type = s.nextInt();
           s.nextLine();
 
-          if (genus == 7) {
-            attributeDescription();// 属性の説明
+          if (type == 7) {
+            typeMemo();// 属性の説明
           }
 
-          if (1 <= genus && genus <= 6)
+          if (1 <= type && type <= 6)
 
             break;
 
@@ -521,7 +531,7 @@ public class GameManager {
         player.setMark(false);// 対戦相手ににfalse(識別)をセットする
       }
 
-      player.initTypes(genus - 1);
+      player.initTypes(type - 1);
       player.setIdNumber(i);// IDをセットする
       player.setMaxHp(player.getHp());// MaxHPをセットする
       player.printStatus();
@@ -530,13 +540,33 @@ public class GameManager {
     }
   }
 
-  private void attributeDescription() {
+  private String checkInputLength() {
+
+    String name;
+
+    while (true) {
+
+      name = s.nextLine();
+
+      if (name.length() <= 10) {
+
+        break;
+
+      } else {
+
+        System.out.printf("10文字以内でプレイヤーの名前を入力してください：");
+      }
+    }
+    return name;
+  }
+
+  private void typeMemo() {
 
     System.out.println("");
 
     System.out.printf("%s %s %s %s %s %s\n\n", TypeData.BLOOD.getDescription(),
         TypeData.SHIELD.getDescription(), TypeData.DEVIL.getDescription(),
-        TypeData.DEVIL.getDescription(), TypeData.SHADOW.getDescription(),
+        TypeData.DARK.getDescription(), TypeData.SHADOW.getDescription(),
         TypeData.HOLY.getDescription());
   }
 

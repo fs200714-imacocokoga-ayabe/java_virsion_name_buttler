@@ -8,7 +8,9 @@ public class BaseUseMagic implements IUseMagic {
   protected Random random = new Random();
   protected MagicData magicData;
   protected int damage;
-
+  protected final int NO_MP = 0;
+  protected final int USE_STATE_MAGIC = 1;
+ 
   public BaseUseMagic() {
     this.initMagic();
   }

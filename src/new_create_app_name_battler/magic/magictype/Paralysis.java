@@ -22,12 +22,12 @@ public class Paralysis extends BaseUseMagic {
       }
       attacker.downMp(this.magicData.getMpcost());
 
-      return 1;
+      return USE_STATE_MAGIC;
 
     } else {
       System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
     }
-    return 0;
+    return NO_MP;
   }
 
   @Override

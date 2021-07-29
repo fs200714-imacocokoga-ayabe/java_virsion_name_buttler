@@ -28,24 +28,4 @@ public class EnemyWizardStrategy extends StrategyEnemyPattern {
     }
     return  player2.getIdNumber();
   }
-
-  BasePlayer selectLowerHP() {
-
-    player2 = playerParty.get(0);// 敵パーティから1人player2に入れる
-
-    for (int i = 1; i < playerParty.size(); i++) {
-
-      if (playerParty.get(i).getHp() < player2.getHp()) {// player2よりHPが低い場合
-
-        player2 = playerParty.get(i);// HPのひくい敵をplayer2に入れる
-
-      }
-    }
-
-    playerParty.clear();
-
-    return player2;
-
-  }
-
 }
