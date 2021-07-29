@@ -23,7 +23,7 @@ public class Thunder extends BaseUseMagic {
     } else {
       System.out.printf("%sは術を唱えようとしたが、MPが足りない！！\n", attacker.getName());
     }
-    return 0;
+    return NO_MP;
   }
 
   @Override
