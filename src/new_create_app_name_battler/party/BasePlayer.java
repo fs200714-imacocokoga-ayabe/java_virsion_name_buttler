@@ -286,9 +286,10 @@ public class BasePlayer implements IPlayer, IEat, IOwnType {
       paralysis = "";
     }
 
-    System.out.printf("[%s]%s(HP=%3d/%d : MP=%3d : STR=%3d : DEF=%3d : LUCK=%3d : AGI=%3d)%S%S\n",
-        type.getType().getTypeName(), this.getJobName(), this.getHp(), getMaxHp(), this.getMp(),
+    System.out.printf("[%s]%-10s(HP=%3d/%3d : MP=%3d : STR=%3d : DEF=%3d : LUCK=%3d : AGI=%3d)%S%S\n",
+        type.getType().getTypeName(), this.getName(), this.getHp(), getMaxHp(), this.getMp(),
         this.getStr(), this.getDef(), this.getLuck(), this.getAgi(), paralysis, poison);
+
   }
 
   public void knockedDownCheck(BasePlayer defender) {
