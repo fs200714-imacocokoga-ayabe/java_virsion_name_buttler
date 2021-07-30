@@ -212,8 +212,11 @@ public class GameManager {
     System.out.println("---攻撃の順番---");// 攻撃順
 
     for (int i = 0; i < party.getMembers().size(); i++) {// パーティ1,パーティ2に振り分ける処理
+
       player = party.getMembers().get(i);// membersからプレイヤーを呼び出す
+
       Thread.sleep(speedChanePlace2);
+
       player.printStatus();// ステータスの表示
     }
   }
@@ -229,7 +232,9 @@ public class GameManager {
       for (int i = 0; i < party.getParty1().size(); i++) {
 
         player = party.getParty1().get(i);
+
         Thread.sleep(speedChanePlace2);
+
         player.printStatus();// パーティ1のプレイヤーのステータスを表示する
       }
     }
@@ -239,8 +244,11 @@ public class GameManager {
       System.out.println("パーティ2");
 
       for (int i = 0; i < party.getParty2().size(); i++) {
+
         player = party.getParty2().get(i);
+
         Thread.sleep(speedChanePlace2);
+
         player.printStatus();// パーティ2のプレイヤーのステータスを表示す
       }
     }
@@ -386,12 +394,12 @@ public class GameManager {
 
   private void createdPlayer() throws InterruptedException {
 
-    jobList.add(new JobFighter("味方アシュラム"));
-    jobList.add(new JobWizard("味方スレイン"));
-    jobList.add(new JobPriest("味方ゼロス"));
-    jobList.add(new JobNinja("敵ウッド"));
-    jobList.add(new JobWizard("敵ガンダルフ"));
-    jobList.add(new JobPriest("敵バグナード"));
+    jobList.add(new JobFighter("m-ashuram"));
+    jobList.add(new JobWizard("m-slain"));
+    jobList.add(new JobPriest("m-zerosu"));
+    jobList.add(new JobNinja("e-wood"));
+    jobList.add(new JobWizard("e-gandalf"));
+    jobList.add(new JobPriest("e-bagnard"));
 
     for (int i = 1; i <= 6; i++) {
 
@@ -439,13 +447,13 @@ public class GameManager {
 
       if (1 <= i && i <= 3) {
 
-        System.out.printf("プレイヤー%dの名前を入力してください：", i);
+        System.out.printf("プレイヤー%dの名前を半角英数字で入力してください：", i);
 
         name = checkInputLength();
 
       } else if (4 <= i && i <= 6) {
 
-        System.out.printf("対戦相手%dの名前を入力してください：", i - 3);
+        System.out.printf("対戦相手%dの名前を半角英数字で入力してください：", i - 3);
 
         name = checkInputLength();
 
